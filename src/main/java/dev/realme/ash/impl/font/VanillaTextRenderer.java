@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 @Deprecated
 public class VanillaTextRenderer implements Globals {
    public void drawWithShadow(MatrixStack matrices, String text, float x, float y, int color) {
-      if ((Boolean)Modules.CLIENT_SETTING.shadow.getValue()) {
+      if (Modules.CLIENT_SETTING.shadow.getValue()) {
          this.draw(matrices, text, x + 1.0F, y + 1.0F, color, true);
       }
 
@@ -40,7 +40,7 @@ public class VanillaTextRenderer implements Globals {
    }
 
    public void draw(MatrixStack matrices, String text, float x, float y, int color) {
-      this.draw(text, x, y, color, matrices.peek().getPositionMatrix(), (Boolean)Modules.CLIENT_SETTING.shadow.getValue());
+      this.draw(text, x, y, color, matrices.peek().getPositionMatrix(), Modules.CLIENT_SETTING.shadow.getValue());
    }
 
    public void draw(String text, float x, float y, int color) {

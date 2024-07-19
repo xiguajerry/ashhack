@@ -23,17 +23,15 @@ public class SocialFile extends ConfigFile {
    public void save() {
       try {
          Path filepath = this.getFilepath();
-         if (!Files.exists(filepath, new LinkOption[0])) {
+         if (!Files.exists(filepath)) {
             Files.createFile(filepath);
          }
 
          JsonArray array = new JsonArray();
-         Iterator var3 = Managers.SOCIAL.getRelations(this.relation).iterator();
 
-         while(var3.hasNext()) {
-            String socials = (String)var3.next();
-            array.add(new JsonPrimitive(socials));
-         }
+          for (String socials : Managers.SOCIAL.getRelations(this.relation)) {
+              array.add(new JsonPrimitive(socials));
+          }
 
          this.write(filepath, this.serialize(array));
       } catch (IOException var5) {
@@ -47,19 +45,16 @@ public class SocialFile extends ConfigFile {
    public void load() {
       try {
          Path filepath = this.getFilepath();
-         if (Files.exists(filepath, new LinkOption[0])) {
+         if (Files.exists(filepath)) {
             String content = this.read(filepath);
             JsonArray json = this.parseArray(content);
             if (json == null) {
                return;
             }
 
-            Iterator var4 = json.asList().iterator();
-
-            while(var4.hasNext()) {
-               JsonElement element = (JsonElement)var4.next();
-               Managers.SOCIAL.addRelation(element.getAsString(), this.relation);
-            }
+             for (JsonElement element : json.asList()) {
+                 Managers.SOCIAL.addRelation(element.getAsString(), this.relation);
+             }
          }
       } catch (IOException var6) {
          IOException e = var6;

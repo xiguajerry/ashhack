@@ -57,7 +57,7 @@ extends ToggleModule {
     Config<Boolean> shieldsConfig = new BooleanConfig("Shields", "Removes the slowdown effect caused by shields", true);
     Config<Boolean> websConfig = new BooleanConfig("Webs", "Removes the slowdown caused when moving through webs", false);
     Config<Boolean> berryBushConfig = new BooleanConfig("BerryBush", "Removes the slowdown caused when moving through webs", false);
-    Config<Float> webSpeedConfig = new NumberConfig<Float>("WebSpeed", "Speed to fall through webs", Float.valueOf(0.0f), Float.valueOf(3.5f), Float.valueOf(20.0f), () -> this.websConfig.getValue());
+    Config<Float> webSpeedConfig = new NumberConfig<Float>("WebSpeed", "Speed to fall through webs", 0.0f, 3.5f, 20.0f, () -> this.websConfig.getValue());
     Config<Boolean> soulsandConfig = new BooleanConfig("SoulSand", "Removes the slowdown effect caused by walking over SoulSand blocks", false);
     Config<Boolean> honeyblockConfig = new BooleanConfig("HoneyBlock", "Removes the slowdown effect caused by walking over Honey blocks", false);
     Config<Boolean> slimeblockConfig = new BooleanConfig("SlimeBlock", "Removes the slowdown effect caused by walking over Slime blocks", false);
@@ -113,7 +113,7 @@ extends ToggleModule {
                 KeyBinding[] keys;
                 long handle = mc.getWindow().getHandle();
                 for (KeyBinding binding : keys = new KeyBinding[]{NoSlowModule.mc.options.jumpKey, NoSlowModule.mc.options.forwardKey, NoSlowModule.mc.options.backKey, NoSlowModule.mc.options.rightKey, NoSlowModule.mc.options.leftKey}) {
-                    binding.setPressed(InputUtil.isKeyPressed(handle, ((AccessorKeyBinding)((Object)binding)).getBoundKey().getCode()));
+                    binding.setPressed(InputUtil.isKeyPressed(handle, ((AccessorKeyBinding) binding).getBoundKey().getCode()));
                 }
                 if (this.arrowMoveConfig.getValue().booleanValue()) {
                     float yaw = NoSlowModule.mc.player.getYaw();
@@ -191,7 +191,7 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof PlayerMoveC2SPacket && (packet = (PlayerMoveC2SPacket)((Object)packet2)).changesPosition() && this.strictConfig.getValue().booleanValue() && this.checkSlowed()) {
+        if (packet2 instanceof PlayerMoveC2SPacket && (packet = (PlayerMoveC2SPacket) packet2).changesPosition() && this.strictConfig.getValue().booleanValue() && this.checkSlowed()) {
             InventoryUtil.doSwap(NoSlowModule.mc.player.getInventory().selectedSlot);
         } else if (event.getPacket() instanceof ClickSlotC2SPacket && this.strictConfig.getValue().booleanValue()) {
             if (NoSlowModule.mc.player.isUsingItem()) {
@@ -207,7 +207,7 @@ extends ToggleModule {
     }
 
     public boolean checkSlowed() {
-        return !NoSlowModule.mc.player.isRiding() && !NoSlowModule.mc.player.isSneaking() && (NoSlowModule.mc.player.isUsingItem() && this.itemsConfig.getValue() != false || NoSlowModule.mc.player.isBlocking() && this.shieldsConfig.getValue() != false && this.grimConfig.getValue() == false);
+        return !NoSlowModule.mc.player.isRiding() && !NoSlowModule.mc.player.isSneaking() && (NoSlowModule.mc.player.isUsingItem() && this.itemsConfig.getValue() || NoSlowModule.mc.player.isBlocking() && this.shieldsConfig.getValue() && !this.grimConfig.getValue());
     }
 
     public boolean checkScreen() {

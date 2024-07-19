@@ -22,7 +22,7 @@ public class ModuleArgumentType
    }
 
    public static Module getModule(CommandContext<?> context, String name) {
-      return (Module)context.getArgument(name, Module.class);
+      return context.getArgument(name, Module.class);
    }
 
    public Module parse(StringReader reader) throws CommandSyntaxException {

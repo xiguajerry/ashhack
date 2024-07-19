@@ -57,7 +57,7 @@ public class PlaceRenderModule extends ToggleModule {
         ColorConfig sb = (ColorConfig)this.color;
         double ease = placePosition.firstFade.easeOutQuad() * 0.5D;
         Box var10000;
-        switch((PlaceRenderModule.FadeMode)this.fadeMode.getValue()) {
+        switch(this.fadeMode.getValue()) {
             case None:
                 var10000 = new Box(pos);
                 break;
@@ -70,16 +70,16 @@ public class PlaceRenderModule extends ToggleModule {
 
         Box bb = var10000;
         if (this.box.getValue()) {
-            RenderManager.renderBox(matrixStack, bb, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double)((Integer)this.boxAlpha.getValue()).intValue() * -alpha) : this.boxAlpha.getValue()));
+            RenderManager.renderBox(matrixStack, bb, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double) this.boxAlpha.getValue().intValue() * -alpha) : this.boxAlpha.getValue()));
         }
 
         if (this.line.getValue()) {
-            RenderManager.renderBoundingBox(matrixStack, bb, 1.0F, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double)((Integer)this.olAlpha.getValue()).intValue() * -alpha) : this.olAlpha.getValue()));
+            RenderManager.renderBoundingBox(matrixStack, bb, 1.0F, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double) this.olAlpha.getValue().intValue() * -alpha) : this.olAlpha.getValue()));
         }
 
     }
 
-    public static enum FadeMode {
+    public enum FadeMode {
         None,
         Shrink;
 
@@ -90,7 +90,7 @@ public class PlaceRenderModule extends ToggleModule {
     }
 
     public static class placePosition {
-        public final FadeUtils firstFade = new FadeUtils((long)((Integer)Modules.PLACE_RENDER.fadeTime.getValue()).intValue());
+        public final FadeUtils firstFade = new FadeUtils(Modules.PLACE_RENDER.fadeTime.getValue().intValue());
         public final BlockPos pos;
 
         public placePosition(BlockPos placePos) {

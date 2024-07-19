@@ -9,7 +9,7 @@ import dev.realme.ash.init.Managers;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
-public class CommandArgumentType implements ArgumentType {
+public class CommandArgumentType implements ArgumentType<Command> {
    public static CommandArgumentType command() {
       return new CommandArgumentType();
    }
@@ -18,23 +18,23 @@ public class CommandArgumentType implements ArgumentType {
       return (Command)context.getArgument(name, Command.class);
    }
 
+   @Override
    public Command parse(StringReader reader) throws CommandSyntaxException {
       String string = reader.readString();
       Command command = Managers.COMMAND.getCommand(string.toLowerCase());
       if (command == null) {
-         throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherParseException().createWithContext(reader, (Object)null);
+         throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherParseException().createWithContext(reader, null);
       } else {
          return command;
       }
    }
 
    public CompletableFuture listSuggestions(CommandContext context, SuggestionsBuilder builder) {
-      Iterator var3 = Managers.COMMAND.getCommands().iterator();
 
-      while(var3.hasNext()) {
-         Command command = (Command)var3.next();
-         builder.suggest(command.getName().toLowerCase());
-      }
+       for (Object o : Managers.COMMAND.getCommands()) {
+           Command command = (Command) o;
+           builder.suggest(command.getName().toLowerCase());
+       }
 
       return builder.buildFuture();
    }

@@ -33,7 +33,7 @@ import org.joml.Quaternionf;
 
 public class ChamsModule
 extends ToggleModule {
-    Config<ChamsMode> modeConfig = new EnumConfig("Mode", "The rendering mode for the chams", (Enum)ChamsMode.NORMAL, (Enum[])ChamsMode.values());
+    Config<ChamsMode> modeConfig = new EnumConfig("Mode", "The rendering mode for the chams", ChamsMode.NORMAL, ChamsMode.values());
     Config<Boolean> handsConfig = new BooleanConfig("Hands", "Render chams on first-person hands", true);
     Config<Boolean> selfConfig = new BooleanConfig("Self", "Render chams on the player", true);
     Config<Boolean> playersConfig = new BooleanConfig("Players", "Render chams on other players", true);
@@ -91,8 +91,7 @@ extends ToggleModule {
         float h = MathHelper.lerpAngleDegrees(event.g, event.entity.prevBodyYaw, event.entity.bodyYaw);
         float j = MathHelper.lerpAngleDegrees(event.g, event.entity.prevHeadYaw, event.entity.headYaw);
         float k = j - h;
-        if (event.entity.hasVehicle() && event.entity.getVehicle() instanceof LivingEntity) {
-            LivingEntity livingEntity2 = (LivingEntity)event.entity.getVehicle();
+        if (event.entity.hasVehicle() && event.entity.getVehicle() instanceof LivingEntity livingEntity2) {
             h = MathHelper.lerpAngleDegrees(event.g, livingEntity2.prevBodyYaw, livingEntity2.bodyYaw);
             k = j - h;
             l = MathHelper.wrapDegrees(k);
@@ -259,20 +258,20 @@ extends ToggleModule {
             event.matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(f * -135.0f));
             event.matrices.translate(f * 5.6f, 0.0f, 0.0f);
             event.playerEntityRenderer.setModelPose(ChamsModule.mc.player);
-            ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).handSwingProgress = 0.0f;
-            ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).sneaking = false;
-            ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).leaningPitch = 0.0f;
-            ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).setAngles(ChamsModule.mc.player, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+            event.playerEntityRenderer.getModel().handSwingProgress = 0.0f;
+            event.playerEntityRenderer.getModel().sneaking = false;
+            event.playerEntityRenderer.getModel().leaningPitch = 0.0f;
+            event.playerEntityRenderer.getModel().setAngles(ChamsModule.mc.player, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
             if (event.arm == Arm.RIGHT) {
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).rightArm.pitch = 0.0f;
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).rightArm.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).rightSleeve.pitch = 0.0f;
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).rightSleeve.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
+                event.playerEntityRenderer.getModel().rightArm.pitch = 0.0f;
+                event.playerEntityRenderer.getModel().rightArm.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
+                event.playerEntityRenderer.getModel().rightSleeve.pitch = 0.0f;
+                event.playerEntityRenderer.getModel().rightSleeve.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
             } else {
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).leftArm.pitch = 0.0f;
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).leftArm.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).leftSleeve.pitch = 0.0f;
-                ((PlayerEntityModel)((Object)event.playerEntityRenderer.getModel())).leftSleeve.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
+                event.playerEntityRenderer.getModel().leftArm.pitch = 0.0f;
+                event.playerEntityRenderer.getModel().leftArm.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
+                event.playerEntityRenderer.getModel().leftSleeve.pitch = 0.0f;
+                event.playerEntityRenderer.getModel().leftSleeve.render(event.matrices, vertexConsumer, event.light, OverlayTexture.DEFAULT_UV);
             }
             tessellator.draw();
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -284,13 +283,13 @@ extends ToggleModule {
 
     private boolean checkChams(LivingEntity entity) {
         if (entity instanceof PlayerEntity && this.playersConfig.getValue().booleanValue()) {
-            return this.selfConfig.getValue() != false || entity != ChamsModule.mc.player;
+            return this.selfConfig.getValue() || entity != ChamsModule.mc.player;
         }
-        return (!entity.isInvisible() || this.invisiblesConfig.getValue() != false) && (EntityUtil.isMonster(entity) && this.monstersConfig.getValue() != false || (EntityUtil.isNeutral(entity) || EntityUtil.isPassive(entity)) && this.animalsConfig.getValue() != false);
+        return (!entity.isInvisible() || this.invisiblesConfig.getValue()) && (EntityUtil.isMonster(entity) && this.monstersConfig.getValue() || (EntityUtil.isNeutral(entity) || EntityUtil.isPassive(entity)) && this.animalsConfig.getValue());
     }
 
-    public static enum ChamsMode {
-        NORMAL;
+    public enum ChamsMode {
+        NORMAL
 
     }
 }

@@ -32,7 +32,7 @@ public abstract class MixinCamera {
       cancellable = true
    )
    private void hookGetSubmersionType(CallbackInfoReturnable cir) {
-      RenderOverlayEvent.Water renderOverlayEvent = new RenderOverlayEvent.Water((DrawContext)null);
+      RenderOverlayEvent.Water renderOverlayEvent = new RenderOverlayEvent.Water(null);
       Ash.EVENT_HANDLER.dispatch(renderOverlayEvent);
       if (renderOverlayEvent.isCanceled()) {
          cir.setReturnValue(CameraSubmersionType.NONE);

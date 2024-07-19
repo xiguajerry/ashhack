@@ -21,7 +21,7 @@ extends ToggleModule {
     Config<Boolean> allowNoWaterConfig = new BooleanConfig("AllowNoWater", "Allows you to fly using tridents even without water", true);
     Config<Boolean> instantConfig = new BooleanConfig("Instant", "Removes the pullback of the trident", true);
     Config<Boolean> flyConfig = new BooleanConfig("Spam", "Automatically uses riptide", false);
-    Config<Integer> ticksConfig = new NumberConfig<Integer>("Ticks", "The ticks between riptide boost", Integer.valueOf(0), Integer.valueOf(3), Integer.valueOf(20), () -> this.flyConfig.getValue());
+    Config<Integer> ticksConfig = new NumberConfig<Integer>("Ticks", "The ticks between riptide boost", 0, 3, 20, () -> this.flyConfig.getValue());
 
     public TridentFlyModule() {
         super("TridentFly", "Allows you to fly using tridents", ModuleCategory.MOVEMENT);

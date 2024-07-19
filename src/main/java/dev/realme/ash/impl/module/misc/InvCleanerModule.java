@@ -31,8 +31,8 @@ import net.minecraft.screen.slot.SlotActionType;
 
 public class InvCleanerModule
         extends ToggleModule {
-    Config<List<Item>> blacklistConfig = new ItemListConfig("Blacklist", "The items to throw", new Item[0]);
-    Config<Float> delayConfig = new NumberConfig<Float>("Delay", "The delay between removing items from the inventory", Float.valueOf(0.05f), Float.valueOf(0.0f), Float.valueOf(1.0f));
+    Config<List<Item>> blacklistConfig = new ItemListConfig("Blacklist", "The items to throw");
+    Config<Float> delayConfig = new NumberConfig<Float>("Delay", "The delay between removing items from the inventory", 0.05f, 0.0f, 1.0f);
     Config<Boolean> hotbarConfig = new BooleanConfig("Hotbar", "Cleans the hotbar inventory slots", true);
     private final Timer invCleanTimer = new CacheTimer();
 
@@ -47,9 +47,9 @@ public class InvCleanerModule
         }
         block0:
         for (Item item : this.blacklistConfig.getValue()) {
-            for (int i = 35; i >= (this.hotbarConfig.getValue() != false ? 0 : 9); --i) {
+            for (int i = 35; i >= (this.hotbarConfig.getValue() ? 0 : 9); --i) {
                 ItemStack stack = InvCleanerModule.mc.player.getInventory().getStack(i);
-                if (stack.isEmpty() || stack.getItem() != item || !this.invCleanTimer.passed(Float.valueOf(this.delayConfig.getValue().floatValue() * 1000.0f)))
+                if (stack.isEmpty() || stack.getItem() != item || !this.invCleanTimer.passed(this.delayConfig.getValue().floatValue() * 1000.0f))
                     continue;
                 InvCleanerModule.mc.interactionManager.clickSlot(InvCleanerModule.mc.player.currentScreenHandler.syncId, i, 0, SlotActionType.PICKUP, InvCleanerModule.mc.player);
                 InvCleanerModule.mc.interactionManager.clickSlot(InvCleanerModule.mc.player.currentScreenHandler.syncId, -999, 0, SlotActionType.PICKUP, InvCleanerModule.mc.player);
@@ -73,8 +73,8 @@ public class InvCleanerModule
         public void save() {
             try {
                 Path filepath = this.getFilepath();
-                if (!Files.exists(filepath, new LinkOption[0])) {
-                    Files.createFile(filepath, new FileAttribute[0]);
+                if (!Files.exists(filepath)) {
+                    Files.createFile(filepath);
                 }
                 JsonObject json = new JsonObject();
                 JsonArray itemArray = new JsonArray();
@@ -95,7 +95,7 @@ public class InvCleanerModule
                 String content;
                 JsonObject object;
                 Path filepath = this.getFilepath();
-                if (Files.exists(filepath, new LinkOption[0]) && (object = this.parseObject(content = this.read(filepath))) != null && object.has("items")) {
+                if (Files.exists(filepath) && (object = this.parseObject(content = this.read(filepath))) != null && object.has("items")) {
                     JsonArray jsonArray = object.getAsJsonArray("items");
                     Iterator iterator = jsonArray.iterator();
                     while (iterator.hasNext()) {

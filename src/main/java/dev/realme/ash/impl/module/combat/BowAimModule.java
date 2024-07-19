@@ -38,7 +38,7 @@ public class BowAimModule extends RotationModule {
 
                 for(Entity entity : mc.world.getEntities()) {
                     if (entity != null && entity != mc.player && entity.isAlive() && this.isValidAimTarget(entity) && !Managers.SOCIAL.isFriend(entity.getName())) {
-                        double dist = (double)mc.player.distanceTo(entity);
+                        double dist = mc.player.distanceTo(entity);
                         if (dist < minDist) {
                             minDist = dist;
                             this.aimTarget = entity;
@@ -47,8 +47,7 @@ public class BowAimModule extends RotationModule {
                 }
 
                 Entity var9 = this.aimTarget;
-                if (var9 instanceof LivingEntity) {
-                    LivingEntity target = (LivingEntity)var9;
+                if (var9 instanceof LivingEntity target) {
                     float[] rotations = this.getBowRotationsTo(target);
                     this.setRotationClient(rotations[0], rotations[1]);
                 }
@@ -72,12 +71,12 @@ public class BowAimModule extends RotationModule {
             duration = 1.0F;
         }
 
-        double duration1 = (double)(duration * 3.0F);
-        double coeff = (double)0.05F;
-        float pitch = (float)(-Math.toDegrees((double)this.calculateArc(entity, duration1, coeff)));
+        double duration1 = duration * 3.0F;
+        double coeff = 0.05F;
+        float pitch = (float)(-Math.toDegrees(this.calculateArc(entity, duration1, coeff)));
         double ix = entity.getX() - entity.prevX;
         double iz = entity.getZ() - entity.prevZ;
-        double d = (double)mc.player.distanceTo(entity);
+        double d = mc.player.distanceTo(entity);
         d -= d % 2.0D;
         ix = d / 2.0D * ix * (mc.player.isSprinting() ? 1.3D : 1.1D);
         iz = d / 2.0D * iz * (mc.player.isSprinting() ? 1.3D : 1.1D);

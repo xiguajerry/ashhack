@@ -91,7 +91,7 @@ public class ChestStealerModule extends ToggleModule {
                         }
 
                         if (!(MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.toCenterPos())) < this.minRange.getValue()) && BlockUtil.clientCanPlace(pos) && BlockUtil.isStrictDirection(pos.offset(Direction.DOWN), Direction.UP) && BlockUtil.canClick(pos.offset(Direction.DOWN)) && (bestPos == null || (double)MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.toCenterPos())) < distance)) {
-                            distance = (double)MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.toCenterPos()));
+                            distance = MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.toCenterPos()));
                             bestPos = pos;
                         }
                     }
@@ -184,8 +184,7 @@ public class ChestStealerModule extends ToggleModule {
             } else {
                 boolean take = false;
                 ScreenHandler pos = mc.player.currentScreenHandler;
-                if (pos instanceof ShulkerBoxScreenHandler) {
-                    ShulkerBoxScreenHandler shulker = (ShulkerBoxScreenHandler)pos;
+                if (pos instanceof ShulkerBoxScreenHandler shulker) {
 
                     for(Slot slot : shulker.slots) {
                         if (slot.id < 27 && !slot.getStack().isEmpty() && (!this.smart.getValue() || this.needSteal(slot.getStack()))) {
@@ -204,7 +203,7 @@ public class ChestStealerModule extends ToggleModule {
     }
 
     private void disable2() {
-        if (this.disableTimer.passed((Number)this.disableTime.getValue())) {
+        if (this.disableTimer.passed(this.disableTime.getValue())) {
             this.disable();
         }
 

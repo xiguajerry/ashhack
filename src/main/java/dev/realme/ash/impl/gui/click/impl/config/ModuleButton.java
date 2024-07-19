@@ -101,9 +101,8 @@ public class ModuleButton extends Button {
             configButton = (ConfigButton)var14.next();
             if (configButton.getConfig().isVisible()) {
                fheight += configButton.getHeight();
-               if (configButton instanceof ColorButton) {
-                  ColorButton colorPicker = (ColorButton)configButton;
-                  if (colorPicker.getScaledTime() > 0.01F) {
+               if (configButton instanceof ColorButton colorPicker) {
+                   if (colorPicker.getScaledTime() > 0.01F) {
                      fheight += colorPicker.getPickerHeight() * colorPicker.getScaledTime() * this.getScaledTime();
                   }
                }
@@ -123,9 +122,9 @@ public class ModuleButton extends Button {
          }
 
          if (fill) {
-            this.fill(context, (double)ix, (double)(this.y + this.height), 1.0, (double)(this.off - (this.y + this.height) + 1.0F), Modules.CLICK_GUI.getColor1(scaledTime));
-            this.fill(context, (double)(ix + this.width - 1.0F), (double)(this.y + this.height), 1.0, (double)(this.off - (this.y + this.height) + 1.0F), Modules.CLICK_GUI.getColor(scaledTime));
-            this.fillGradient(context, (double)ix, (double)(this.off + 1.0F), (double)(ix + this.width), (double)(this.off + 2.0F), Modules.CLICK_GUI.getColor(scaledTime), Modules.CLICK_GUI.getColor1(scaledTime));
+            this.fill(context, ix, this.y + this.height, 1.0, this.off - (this.y + this.height) + 1.0F, Modules.CLICK_GUI.getColor1(scaledTime));
+            this.fill(context, ix + this.width - 1.0F, this.y + this.height, 1.0, this.off - (this.y + this.height) + 1.0F, Modules.CLICK_GUI.getColor(scaledTime));
+            this.fillGradient(context, ix, this.off + 1.0F, ix + this.width, this.off + 2.0F, Modules.CLICK_GUI.getColor(scaledTime), Modules.CLICK_GUI.getColor1(scaledTime));
          }
 
          this.disableScissor();
@@ -139,9 +138,8 @@ public class ModuleButton extends Button {
          label31: {
             if (button == 0) {
                Module var7 = this.module;
-               if (var7 instanceof ToggleModule) {
-                  ToggleModule t = (ToggleModule)var7;
-                  t.toggle();
+               if (var7 instanceof ToggleModule t) {
+                   t.toggle();
                   break label31;
                }
             }

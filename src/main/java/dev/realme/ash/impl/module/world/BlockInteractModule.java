@@ -17,7 +17,7 @@ import net.minecraft.util.hit.HitResult;
 
 public class BlockInteractModule
 extends ToggleModule {
-    Config<Float> range = new NumberConfig<Float>("Range", "", Float.valueOf(1.0f), Float.valueOf(4.0f), Float.valueOf(10.0f), NumberDisplay.DEFAULT);
+    Config<Float> range = new NumberConfig<Float>("Range", "", 1.0f, 4.0f, 10.0f, NumberDisplay.DEFAULT);
     Config<Boolean> fluids = new BooleanConfig("Fluids", "", false);
 
     public BlockInteractModule() {

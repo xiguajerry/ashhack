@@ -10,11 +10,11 @@ import dev.realme.ash.impl.event.network.PlayerTickEvent;
 
 public class AntiAimModule
 extends RotationModule {
-    Config<YawMode> yawModeConfig = new EnumConfig("Yaw", "The mode for the rotation yaw spin ", (Enum)YawMode.SPIN, (Enum[])YawMode.values());
-    Config<PitchMode> pitchModeConfig = new EnumConfig("Pitch", "The mode for the rotation pitch spin", (Enum)PitchMode.DOWN, (Enum[])PitchMode.values());
-    Config<Float> yawAddConfig = new NumberConfig<Float>("YawAdd", "The yaw to add during each rotation", Float.valueOf(-180.0f), Float.valueOf(20.0f), Float.valueOf(180.0f));
-    Config<Float> pitchAddConfig = new NumberConfig<Float>("CustomPitch", "The pitch to add during each rotation", Float.valueOf(-90.0f), Float.valueOf(20.0f), Float.valueOf(90.0f));
-    Config<Float> spinSpeedConfig = new NumberConfig<Float>("SpinSpeed", "The yaw speed to rotate", Float.valueOf(1.0f), Float.valueOf(16.0f), Float.valueOf(40.0f));
+    Config<YawMode> yawModeConfig = new EnumConfig("Yaw", "The mode for the rotation yaw spin ", YawMode.SPIN, YawMode.values());
+    Config<PitchMode> pitchModeConfig = new EnumConfig("Pitch", "The mode for the rotation pitch spin", PitchMode.DOWN, PitchMode.values());
+    Config<Float> yawAddConfig = new NumberConfig<Float>("YawAdd", "The yaw to add during each rotation", -180.0f, 20.0f, 180.0f);
+    Config<Float> pitchAddConfig = new NumberConfig<Float>("CustomPitch", "The pitch to add during each rotation", -90.0f, 20.0f, 90.0f);
+    Config<Float> spinSpeedConfig = new NumberConfig<Float>("SpinSpeed", "The yaw speed to rotate", 1.0f, 16.0f, 40.0f);
     Config<Integer> flipTicksConfig = new NumberConfig<Integer>("FlipTicks", "The number of ticks to wait between jitter", 2, 2, 20);
     private float yaw;
     private float pitch;
@@ -73,22 +73,22 @@ extends RotationModule {
         this.setRotation(this.yaw, this.pitch);
     }
 
-    public static enum YawMode {
+    public enum YawMode {
         OFF,
         STATIC,
         ZERO,
         SPIN,
-        JITTER;
+        JITTER
 
     }
 
-    public static enum PitchMode {
+    public enum PitchMode {
         OFF,
         STATIC,
         ZERO,
         UP,
         DOWN,
-        JITTER;
+        JITTER
 
     }
 }

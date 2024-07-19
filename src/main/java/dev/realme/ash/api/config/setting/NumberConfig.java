@@ -55,11 +55,11 @@ public class NumberConfig<T extends Number> extends Config<T> {
    }
 
    public boolean isMin() {
-      return this.min.doubleValue() == ((Number)this.getValue()).doubleValue();
+      return this.min.doubleValue() == this.getValue().doubleValue();
    }
 
    public boolean isMax() {
-      return this.max.doubleValue() == ((Number)this.getValue()).doubleValue();
+      return this.max.doubleValue() == this.getValue().doubleValue();
    }
 
    public int getRoundingScale() {
@@ -89,11 +89,11 @@ public class NumberConfig<T extends Number> extends Config<T> {
    public JsonObject toJson() {
       JsonObject configObj = super.toJson();
       if (this.getValue() instanceof Integer) {
-         configObj.addProperty("value", (Integer)this.getValue());
+         configObj.addProperty("value", this.getValue());
       } else if (this.getValue() instanceof Float) {
-         configObj.addProperty("value", (Float)this.getValue());
+         configObj.addProperty("value", this.getValue());
       } else if (this.getValue() instanceof Double) {
-         configObj.addProperty("value", (Double)this.getValue());
+         configObj.addProperty("value", this.getValue());
       }
 
       return configObj;

@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec2f;
 
 public class StrafeModule
 extends ToggleModule {
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The speed for alternative modes", Float.valueOf(0.0f), Float.valueOf(5.5f), Float.valueOf(10.0f));
+    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The speed for alternative modes", 0.0f, 5.5f, 10.0f);
 
     public StrafeModule() {
         super("Strafe", "Move ice", ModuleCategory.MOVEMENT);

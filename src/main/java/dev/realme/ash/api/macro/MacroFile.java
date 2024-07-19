@@ -27,8 +27,8 @@ public class MacroFile extends ConfigFile
    public void save() {
       try {
          final Path filepath = this.getFilepath();
-         if (!Files.exists(filepath, new LinkOption[0])) {
-            Files.createFile(filepath, (FileAttribute<?>[])new FileAttribute[0]);
+         if (!Files.exists(filepath)) {
+            Files.createFile(filepath, new FileAttribute[0]);
          }
          final JsonArray object = new JsonArray();
          for (final Macro macro : Managers.MACRO.getMacros()) {
@@ -46,7 +46,7 @@ public class MacroFile extends ConfigFile
    public void load() {
       try {
          final Path filepath = this.getFilepath();
-         if (Files.exists(filepath, new LinkOption[0])) {
+         if (Files.exists(filepath)) {
             final String content = this.read(filepath);
             final JsonArray object = this.parseArray(content);
             for (final JsonElement element : object.getAsJsonArray()) {
@@ -59,11 +59,10 @@ public class MacroFile extends ConfigFile
                   }
                   macro.fromJson(jsonObject);
                   final Module module = Managers.MODULE.getModule(id.substring(0, id.length() - 6));
-                  if (!(module instanceof ToggleModule)) {
+                  if (!(module instanceof ToggleModule t)) {
                      continue;
                   }
-                  final ToggleModule t = (ToggleModule)module;
-                  t.keybind(jsonObject.get("value").getAsInt());
+                   t.keybind(jsonObject.get("value").getAsInt());
                }
             }
          }

@@ -19,11 +19,11 @@ import net.minecraft.util.math.Vec3d;
 
 public class ElytraFlyModule
 extends ToggleModule {
-    Config<Float> speed = new NumberConfig<Float>("Speed", "", Float.valueOf(0.0f), Float.valueOf(1.0f), Float.valueOf(3.0f));
-    Config<Float> downSpeed = new NumberConfig<Float>("DownSpeed", "", Float.valueOf(0.0f), Float.valueOf(1.0f), Float.valueOf(2.0f));
-    Config<Float> upPitch = new NumberConfig<Float>("UpPitch", "", Float.valueOf(0.0f), Float.valueOf(85.0f), Float.valueOf(90.0f));
-    Config<Float> upFactor = new NumberConfig<Float>("UpFactor", "", Float.valueOf(0.0f), Float.valueOf(2.0f), Float.valueOf(10.0f));
-    Config<Float> downFactor = new NumberConfig<Float>("DownFactor", "", Float.valueOf(0.0f), Float.valueOf(2.0f), Float.valueOf(10.0f));
+    Config<Float> speed = new NumberConfig<Float>("Speed", "", 0.0f, 1.0f, 3.0f);
+    Config<Float> downSpeed = new NumberConfig<Float>("DownSpeed", "", 0.0f, 1.0f, 2.0f);
+    Config<Float> upPitch = new NumberConfig<Float>("UpPitch", "", 0.0f, 85.0f, 90.0f);
+    Config<Float> upFactor = new NumberConfig<Float>("UpFactor", "", 0.0f, 2.0f, 10.0f);
+    Config<Float> downFactor = new NumberConfig<Float>("DownFactor", "", 0.0f, 2.0f, 10.0f);
     Config<Double> timeout = new NumberConfig<Double>("Timeout", "", 0.1, 0.5, 2.0);
     private boolean hasElytra = false;
     private final Timer instantFlyTimer = new CacheTimer();

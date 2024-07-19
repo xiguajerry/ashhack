@@ -84,7 +84,7 @@ public abstract class MixinTridentItem implements Globals {
                      }
 
                      world.spawnEntity(tridentEntity);
-                     world.playSoundFromEntity((PlayerEntity)null, tridentEntity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                     world.playSoundFromEntity(null, tridentEntity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
                      if (!playerEntity.getAbilities().creativeMode) {
                         playerEntity.getInventory().removeOne(stack);
                      }
@@ -100,7 +100,7 @@ public abstract class MixinTridentItem implements Globals {
                   float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
                   float m = MathHelper.sqrt(h * h + k * k + l * l);
                   float n = 3.0F * ((1.0F + (float)j) / 4.0F);
-                  playerEntity.addVelocity((double)(h * (n / m)), (double)(k * (n / m)), (double)(l * (n / m)));
+                  playerEntity.addVelocity(h * (n / m), k * (n / m), l * (n / m));
                   playerEntity.useRiptide(20);
                   if (playerEntity.isOnGround()) {
                      float o = 1.1999999F;
@@ -108,7 +108,7 @@ public abstract class MixinTridentItem implements Globals {
                   }
 
                   SoundEvent soundEvent = j >= 3 ? SoundEvents.ITEM_TRIDENT_RIPTIDE_3 : (j == 2 ? SoundEvents.ITEM_TRIDENT_RIPTIDE_2 : SoundEvents.ITEM_TRIDENT_RIPTIDE_1);
-                  world.playSoundFromEntity((PlayerEntity)null, playerEntity, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                  world.playSoundFromEntity(null, playerEntity, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
                }
             }
 

@@ -35,19 +35,19 @@ public class SliderButton extends ConfigButton {
          if (this.config.getValue() instanceof Integer) {
             lower = min.floatValue() + fillv * (float)(max.intValue() - min.intValue());
             int bval = (int)MathHelper.clamp(lower, (float)min.intValue(), (float)max.intValue());
-            ((NumberConfig)this.config).setValue((Number)bval);
+            this.config.setValue(bval);
          } else if (this.config.getValue() instanceof Float) {
             lower = min.floatValue() + fillv * (max.floatValue() - min.floatValue());
             upper = MathHelper.clamp(lower, min.floatValue(), max.floatValue());
-            BigDecimal bigDecimal = new BigDecimal((double)upper);
+            BigDecimal bigDecimal = BigDecimal.valueOf(upper);
             upper = bigDecimal.setScale(this.scale, RoundingMode.HALF_UP).floatValue();
-            ((NumberConfig)this.config).setValue((Number)upper);
+            this.config.setValue(upper);
          } else if (this.config.getValue() instanceof Double) {
             double val = min.doubleValue() + (double)fillv * (max.doubleValue() - min.doubleValue());
             double bval = MathHelper.clamp(val, min.doubleValue(), max.doubleValue());
             BigDecimal bigDecimal = new BigDecimal(bval);
             bval = bigDecimal.setScale(this.scale, RoundingMode.HALF_UP).doubleValue();
-            ((NumberConfig)this.config).setValue((Number)bval);
+            this.config.setValue(bval);
          }
 
          lower = ix + 1.0F;
@@ -60,7 +60,7 @@ public class SliderButton extends ConfigButton {
       }
 
       fillv = (((Number)this.config.getValue()).floatValue() - min.floatValue()) / (max.floatValue() - min.floatValue());
-      this.fillGradient(context, (double)ix, (double)iy, (double)(ix + fillv * this.width), (double)(iy + this.height), Modules.CLICK_GUI.getColor(), Modules.CLICK_GUI.getColor1());
+      this.fillGradient(context, ix, iy, ix + fillv * this.width, iy + this.height, Modules.CLICK_GUI.getColor(), Modules.CLICK_GUI.getColor1());
       RenderManager.renderText(context, this.config.getName() + Formatting.GRAY + " " + this.config.getValue(), ix + 2.0F, iy + 4.0F, -1);
    }
 

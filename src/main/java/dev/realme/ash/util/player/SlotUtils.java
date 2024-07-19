@@ -52,9 +52,8 @@ public class SlotUtils {
             return survivalInventory(i);
          } else if (handler instanceof CreativeInventoryScreen.CreativeScreenHandler) {
             return creativeInventory(i);
-         } else if (handler instanceof GenericContainerScreenHandler) {
-            GenericContainerScreenHandler genericContainerScreenHandler = (GenericContainerScreenHandler)handler;
-            return genericContainer(i, genericContainerScreenHandler.getRows());
+         } else if (handler instanceof GenericContainerScreenHandler genericContainerScreenHandler) {
+             return genericContainer(i, genericContainerScreenHandler.getRows());
          } else if (handler instanceof CraftingScreenHandler) {
             return craftingTable(i);
          } else if (handler instanceof FurnaceScreenHandler) {
@@ -199,9 +198,8 @@ public class SlotUtils {
             return 2 + 3 * strength + 1 + (i - 9);
          }
       } else if (!(entity instanceof HorseEntity) && !(entity instanceof SkeletonHorseEntity) && !(entity instanceof ZombieHorseEntity)) {
-         if (entity instanceof AbstractDonkeyEntity) {
-            AbstractDonkeyEntity abstractDonkeyEntity = (AbstractDonkeyEntity)entity;
-            boolean chest = abstractDonkeyEntity.hasChest();
+         if (entity instanceof AbstractDonkeyEntity abstractDonkeyEntity) {
+             boolean chest = abstractDonkeyEntity.hasChest();
             if (isHotbar(i)) {
                return (chest ? 44 : 29) + i;
             }

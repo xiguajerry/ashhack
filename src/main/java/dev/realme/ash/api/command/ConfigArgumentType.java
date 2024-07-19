@@ -28,32 +28,30 @@ public class ConfigArgumentType implements ArgumentType {
    public Config parse(StringReader reader) throws CommandSyntaxException {
       String string = reader.readString();
       Config config = null;
-      Iterator var4 = this.module.getConfigs().iterator();
 
-      while(var4.hasNext()) {
-         Config config1 = (Config)var4.next();
-         if (!config1.getName().equalsIgnoreCase("Enabled") && !config1.getName().equalsIgnoreCase("Keybind") && !config1.getName().equalsIgnoreCase("Hidden") && config1.getName().equalsIgnoreCase(string)) {
-            config = config1;
-            break;
-         }
-      }
+       for (Object o : this.module.getConfigs()) {
+           Config config1 = (Config) o;
+           if (!config1.getName().equalsIgnoreCase("Enabled") && !config1.getName().equalsIgnoreCase("Keybind") && !config1.getName().equalsIgnoreCase("Hidden") && config1.getName().equalsIgnoreCase(string)) {
+               config = config1;
+               break;
+           }
+       }
 
       if (config == null) {
-         throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherParseException().createWithContext(reader, (Object)null);
+         throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherParseException().createWithContext(reader, null);
       } else {
          return config;
       }
    }
 
    public CompletableFuture listSuggestions(CommandContext context, SuggestionsBuilder builder) {
-      Iterator var3 = this.module.getConfigs().iterator();
 
-      while(var3.hasNext()) {
-         Config config = (Config)var3.next();
-         if (!config.getName().equalsIgnoreCase("Enabled") && !config.getName().equalsIgnoreCase("Keybind") && !config.getName().equalsIgnoreCase("Hidden")) {
-            builder.suggest(config.getName().toLowerCase());
-         }
-      }
+       for (Object o : this.module.getConfigs()) {
+           Config config = (Config) o;
+           if (!config.getName().equalsIgnoreCase("Enabled") && !config.getName().equalsIgnoreCase("Keybind") && !config.getName().equalsIgnoreCase("Hidden")) {
+               builder.suggest(config.getName().toLowerCase());
+           }
+       }
 
       return builder.buildFuture();
    }

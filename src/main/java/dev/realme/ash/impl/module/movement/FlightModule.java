@@ -17,13 +17,13 @@ import dev.realme.ash.util.string.EnumFormatter;
 
 public class FlightModule
 extends ToggleModule {
-    Config<FlightMode> modeConfig = new EnumConfig("Mode", "The mode for vanilla flight", (Enum)FlightMode.NORMAL, (Enum[])FlightMode.values());
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The horizontal flight speed", Float.valueOf(0.1f), Float.valueOf(2.5f), Float.valueOf(10.0f));
-    Config<Float> vspeedConfig = new NumberConfig<Float>("VerticalSpeed", "The vertical flight speed", Float.valueOf(0.1f), Float.valueOf(1.0f), Float.valueOf(5.0f));
+    Config<FlightMode> modeConfig = new EnumConfig("Mode", "The mode for vanilla flight", FlightMode.NORMAL, FlightMode.values());
+    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The horizontal flight speed", 0.1f, 2.5f, 10.0f);
+    Config<Float> vspeedConfig = new NumberConfig<Float>("VerticalSpeed", "The vertical flight speed", 0.1f, 1.0f, 5.0f);
     Config<Boolean> antiKickConfig = new BooleanConfig("AntiKick", "Prevents vanilla flight detection", true);
     Config<Boolean> accelerateConfig = new BooleanConfig("Accelerate", "Accelerate as you fly", false);
-    Config<Float> accelerateSpeedConfig = new NumberConfig<Float>("AccelerateSpeed", "Speed to accelerate as", Float.valueOf(0.01f), Float.valueOf(0.2f), Float.valueOf(1.0f), () -> this.accelerateConfig.getValue());
-    Config<Float> maxSpeedConfig = new NumberConfig<Float>("MaxSpeed", "Max speed to acceleratee to", Float.valueOf(1.0f), Float.valueOf(5.0f), Float.valueOf(10.0f), () -> this.accelerateConfig.getValue());
+    Config<Float> accelerateSpeedConfig = new NumberConfig<Float>("AccelerateSpeed", "Speed to accelerate as", 0.01f, 0.2f, 1.0f, () -> this.accelerateConfig.getValue());
+    Config<Float> maxSpeedConfig = new NumberConfig<Float>("MaxSpeed", "Max speed to acceleratee to", 1.0f, 5.0f, 10.0f, () -> this.accelerateConfig.getValue());
     private double speed;
     private final Timer antiKickTimer = new CacheTimer();
     private final Timer antiKick2Timer = new CacheTimer();
@@ -60,14 +60,14 @@ extends ToggleModule {
             if (!MovementUtil.isInputtingMovement() || FlightModule.mc.player.horizontalCollision) {
                 this.speed = 0.0;
             }
-            this.speed += (double)this.accelerateSpeedConfig.getValue().floatValue();
+            this.speed += this.accelerateSpeedConfig.getValue().floatValue();
             if (this.speed > (double)this.maxSpeedConfig.getValue().floatValue()) {
                 this.speed = this.maxSpeedConfig.getValue().floatValue();
             }
         } else {
             this.speed = this.speedConfig.getValue().floatValue();
         }
-        if (this.modeConfig.getValue().equals((Object)FlightMode.VANILLA)) {
+        if (this.modeConfig.getValue().equals(FlightMode.VANILLA)) {
             FlightModule.mc.player.getAbilities().setFlySpeed((float)(this.speed * (double)0.05f));
         } else {
             FlightModule.mc.player.getAbilities().setFlySpeed(0.05f);
@@ -87,7 +87,7 @@ extends ToggleModule {
             }
         }
         if (this.modeConfig.getValue() == FlightMode.NORMAL) {
-            this.speed = Math.max(this.speed, (double)0.2873f);
+            this.speed = Math.max(this.speed, 0.2873f);
             float forward = FlightModule.mc.player.input.movementForward;
             float strafe = FlightModule.mc.player.input.movementSideways;
             float yaw = FlightModule.mc.player.getYaw();
@@ -125,9 +125,9 @@ extends ToggleModule {
         FlightModule.mc.player.getAbilities().setFlySpeed(0.05f);
     }
 
-    public static enum FlightMode {
+    public enum FlightMode {
         NORMAL,
-        VANILLA;
+        VANILLA
 
     }
 }

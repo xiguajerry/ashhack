@@ -54,10 +54,10 @@ public class DamageUtil implements Globals {
    private static final Vec3d vec3d;
 
    public static float getCrystalDamage(Vec3d crystalPos, PlayerEntity target) {
-      if ((Boolean)Modules.COMBAT_SETTING.oldVersion.getValue()) {
-         return oldVerCrystal(target, target.getBoundingBox(), crystalPos, (BlockPos)null, false);
+      if (Modules.COMBAT_SETTING.oldVersion.getValue()) {
+         return oldVerCrystal(target, target.getBoundingBox(), crystalPos, null, false);
       } else {
-         return (Integer)Modules.AUTO_CRYSTAL.predictTicks.getValue() == 0 ? getExplosionDamage(crystalPos, target) : getExplosionDamageWPredict(crystalPos, target, PredictUtility.predictPlayer(target, (Integer)Modules.AUTO_CRYSTAL.predictTicks.getValue()));
+         return Modules.AUTO_CRYSTAL.predictTicks.getValue() == 0 ? getExplosionDamage(crystalPos, target) : getExplosionDamageWPredict(crystalPos, target, PredictUtility.predictPlayer(target, Modules.AUTO_CRYSTAL.predictTicks.getValue()));
       }
    }
 
@@ -71,7 +71,7 @@ public class DamageUtil implements Globals {
             return false;
          }
       };
-      copyEntity.setPosition(EntityUtil.getEntityPosVec(target, (Integer)Modules.AUTO_ANCHOR.predictTicks.getValue()));
+      copyEntity.setPosition(EntityUtil.getEntityPosVec(target, Modules.AUTO_ANCHOR.predictTicks.getValue()));
       return calculateDamage(pos, pos.toCenterPos(), target, copyEntity, 5.0F);
    }
 
@@ -87,13 +87,13 @@ public class DamageUtil implements Globals {
             ((IExplosion)explosion).setWorld(mc.world);
          }
 
-         if (!(new Box((double)MathHelper.floor(explosionPos.x - 11.0), (double)MathHelper.floor(explosionPos.y - 11.0), (double)MathHelper.floor(explosionPos.z - 11.0), (double)MathHelper.floor(explosionPos.x + 13.0), (double)MathHelper.floor(explosionPos.y + 13.0), (double)MathHelper.floor(explosionPos.z + 13.0))).intersects(target.getBoundingBox())) {
+         if (!(new Box(MathHelper.floor(explosionPos.x - 11.0), MathHelper.floor(explosionPos.y - 11.0), MathHelper.floor(explosionPos.z - 11.0), MathHelper.floor(explosionPos.x + 13.0), MathHelper.floor(explosionPos.y + 13.0), MathHelper.floor(explosionPos.z + 13.0))).intersects(target.getBoundingBox())) {
             return 0.0F;
          } else {
             if (!target.isImmuneToExplosion(explosion) && !target.isInvulnerable()) {
-               double distExposure = (double)((float)target.squaredDistanceTo(explosionPos) / 144.0F);
+               double distExposure = (float)target.squaredDistanceTo(explosionPos) / 144.0F;
                if (distExposure <= 1.0) {
-                  double exposure = (double)getExposureGhost(explosionPos, target, bp);
+                  double exposure = getExposureGhost(explosionPos, target, bp);
                   double finalExposure = (1.0 - distExposure) * exposure;
                   float toDamage = (float)Math.floor((finalExposure * finalExposure + finalExposure) / 2.0 * 7.0 * 12.0 + 1.0);
                   if (mc.world.getDifficulty() == Difficulty.EASY) {
@@ -162,7 +162,7 @@ public class DamageUtil implements Globals {
    }
 
    private static BlockHitResult raycastGhost(RaycastContext context, BlockPos bPos) {
-      return (BlockHitResult)BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
+      return BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
          Vec3d vec3d = innerContext.getStart();
          Vec3d vec3d2 = innerContext.getEnd();
          BlockState blockState;
@@ -188,13 +188,13 @@ public class DamageUtil implements Globals {
       if (mc.world.getDifficulty() == Difficulty.PEACEFUL) {
          return 0.0F;
       } else {
-         Explosion explosion = new Explosion(mc.world, (Entity)null, explosionPos.x, explosionPos.y, explosionPos.z, 6.0F, false, DestructionType.DESTROY);
+         Explosion explosion = new Explosion(mc.world, null, explosionPos.x, explosionPos.y, explosionPos.z, 6.0F, false, DestructionType.DESTROY);
          ((IExplosion)explosion).setWorld(mc.world);
          ((IExplosion)explosion).setX(explosionPos.x);
          ((IExplosion)explosion).setY(explosionPos.y);
          ((IExplosion)explosion).setZ(explosionPos.z);
          ((IExplosion)explosion).setPower(power);
-         if (!(new Box((double)MathHelper.floor(explosionPos.x - 11.0), (double)MathHelper.floor(explosionPos.y - 11.0), (double)MathHelper.floor(explosionPos.z - 11.0), (double)MathHelper.floor(explosionPos.x + 13.0), (double)MathHelper.floor(explosionPos.y + 13.0), (double)MathHelper.floor(explosionPos.z + 13.0))).intersects(predict.getBoundingBox())) {
+         if (!(new Box(MathHelper.floor(explosionPos.x - 11.0), MathHelper.floor(explosionPos.y - 11.0), MathHelper.floor(explosionPos.z - 11.0), MathHelper.floor(explosionPos.x + 13.0), MathHelper.floor(explosionPos.y + 13.0), MathHelper.floor(explosionPos.z + 13.0))).intersects(predict.getBoundingBox())) {
             return 0.0F;
          } else {
             if (!target.isImmuneToExplosion(explosion) && !target.isInvulnerable()) {
@@ -203,7 +203,7 @@ public class DamageUtil implements Globals {
                   double xDiff = predict.getX() - explosionPos.x;
                   double yDiff = predict.getY() - explosionPos.y;
                   double zDiff = predict.getX() - explosionPos.z;
-                  double diff = (double)MathHelper.sqrt((float)(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff));
+                  double diff = MathHelper.sqrt((float)(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff));
                   if (diff != 0.0) {
                      double exposure = getExposure(explosionPos, target, target.getBoundingBox(), raycastContext, pos, true);
                      double finalExposure = (1.0 - distExposure) * exposure;
@@ -214,10 +214,10 @@ public class DamageUtil implements Globals {
                         toDamage = toDamage * 3.0F / 2.0F;
                      }
 
-                     toDamage = net.minecraft.entity.DamageUtil.getDamageLeft(toDamage, (float)target.getArmor(), (float)((EntityAttributeInstance)Objects.requireNonNull(target.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS))).getValue());
+                     toDamage = net.minecraft.entity.DamageUtil.getDamageLeft(toDamage, (float)target.getArmor(), (float) Objects.requireNonNull(target.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS)).getValue());
                      int protAmount;
                      if (target.hasStatusEffect(StatusEffects.RESISTANCE)) {
-                        protAmount = 25 - (((StatusEffectInstance)Objects.requireNonNull(target.getStatusEffect(StatusEffects.RESISTANCE))).getAmplifier() + 1) * 5;
+                        protAmount = 25 - (Objects.requireNonNull(target.getStatusEffect(StatusEffects.RESISTANCE)).getAmplifier() + 1) * 5;
                         float resistance_1 = toDamage * (float)protAmount;
                         toDamage = Math.max(resistance_1 / 25.0F, 0.0F);
                      }
@@ -250,7 +250,7 @@ public class DamageUtil implements Globals {
          double exposure = getExposure(crystal, player, bb, raycastContext, ignore, ignoreTerrain);
          double d10 = (1.0 - dist) * exposure;
          float damage = (float)((int)((d10 * d10 + d10) / 2.0 * 7.0 * 12.0 + 1.0));
-         damage = (float)getDamageForDifficulty((double)damage);
+         damage = (float)getDamageForDifficulty(damage);
          damage = getDamageAfterAbsorb(damage, (float)player.getArmor(), (float)player.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS).getValue());
          damage = oldVerPotionReduce(player, damage);
          return damage;
@@ -355,13 +355,13 @@ public class DamageUtil implements Globals {
             ((IExplosion)explosion).setWorld(mc.world);
          }
 
-         if (!(new Box((double)MathHelper.floor(explosionPos.x - 11.0), (double)MathHelper.floor(explosionPos.y - 11.0), (double)MathHelper.floor(explosionPos.z - 11.0), (double)MathHelper.floor(explosionPos.x + 13.0), (double)MathHelper.floor(explosionPos.y + 13.0), (double)MathHelper.floor(explosionPos.z + 13.0))).intersects(target.getBoundingBox())) {
+         if (!(new Box(MathHelper.floor(explosionPos.x - 11.0), MathHelper.floor(explosionPos.y - 11.0), MathHelper.floor(explosionPos.z - 11.0), MathHelper.floor(explosionPos.x + 13.0), MathHelper.floor(explosionPos.y + 13.0), MathHelper.floor(explosionPos.z + 13.0))).intersects(target.getBoundingBox())) {
             return 0.0F;
          } else {
             if (!target.isImmuneToExplosion(explosion) && !target.isInvulnerable()) {
-               double distExposure = (double)((float)target.squaredDistanceTo(explosionPos) / 144.0F);
+               double distExposure = (float)target.squaredDistanceTo(explosionPos) / 144.0F;
                if (distExposure <= 1.0) {
-                  double exposure = (double)getExposure(explosionPos, target);
+                  double exposure = getExposure(explosionPos, target);
                   double finalExposure = (1.0 - distExposure) * exposure;
                   float toDamage = (float)Math.floor((finalExposure * finalExposure + finalExposure) / 2.0 * 7.0 * 12.0 + 1.0);
                   if (mc.world.getDifficulty() == Difficulty.EASY) {
@@ -408,13 +408,13 @@ public class DamageUtil implements Globals {
             ((IExplosion)explosion).setWorld(mc.world);
          }
 
-         if (!(new Box((double)MathHelper.floor(explosionPos.x - 11.0), (double)MathHelper.floor(explosionPos.y - 11.0), (double)MathHelper.floor(explosionPos.z - 11.0), (double)MathHelper.floor(explosionPos.x + 13.0), (double)MathHelper.floor(explosionPos.y + 13.0), (double)MathHelper.floor(explosionPos.z + 13.0))).intersects(predict.getBoundingBox())) {
+         if (!(new Box(MathHelper.floor(explosionPos.x - 11.0), MathHelper.floor(explosionPos.y - 11.0), MathHelper.floor(explosionPos.z - 11.0), MathHelper.floor(explosionPos.x + 13.0), MathHelper.floor(explosionPos.y + 13.0), MathHelper.floor(explosionPos.z + 13.0))).intersects(predict.getBoundingBox())) {
             return 0.0F;
          } else {
             if (!target.isImmuneToExplosion(explosion) && !target.isInvulnerable()) {
                double distExposure = (double)MathHelper.sqrt((float)predict.squaredDistanceTo(explosionPos)) / 12.0;
                if (distExposure <= 1.0) {
-                  double exposure = (double)getExposure(explosionPos, predict);
+                  double exposure = getExposure(explosionPos, predict);
                   double finalExposure = (1.0 - distExposure) * exposure;
                   float toDamage = (float)Math.floor((finalExposure * finalExposure + finalExposure) / 2.0 * 7.0 * 12.0 + 1.0);
                   if (mc.world.getDifficulty() == Difficulty.EASY) {
@@ -423,10 +423,10 @@ public class DamageUtil implements Globals {
                      toDamage = toDamage * 3.0F / 2.0F;
                   }
 
-                  toDamage = getDamageLeft(toDamage, (float)target.getArmor(), (float)((EntityAttributeInstance)Objects.requireNonNull(target.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS))).getValue());
+                  toDamage = getDamageLeft(toDamage, (float)target.getArmor(), (float) Objects.requireNonNull(target.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS)).getValue());
                   int protAmount;
                   if (target.hasStatusEffect(StatusEffects.RESISTANCE)) {
-                     protAmount = 25 - (((StatusEffectInstance)Objects.requireNonNull(target.getStatusEffect(StatusEffects.RESISTANCE))).getAmplifier() + 1) * 5;
+                     protAmount = 25 - (Objects.requireNonNull(target.getStatusEffect(StatusEffects.RESISTANCE)).getAmplifier() + 1) * 5;
                      float resistance_1 = toDamage * (float)protAmount;
                      toDamage = Math.max(resistance_1 / 25.0F, 0.0F);
                   }
@@ -455,8 +455,8 @@ public class DamageUtil implements Globals {
       if (mc.world.getDifficulty() == Difficulty.PEACEFUL) {
          return 0.0F;
       } else {
-         Explosion explosion = new Explosion(mc.world, (Entity)null, explosionPos.x, explosionPos.y, explosionPos.z, 6.0F, false, DestructionType.DESTROY);
-         if (!(new Box((double)MathHelper.floor(explosionPos.x - 11.0), (double)MathHelper.floor(explosionPos.y - 11.0), (double)MathHelper.floor(explosionPos.z - 11.0), (double)MathHelper.floor(explosionPos.x + 13.0), (double)MathHelper.floor(explosionPos.y + 13.0), (double)MathHelper.floor(explosionPos.z + 13.0))).intersects(predict.getBoundingBox())) {
+         Explosion explosion = new Explosion(mc.world, null, explosionPos.x, explosionPos.y, explosionPos.z, 6.0F, false, DestructionType.DESTROY);
+         if (!(new Box(MathHelper.floor(explosionPos.x - 11.0), MathHelper.floor(explosionPos.y - 11.0), MathHelper.floor(explosionPos.z - 11.0), MathHelper.floor(explosionPos.x + 13.0), MathHelper.floor(explosionPos.y + 13.0), MathHelper.floor(explosionPos.z + 13.0))).intersects(predict.getBoundingBox())) {
             return 0.0F;
          } else {
             if (!target.isImmuneToExplosion(explosion) && !target.isInvulnerable()) {
@@ -465,7 +465,7 @@ public class DamageUtil implements Globals {
                   double xDiff = predict.getX() - explosionPos.x;
                   double yDiff = predict.getY() - explosionPos.y;
                   double zDiff = predict.getX() - explosionPos.z;
-                  double diff = (double)MathHelper.sqrt((float)(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff));
+                  double diff = MathHelper.sqrt((float)(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff));
                   if (diff != 0.0) {
                      double exposure = getExposure(explosionPos, predict, target.getBoundingBox(), raycastContext, pos, true);
                      double finalExposure = (1.0 - distExposure) * exposure;
@@ -476,10 +476,10 @@ public class DamageUtil implements Globals {
                         toDamage = toDamage * 3.0F / 2.0F;
                      }
 
-                     toDamage = getDamageLeft(toDamage, (float)target.getArmor(), (float)((EntityAttributeInstance)Objects.requireNonNull(target.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS))).getValue());
+                     toDamage = getDamageLeft(toDamage, (float)target.getArmor(), (float) Objects.requireNonNull(target.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS)).getValue());
                      int protAmount;
                      if (target.hasStatusEffect(StatusEffects.RESISTANCE)) {
-                        protAmount = 25 - (((StatusEffectInstance)Objects.requireNonNull(target.getStatusEffect(StatusEffects.RESISTANCE))).getAmplifier() + 1) * 5;
+                        protAmount = 25 - (Objects.requireNonNull(target.getStatusEffect(StatusEffects.RESISTANCE)).getAmplifier() + 1) * 5;
                         float resistance_1 = toDamage * (float)protAmount;
                         toDamage = Math.max(resistance_1 / 25.0F, 0.0F);
                      }
@@ -509,9 +509,9 @@ public class DamageUtil implements Globals {
             return 0.0F;
          }
 
-         Explosion explosion = new Explosion(mc.world, (Entity)null, explosionPos.x, explosionPos.y, explosionPos.z, 6.0F, false, DestructionType.DESTROY);
+         Explosion explosion = new Explosion(mc.world, null, explosionPos.x, explosionPos.y, explosionPos.z, 6.0F, false, DestructionType.DESTROY);
          double maxDist = 12.0;
-         if (!(new Box((double)MathHelper.floor(explosionPos.x - maxDist - 1.0), (double)MathHelper.floor(explosionPos.y - maxDist - 1.0), (double)MathHelper.floor(explosionPos.z - maxDist - 1.0), (double)MathHelper.floor(explosionPos.x + maxDist + 1.0), (double)MathHelper.floor(explosionPos.y + maxDist + 1.0), (double)MathHelper.floor(explosionPos.z + maxDist + 1.0))).intersects(target.getBoundingBox())) {
+         if (!(new Box(MathHelper.floor(explosionPos.x - maxDist - 1.0), MathHelper.floor(explosionPos.y - maxDist - 1.0), MathHelper.floor(explosionPos.z - maxDist - 1.0), MathHelper.floor(explosionPos.x + maxDist + 1.0), MathHelper.floor(explosionPos.y + maxDist + 1.0), MathHelper.floor(explosionPos.z + maxDist + 1.0))).intersects(target.getBoundingBox())) {
             return 0.0F;
          }
 
@@ -521,7 +521,7 @@ public class DamageUtil implements Globals {
                double xDiff = target.getX() - explosionPos.x;
                double yDiff = target.getY() - explosionPos.y;
                double zDiff = target.getX() - explosionPos.z;
-               double diff = (double)MathHelper.sqrt((float)(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff));
+               double diff = MathHelper.sqrt((float)(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff));
                if (diff != 0.0) {
                   double exposure = getExposure(explosionPos, target, target.getBoundingBox(), raycastContext, pos, true);
                   double finalExposure = (1.0 - distExposure) * exposure;
@@ -570,9 +570,9 @@ public class DamageUtil implements Globals {
          for(int k = 0; k <= 1; ++k) {
             for(int l = 0; l <= 1; ++l) {
                for(int m = 0; m <= 1; ++m) {
-                  double n = MathHelper.lerp((double)k, box.minX, box.maxX);
-                  double o = MathHelper.lerp((double)l, box.minY, box.maxY);
-                  double p = MathHelper.lerp((double)m, box.minZ, box.maxZ);
+                  double n = MathHelper.lerp(k, box.minX, box.maxX);
+                  double o = MathHelper.lerp(l, box.minY, box.maxY);
+                  double p = MathHelper.lerp(m, box.minZ, box.maxZ);
                   Vec3d vec3d = new Vec3d(n, o, p);
                   if (raycast(vec3d, source) == Type.MISS) {
                      ++miss;
@@ -621,7 +621,7 @@ public class DamageUtil implements Globals {
    }
 
    private static HitResult.Type raycast(Vec3d start, Vec3d end) {
-      return (HitResult.Type)BlockView.raycast(start, end, (Object)null, (_null, blockPos) -> {
+      return BlockView.raycast(start, end, null, (_null, blockPos) -> {
          BlockState blockState = mc.world.getBlockState(blockPos);
          if (blockState.getBlock().getBlastResistance() < 600.0F) {
             return null;
@@ -635,7 +635,7 @@ public class DamageUtil implements Globals {
    }
 
    private static BlockHitResult raycast(RaycastContext context, BlockPos ignore, boolean ignoreTerrain) {
-      return (BlockHitResult)BlockView.raycast(context.getStart(), context.getEnd(), context, (raycastContext, blockPos) -> {
+      return BlockView.raycast(context.getStart(), context.getEnd(), context, (raycastContext, blockPos) -> {
          BlockState blockState;
          if (blockPos.equals(ignore)) {
             blockState = Blocks.AIR.getDefaultState();
@@ -662,7 +662,7 @@ public class DamageUtil implements Globals {
    }
 
    static {
-      raycastContext = new RaycastContext((Vec3d)null, (Vec3d)null, ShapeType.COLLIDER, FluidHandling.ANY, mc.player);
+      raycastContext = new RaycastContext(null, null, ShapeType.COLLIDER, FluidHandling.ANY, mc.player);
       vec3d = new Vec3d(0.0, 0.0, 0.0);
    }
 }

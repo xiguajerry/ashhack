@@ -15,7 +15,7 @@ public class MathUtil {
       double difX = to.x - from.x;
       double difY = (to.y - from.y) * -1.0;
       double difZ = to.z - from.z;
-      double dist = (double)MathHelper.sqrt((float)(difX * difX + difZ * difZ));
+      double dist = MathHelper.sqrt((float)(difX * difX + difZ * difZ));
       return new float[]{(float)MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float)MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
    }
 
@@ -40,7 +40,7 @@ public class MathUtil {
    }
 
    public static double random(double min, double max) {
-      return (double)((float)(Math.random() * (max - min) + min));
+      return (float)(Math.random() * (max - min) + min);
    }
 
    public static float rad(float angle) {

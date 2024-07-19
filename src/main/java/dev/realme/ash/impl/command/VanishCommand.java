@@ -16,7 +16,7 @@ public class VanishCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(argument("mount", StringArgumentType.string()).suggests(suggest(new String[]{"mount", "remount"})).executes((c) -> {
+      builder.then(argument("mount", StringArgumentType.string()).suggests(suggest("mount", "remount")).executes((c) -> {
          String dismount = StringArgumentType.getString(c, "mount");
          if (dismount.equalsIgnoreCase("dismount")) {
             if (mc.player.isRiding() && mc.player.getVehicle() != null) {
@@ -42,7 +42,7 @@ public class VanishCommand extends Command {
          }
 
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Invalid usage! Usage: " + this.getUsage());
          return 1;
       });

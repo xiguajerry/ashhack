@@ -33,7 +33,7 @@ public abstract class MixinPacketByteBuf {
             return new DecoderException("Failed to decode: " + error + " " + nbtElement);
          }));
       } catch (DecoderException var6) {
-         cir.setReturnValue((Object)null);
+         cir.setReturnValue(null);
       }
 
    }

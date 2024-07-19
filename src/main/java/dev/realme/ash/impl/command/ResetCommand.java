@@ -14,7 +14,7 @@ public class ResetCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(argument("module", ModuleArgumentType.module()).executes((context) -> {
+      builder.then(argument("module", ModuleArgumentType.module()).executes((context) -> {
          Module module = ModuleArgumentType.getModule(context, "module");
          if (module == null) {
             ChatUtil.error("Invalid module!");
@@ -32,7 +32,7 @@ public class ResetCommand extends Command {
             ChatUtil.clientSendMessage("§7" + module.getName() + "§f settings were reset to default values");
             return 1;
          }
-      }))).executes((context) -> {
+      })).executes((context) -> {
          ChatUtil.error("Must provide module to reset!");
          return 1;
       });

@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
 
 public class TimerModule
 extends ToggleModule {
-    Config<Float> ticksConfig = new NumberConfig<Float>("Ticks", "The game tick speed", Float.valueOf(0.1f), Float.valueOf(2.0f), Float.valueOf(50.0f));
+    Config<Float> ticksConfig = new NumberConfig<Float>("Ticks", "The game tick speed", 0.1f, 2.0f, 50.0f);
     Config<Boolean> tpsSyncConfig = new BooleanConfig("TPSSync", "Syncs game tick speed to server tick speed", false);
     private float prevTimer = -1.0f;
     private float timer = 1.0f;

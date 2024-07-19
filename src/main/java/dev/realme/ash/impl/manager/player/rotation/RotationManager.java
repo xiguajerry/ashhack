@@ -73,7 +73,7 @@ public class RotationManager implements Globals {
    )
    public void onRotation(RotateEvent event) {
       if (mc.player != null) {
-         if (directionVec != null && !ROTATE_TIMER.passed((long)((Float)Modules.COMBAT_SETTING.rotateTime.getValue() * 1000.0F))) {
+         if (directionVec != null && !ROTATE_TIMER.passed((long)(Modules.COMBAT_SETTING.rotateTime.getValue() * 1000.0F))) {
             float[] angle = EntityUtil.getLegitRotations(directionVec);
             this.rotating = true;
             event.setYaw(angle[0]);
@@ -94,7 +94,7 @@ public class RotationManager implements Globals {
          Packet var3;
          float pitch;
          float yaw;
-         if (directionVec != null && !ROTATE_TIMER.passed((long)((Float)Modules.COMBAT_SETTING.rotateTime.getValue() * 1000.0F)) && !this.rotating) {
+         if (directionVec != null && !ROTATE_TIMER.passed((long)(Modules.COMBAT_SETTING.rotateTime.getValue() * 1000.0F)) && !this.rotating) {
             var3 = event.getPacket();
             if (var3 instanceof PlayerMoveC2SPacket) {
                packet = (PlayerMoveC2SPacket)var3;
@@ -153,7 +153,7 @@ public class RotationManager implements Globals {
 
    @EventListener
    public void onKeyboardTick(KeyboardTickEvent event) {
-      if (directionVec != null && mc.player != null && (Boolean)Modules.COMBAT_SETTING.movementFix.getValue()) {
+      if (directionVec != null && mc.player != null && Modules.COMBAT_SETTING.movementFix.getValue()) {
          float mF = mc.player.input.movementForward;
          float mS = mc.player.input.movementSideways;
          float delta = (mc.player.getYaw() - this.lastYaw) * 0.017453292F;
@@ -167,7 +167,7 @@ public class RotationManager implements Globals {
 
    @EventListener
    public void onUpdateVelocity(UpdateVelocityEvent event) {
-      if (directionVec != null && (Boolean)Modules.COMBAT_SETTING.movementFix.getValue()) {
+      if (directionVec != null && Modules.COMBAT_SETTING.movementFix.getValue()) {
          event.cancel();
          event.setVelocity(this.movementInputToVelocity(this.lastYaw, event.getMovementInput(), event.getSpeed()));
       }
@@ -176,7 +176,7 @@ public class RotationManager implements Globals {
 
    @EventListener
    public void onPlayerJump(PlayerJumpEvent event) {
-      if (directionVec != null && (Boolean)Modules.COMBAT_SETTING.movementFix.getValue()) {
+      if (directionVec != null && Modules.COMBAT_SETTING.movementFix.getValue()) {
          if (event.getStage() == EventStage.PRE) {
             this.prevJumpYaw = mc.player.getYaw();
             mc.player.setYaw(this.lastYaw);
@@ -192,7 +192,7 @@ public class RotationManager implements Globals {
       if (d < 1.0E-7) {
          return Vec3d.ZERO;
       } else {
-         Vec3d vec3d = (d > 1.0 ? movementInput.normalize() : movementInput).multiply((double)speed);
+         Vec3d vec3d = (d > 1.0 ? movementInput.normalize() : movementInput).multiply(speed);
          float f = MathHelper.sin(yaw * 0.017453292F);
          float g = MathHelper.cos(yaw * 0.017453292F);
          return new Vec3d(vec3d.x * (double)g - vec3d.z * (double)f, vec3d.y, vec3d.z * (double)g + vec3d.x * (double)f);

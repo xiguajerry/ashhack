@@ -107,7 +107,7 @@ extends ToggleModule {
             return false;
         }
         Item item = itemStack.getItem();
-        return item instanceof ArmorItem && (armorItem = (ArmorItem)((Object)item)).getSlotType() == EquipmentSlot.HEAD;
+        return item instanceof ArmorItem && (armorItem = (ArmorItem) item).getSlotType() == EquipmentSlot.HEAD;
     }
 
     public static boolean isChestplateArmor(ItemStack itemStack) {
@@ -116,7 +116,7 @@ extends ToggleModule {
             return false;
         }
         Item item = itemStack.getItem();
-        return item instanceof ArmorItem && (armorItem = (ArmorItem)((Object)item)).getSlotType() == EquipmentSlot.CHEST;
+        return item instanceof ArmorItem && (armorItem = (ArmorItem) item).getSlotType() == EquipmentSlot.CHEST;
     }
 
     public static boolean isLeggingsArmor(ItemStack itemStack) {
@@ -125,7 +125,7 @@ extends ToggleModule {
             return false;
         }
         Item item = itemStack.getItem();
-        return item instanceof ArmorItem && (armorItem = (ArmorItem)((Object)item)).getSlotType() == EquipmentSlot.LEGS;
+        return item instanceof ArmorItem && (armorItem = (ArmorItem) item).getSlotType() == EquipmentSlot.LEGS;
     }
 
     public static boolean isBootsArmor(ItemStack itemStack) {
@@ -134,7 +134,7 @@ extends ToggleModule {
             return false;
         }
         Item item = itemStack.getItem();
-        return item instanceof ArmorItem && (armorItem = (ArmorItem)((Object)item)).getSlotType() == EquipmentSlot.FEET;
+        return item instanceof ArmorItem && (armorItem = (ArmorItem) item).getSlotType() == EquipmentSlot.FEET;
     }
 
     @EventListener
@@ -144,7 +144,7 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof EntityStatusS2CPacket && (packet = (EntityStatusS2CPacket)((Object)packet2)).getStatus() == 35 && this.totemPopConfig.getValue().booleanValue()) {
+        if (packet2 instanceof EntityStatusS2CPacket && (packet = (EntityStatusS2CPacket) packet2).getStatus() == 35 && this.totemPopConfig.getValue().booleanValue()) {
             Entity entity = packet.getEntity(ChatNotifierModule.mc.world);
             if (!(entity instanceof LivingEntity) || entity.getDisplayName() == null) {
                 return;
@@ -187,7 +187,7 @@ extends ToggleModule {
         if (isFriend && !this.friendsConfig.getValue().booleanValue() || event.getEntity() == ChatNotifierModule.mc.player) {
             return;
         }
-        ChatUtil.sendChatMessageWidthId("\u00a7s[VisualRange] " + (String)(isFriend ? "\u00a7b" + playerName : playerName) + "\u00a7f entered your visual range.", player.getId());
+        ChatUtil.sendChatMessageWidthId("\u00a7s[VisualRange] " + (isFriend ? "\u00a7b" + playerName : playerName) + "\u00a7f entered your visual range.", player.getId());
     }
 
     @EventListener

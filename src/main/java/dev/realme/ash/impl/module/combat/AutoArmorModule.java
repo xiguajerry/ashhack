@@ -56,8 +56,7 @@ public class AutoArmorModule extends ToggleModule {
                     ItemStack stack = mc.player.getInventory().getStack(j);
                     if (!stack.isEmpty()) {
                         Item bootsSlot = stack.getItem();
-                        if (bootsSlot instanceof ArmorItem) {
-                            ArmorItem armor = (ArmorItem)bootsSlot;
+                        if (bootsSlot instanceof ArmorItem armor) {
                             if (!this.noBindingConfig.getValue() || !EnchantmentHelper.hasBindingCurse(stack)) {
                                 int index = armor.getSlotType().getEntitySlotId();
                                 float dura = (float)(stack.getMaxDamage() - stack.getDamage()) / (float)stack.getMaxDamage();
@@ -90,25 +89,25 @@ public class AutoArmorModule extends ToggleModule {
                             switch(i) {
                                 case 0:
                                     if (!this.helmet.isEmpty()) {
-                                        AutoArmorModule.ArmorSlot helmetSlot = (AutoArmorModule.ArmorSlot)this.helmet.poll();
+                                        AutoArmorModule.ArmorSlot helmetSlot = this.helmet.poll();
                                         this.swapArmor(helmetSlot.getType(), helmetSlot.getSlot());
                                     }
                                     break;
                                 case 1:
                                     if (!this.chestplate.isEmpty()) {
-                                        AutoArmorModule.ArmorSlot chestSlot = (AutoArmorModule.ArmorSlot)this.chestplate.poll();
+                                        AutoArmorModule.ArmorSlot chestSlot = this.chestplate.poll();
                                         this.swapArmor(chestSlot.getType(), chestSlot.getSlot());
                                     }
                                     break;
                                 case 2:
                                     if (!this.leggings.isEmpty()) {
-                                        AutoArmorModule.ArmorSlot leggingsSlot = (AutoArmorModule.ArmorSlot)this.leggings.poll();
+                                        AutoArmorModule.ArmorSlot leggingsSlot = this.leggings.poll();
                                         this.swapArmor(leggingsSlot.getType(), leggingsSlot.getSlot());
                                     }
                                     break;
                                 case 3:
                                     if (!this.boots.isEmpty()) {
-                                        AutoArmorModule.ArmorSlot bootsSlot = (AutoArmorModule.ArmorSlot)this.boots.poll();
+                                        AutoArmorModule.ArmorSlot bootsSlot = this.boots.poll();
                                         this.swapArmor(bootsSlot.getType(), bootsSlot.getSlot());
                                     }
                             }
@@ -148,7 +147,7 @@ public class AutoArmorModule extends ToggleModule {
                 if (durabilityDiff != 0) {
                     return durabilityDiff;
                 } else {
-                    Enchantment enchantment = ((AutoArmorModule.Priority)AutoArmorModule.this.priorityConfig.getValue()).getEnchantment();
+                    Enchantment enchantment = AutoArmorModule.this.priorityConfig.getValue().getEnchantment();
                     if (AutoArmorModule.this.blastLeggingsConfig.getValue() && this.armorType == 2 && this.hasEnchantment(Enchantments.BLAST_PROTECTION)) {
                         return -1;
                     } else if (this.hasEnchantment(enchantment)) {
@@ -178,14 +177,14 @@ public class AutoArmorModule extends ToggleModule {
         }
     }
 
-    public static enum Priority {
+    public enum Priority {
         BLAST_PROTECTION(Enchantments.BLAST_PROTECTION),
         PROTECTION(Enchantments.PROTECTION),
         PROJECTILE_PROTECTION(Enchantments.PROJECTILE_PROTECTION);
 
         private final Enchantment enchant;
 
-        private Priority(Enchantment enchant) {
+        Priority(Enchantment enchant) {
             this.enchant = enchant;
         }
 

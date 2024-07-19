@@ -7,7 +7,7 @@ import dev.realme.ash.impl.gui.click.impl.config.ModuleButton;
 import net.minecraft.client.gui.DrawContext;
 
 public class TextButton extends ConfigButton {
-   private StringBuilder text;
+   private final StringBuilder text;
    private boolean typing;
 
    public TextButton(CategoryFrame frame, ModuleButton moduleButton, Config config, float x, float y) {

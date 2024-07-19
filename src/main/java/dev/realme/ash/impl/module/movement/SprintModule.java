@@ -14,7 +14,7 @@ import net.minecraft.entity.effect.StatusEffects;
 
 public class SprintModule
 extends ToggleModule {
-    Config<SprintMode> modeConfig = new EnumConfig("Mode", "Sprinting mode. Rage allows for multi-directional sprinting.", (Enum)SprintMode.LEGIT, (Enum[])SprintMode.values());
+    Config<SprintMode> modeConfig = new EnumConfig("Mode", "Sprinting mode. Rage allows for multi-directional sprinting.", SprintMode.LEGIT, SprintMode.values());
 
     public SprintModule() {
         super("Sprint", "Automatically sprints", ModuleCategory.MOVEMENT);
@@ -51,9 +51,9 @@ extends ToggleModule {
         }
     }
 
-    public static enum SprintMode {
+    public enum SprintMode {
         LEGIT,
-        RAGE;
+        RAGE
 
     }
 }

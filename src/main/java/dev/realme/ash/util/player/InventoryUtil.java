@@ -308,7 +308,7 @@ public class InventoryUtil implements Globals {
       }
 
       public Action fromHotbar(int i) {
-         return this.from(0 + i);
+         return this.from(i);
       }
 
       public Action fromOffhand() {
@@ -333,7 +333,7 @@ public class InventoryUtil implements Globals {
       }
 
       public void toHotbar(int i) {
-         this.to(0 + i);
+         this.to(i);
       }
 
       public void toOffhand() {
@@ -358,7 +358,7 @@ public class InventoryUtil implements Globals {
       }
 
       public void slotHotbar(int i) {
-         this.slot(0 + i);
+         this.slot(i);
       }
 
       public void slotOffhand() {
@@ -409,7 +409,7 @@ public class InventoryUtil implements Globals {
       }
    }
 
-   public static enum SwapMode {
+   public enum SwapMode {
       OFF,
       NORMAL,
       SILENT,

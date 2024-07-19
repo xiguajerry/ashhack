@@ -429,9 +429,8 @@ public class Modules {
             Module module = (Module)var0.next();
             if (module != null) {
                module.reflectConfigs();
-               if (module instanceof ToggleModule) {
-                  ToggleModule t = (ToggleModule)module;
-                  Managers.MACRO.register(t.getKeybinding());
+               if (module instanceof ToggleModule t) {
+                   Managers.MACRO.register(t.getKeybinding());
                }
             }
          }

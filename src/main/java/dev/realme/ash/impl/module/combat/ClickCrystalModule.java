@@ -29,8 +29,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class ClickCrystalModule
 extends RotationModule {
-    Config<Float> breakDelayConfig = new NumberConfig<Float>("SpawnDelay", "Speed to break crystals after spawning", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(20.0f));
-    Config<Float> randomDelayConfig = new NumberConfig<Float>("RandomDelay", "Randomized break delay", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(5.0f));
+    Config<Float> breakDelayConfig = new NumberConfig<Float>("SpawnDelay", "Speed to break crystals after spawning", 0.0f, 0.0f, 20.0f);
+    Config<Float> randomDelayConfig = new NumberConfig<Float>("RandomDelay", "Randomized break delay", 0.0f, 0.0f, 5.0f);
     Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotate before breaking", false);
     Config<Boolean> randomRotateConfig = new BooleanConfig("Rotate-Random", "Slightly randomizes rotations", false, () -> this.rotateConfig.getValue());
     private final Set<BlockPos> placedCrystals = new HashSet<BlockPos>();
@@ -72,8 +72,7 @@ extends RotationModule {
     @EventListener
     public void onPacketOutbound(PacketEvent.Send event) {
         Packet<?> packet = event.getPacket();
-        if (packet instanceof PlayerInteractBlockC2SPacket) {
-            PlayerInteractBlockC2SPacket packet2 = (PlayerInteractBlockC2SPacket)packet;
+        if (packet instanceof PlayerInteractBlockC2SPacket packet2) {
             if (!event.isClientPacket() && ClickCrystalModule.mc.player.getStackInHand(packet2.getHand()).getItem() instanceof EndCrystalItem) {
                 this.placedCrystals.add(packet2.getBlockHitResult().getBlockPos());
             }
@@ -94,8 +93,7 @@ extends RotationModule {
     @EventListener
     public void onRemoveEntity(RemoveEntityEvent event) {
         Entity entity = event.getEntity();
-        if (entity instanceof EndCrystalEntity) {
-            EndCrystalEntity crystalEntity = (EndCrystalEntity)entity;
+        if (entity instanceof EndCrystalEntity crystalEntity) {
             this.spawnedCrystals.remove(crystalEntity);
         }
     }

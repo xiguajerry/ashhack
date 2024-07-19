@@ -19,7 +19,7 @@ public class ChatUtil implements Globals {
    }
 
    public static void clientSendMessage(String message) {
-      mc.inGameHud.getChatHud().addMessage(Text.of(PREFIX + message), (MessageSignatureData)null, (MessageIndicator)null);
+      mc.inGameHud.getChatHud().addMessage(Text.of(PREFIX + message), null, null);
    }
 
    public static void clientSendMessage(String message, Object... params) {
@@ -27,7 +27,7 @@ public class ChatUtil implements Globals {
    }
 
    public static void clientSendMessageRaw(String message) {
-      mc.inGameHud.getChatHud().addMessage(Text.of(message), (MessageSignatureData)null, (MessageIndicator)null);
+      mc.inGameHud.getChatHud().addMessage(Text.of(message), null, null);
    }
 
    public static void clientSendMessageRaw(String message, Object... params) {

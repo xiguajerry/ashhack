@@ -70,7 +70,7 @@ public abstract class MixinPlayerListHud {
       Ash.EVENT_HANDLER.dispatch(playerListEvent);
       if (playerListEvent.isCanceled()) {
          cir.cancel();
-         cir.setReturnValue(this.client.player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit((long)playerListEvent.getSize()).toList());
+         cir.setReturnValue(this.client.player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit(playerListEvent.getSize()).toList());
       }
 
    }

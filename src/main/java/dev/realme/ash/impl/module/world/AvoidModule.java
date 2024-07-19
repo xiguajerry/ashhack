@@ -44,7 +44,7 @@ extends ToggleModule {
             return;
         }
         BlockPos pos = event.getPos();
-        if (this.fireConfig.getValue() != false && event.getBlock() == Blocks.FIRE && AvoidModule.mc.player.getY() < (double)pos.getY() + 1.0 || this.cactiConfig.getValue() != false && event.getBlock() == Blocks.CACTUS || this.berryBushConfig.getValue() != false && event.getBlock() == Blocks.SWEET_BERRY_BUSH || this.unloadedConfig.getValue().booleanValue() && !BlockUtil.isBlockLoaded(pos.getX(), pos.getZ())) {
+        if (this.fireConfig.getValue() && event.getBlock() == Blocks.FIRE && AvoidModule.mc.player.getY() < (double)pos.getY() + 1.0 || this.cactiConfig.getValue() && event.getBlock() == Blocks.CACTUS || this.berryBushConfig.getValue() && event.getBlock() == Blocks.SWEET_BERRY_BUSH || this.unloadedConfig.getValue().booleanValue() && !BlockUtil.isBlockLoaded(pos.getX(), pos.getZ())) {
             event.cancel();
             event.setVoxelShape(VoxelShapes.fullCube());
         }

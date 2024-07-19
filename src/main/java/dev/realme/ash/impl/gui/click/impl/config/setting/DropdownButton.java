@@ -28,7 +28,7 @@ public class DropdownButton extends ConfigButton {
    public void mouseClicked(double mouseX, double mouseY, int button) {
       if (this.isWithin(mouseX, mouseY)) {
          Enum val = (Enum)this.config.getValue();
-         String[] values = (String[])Arrays.stream((Enum[])val.getClass().getEnumConstants()).map(Enum::name).toArray((x$0) -> {
+         String[] values = Arrays.stream((Enum[])val.getClass().getEnumConstants()).map(Enum::name).toArray((x$0) -> {
             return new String[x$0];
          });
          if (button == 0) {

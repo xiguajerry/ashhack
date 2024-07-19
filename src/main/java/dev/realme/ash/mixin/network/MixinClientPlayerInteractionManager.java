@@ -138,6 +138,6 @@ public abstract class MixinClientPlayerInteractionManager implements Globals {
             return playerInteractItemC2SPacket;
          }
       });
-      cir.setReturnValue((ActionResult)mutableObject.getValue());
+      cir.setReturnValue(mutableObject.getValue());
    }
 }

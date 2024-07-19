@@ -31,14 +31,14 @@ extends ToggleModule {
     Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
     Config<Boolean> line = new BooleanConfig("lines", "", true);
     Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 255, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
+    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
     Config<Color> friend_color = new ColorConfig("Friend_Color", "", new Color(0, 150, 255), false, false);
     Config<Boolean> friend_box = new BooleanConfig("Friend_Box", "", true);
     Config<Integer> friend_boxAlpha = new NumberConfig<Integer>("Friend_BoxAlpha", "", 0, 80, 255);
     Config<Boolean> friend_line = new BooleanConfig("Friend_lines", "", true);
     Config<Integer> friend_olAlpha = new NumberConfig<Integer>("Friend_OLAlpha", "", 0, 255, 255);
-    Config<Float> friend_olWidth = new NumberConfig<Float>("Friend_OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
-    Config<Float> range = new NumberConfig<Float>("Range", "", Float.valueOf(5.0f), Float.valueOf(20.0f), Float.valueOf(50.0f));
+    Config<Float> friend_olWidth = new NumberConfig<Float>("Friend_OLWidth", "", 0.1f, 1.5f, 5.0f);
+    Config<Float> range = new NumberConfig<Float>("Range", "", 5.0f, 20.0f, 50.0f);
     Render render = null;
     private final List<Render> renders = new ArrayList<Render>();
 
@@ -53,7 +53,7 @@ extends ToggleModule {
         }
         Packet<?> packet = event.getPacket();
         if (packet instanceof BlockBreakingProgressS2CPacket) {
-            BlockBreakingProgressS2CPacket packet2 = (BlockBreakingProgressS2CPacket)((Object)packet);
+            BlockBreakingProgressS2CPacket packet2 = (BlockBreakingProgressS2CPacket) packet;
             this.render = new Render(packet2.getPos(), packet2.getEntityId());
         }
     }

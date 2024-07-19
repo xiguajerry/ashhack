@@ -22,7 +22,7 @@ public class MixinParticleManager {
       ParticleEvent particleEvent = new ParticleEvent(parameters);
       Ash.EVENT_HANDLER.dispatch(particleEvent);
       if (particleEvent.isCanceled()) {
-         cir.setReturnValue((Object)null);
+         cir.setReturnValue(null);
          cir.cancel();
       }
 

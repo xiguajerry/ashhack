@@ -9,17 +9,17 @@ public class EnumConfig<E extends Enum<E>> extends Config<E> {
    private final Enum[] values;
 
    public EnumConfig(String name, String desc, E val, E[] values) {
-      super(name, desc, (E) val);
+      super(name, desc, val);
       this.values = values;
    }
 
    public EnumConfig(String name, String desc, E val, E[] values, Supplier visible) {
-      super(name, desc, (E) val, visible);
+      super(name, desc, val, visible);
       this.values = values;
    }
 
    public String getValueName() {
-      return ((Enum)this.getValue()).name();
+      return this.getValue().name();
    }
 
    public Enum[] getValues() {
@@ -32,17 +32,17 @@ public class EnumConfig<E extends Enum<E>> extends Config<E> {
       return configObj;
    }
 
-   public Enum fromJson(JsonObject jsonObj) {
+   public Enum<E> fromJson(JsonObject jsonObj) {
       if (jsonObj.has("value")) {
          JsonElement element = jsonObj.get("value");
 
          try {
-            return Enum.valueOf(((Enum)this.getValue()).getClass(), element.getAsString());
+            return Enum.<E>valueOf((Class<E>) this.getValue().getClass(), element.getAsString());
          } catch (IllegalArgumentException var4) {
             return null;
          }
       } else {
-         return (Enum)this.getValue();
+         return this.getValue();
       }
    }
 }

@@ -33,10 +33,10 @@ import net.minecraft.util.math.Vec3d;
 
 public class FreecamModule
 extends RotationModule {
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The move speed of the camera", Float.valueOf(0.1f), Float.valueOf(4.0f), Float.valueOf(10.0f));
+    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The move speed of the camera", 0.1f, 4.0f, 10.0f);
     Config<Macro> controlConfig = new MacroConfig("ControlKey", "", new Macro(this.getId() + "-control", 342, () -> {}));
     Config<Boolean> toggleControlConfig = new BooleanConfig("ToggleControl", "Allows toggling control key instead of holding", false);
-    Config<Interact> interactConfig = new EnumConfig("Interact", "The interaction type of the camera", (Enum)Interact.CAMERA, (Enum[])Interact.values());
+    Config<Interact> interactConfig = new EnumConfig("Interact", "The interaction type of the camera", Interact.CAMERA, Interact.values());
     Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotate to the point of interaction", false);
     public Vec3d position;
     public Vec3d lastPosition;
@@ -191,9 +191,9 @@ extends RotationModule {
         return new float[]{this.yaw, this.pitch};
     }
 
-    public static enum Interact {
+    public enum Interact {
         PLAYER,
-        CAMERA;
+        CAMERA
 
     }
 

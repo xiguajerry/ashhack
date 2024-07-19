@@ -71,9 +71,9 @@ public class HolePushModule extends RotationModule {
     @EventListener
     public void onUpdateWalking(UpdateWalkingEvent event) {
         if (mc.player != null && mc.world != null) {
-            if (this.updateTimer.passed((Number)this.updateDelay.getValue())) {
+            if (this.updateTimer.passed(this.updateDelay.getValue())) {
                 this.updateTimer.reset();
-                switch((HolePushModule.SwapMode)this.swapMode.getValue()) {
+                switch(this.swapMode.getValue()) {
                     case SILENT:
                     case NORMAL:
                         this.redBlock = InventoryUtil.findItem(Items.REDSTONE_BLOCK);
@@ -135,7 +135,7 @@ public class HolePushModule extends RotationModule {
     }
 
     private void update() {
-        this.target = EntityUtil.getTarget((double)((Float)this.targetRange.getValue()).floatValue());
+        this.target = EntityUtil.getTarget(this.targetRange.getValue().floatValue());
         if (this.target == null) {
             this.disable();
         } else {
@@ -147,7 +147,7 @@ public class HolePushModule extends RotationModule {
                 for(Direction pistonHeadSide : Direction.values()) {
                     if (pistonHeadSide != Direction.UP && pistonHeadSide != Direction.DOWN) {
                         ++headYaw;
-                        if ((BlockUtil.canReplace(head.offset(pistonHeadSide)) || BlockUtil.getBlock(head.offset(pistonHeadSide)) instanceof PistonBlock) && (!(BlockUtil.getBlock(head.offset(pistonHeadSide)) instanceof PistonBlock) || ((Direction)BlockUtil.getState(head.offset(pistonHeadSide)).get(Properties.FACING)).equals(pistonHeadSide.getOpposite())) && this.canPlaceRedStone(head.offset(pistonHeadSide)) && this.canPush(head) && !EntityUtil.hasEntity(head.offset(pistonHeadSide)) && !BlockUtil.blockMovement(head.offset(pistonHeadSide.getOpposite())) && !BlockUtil.blockMovement(head.offset(pistonHeadSide.getOpposite()).up()) && Managers.INTERACT.getPlaceDirection(head.offset(pistonHeadSide)) != null) {
+                        if ((BlockUtil.canReplace(head.offset(pistonHeadSide)) || BlockUtil.getBlock(head.offset(pistonHeadSide)) instanceof PistonBlock) && (!(BlockUtil.getBlock(head.offset(pistonHeadSide)) instanceof PistonBlock) || BlockUtil.getState(head.offset(pistonHeadSide)).get(Properties.FACING).equals(pistonHeadSide.getOpposite())) && this.canPlaceRedStone(head.offset(pistonHeadSide)) && this.canPush(head) && !EntityUtil.hasEntity(head.offset(pistonHeadSide)) && !BlockUtil.blockMovement(head.offset(pistonHeadSide.getOpposite())) && !BlockUtil.blockMovement(head.offset(pistonHeadSide.getOpposite()).up()) && Managers.INTERACT.getPlaceDirection(head.offset(pistonHeadSide)) != null) {
                             this.pistonPos = head.offset(pistonHeadSide);
                             this.yaw = headYaw;
                         }
@@ -159,7 +159,7 @@ public class HolePushModule extends RotationModule {
                 for(Direction pistonFeetSide : Direction.values()) {
                     if (pistonFeetSide != Direction.UP && pistonFeetSide != Direction.DOWN) {
                         ++feetYaw;
-                        if ((BlockUtil.canReplace(feet.offset(pistonFeetSide)) || BlockUtil.getBlock(feet.offset(pistonFeetSide)) instanceof PistonBlock) && (!(BlockUtil.getBlock(feet.offset(pistonFeetSide)) instanceof PistonBlock) || ((Direction)BlockUtil.getState(feet.offset(pistonFeetSide)).get(Properties.FACING)).equals(pistonFeetSide.getOpposite())) && this.canPlaceRedStone(feet.offset(pistonFeetSide)) && this.canPush(feet) && !EntityUtil.hasEntity(feet.offset(pistonFeetSide)) && !BlockUtil.blockMovement(head.offset(pistonFeetSide.getOpposite())) && Managers.INTERACT.getPlaceDirection(feet.offset(pistonFeetSide)) != null) {
+                        if ((BlockUtil.canReplace(feet.offset(pistonFeetSide)) || BlockUtil.getBlock(feet.offset(pistonFeetSide)) instanceof PistonBlock) && (!(BlockUtil.getBlock(feet.offset(pistonFeetSide)) instanceof PistonBlock) || BlockUtil.getState(feet.offset(pistonFeetSide)).get(Properties.FACING).equals(pistonFeetSide.getOpposite())) && this.canPlaceRedStone(feet.offset(pistonFeetSide)) && this.canPush(feet) && !EntityUtil.hasEntity(feet.offset(pistonFeetSide)) && !BlockUtil.blockMovement(head.offset(pistonFeetSide.getOpposite())) && Managers.INTERACT.getPlaceDirection(feet.offset(pistonFeetSide)) != null) {
                             this.pistonPos = feet.offset(pistonFeetSide);
                             this.yaw = feetYaw;
                         }
@@ -201,7 +201,7 @@ public class HolePushModule extends RotationModule {
 
             if (!BlockUtil.isMining(this.pistonPos)) {
                 int oldSlot = mc.player.getInventory().selectedSlot;
-                switch((HolePushModule.SwapMode)this.swapMode.getValue()) {
+                switch(this.swapMode.getValue()) {
                     case SILENT:
                     case NORMAL:
                         InventoryUtil.doSwap(this.pistonBlock);
@@ -219,7 +219,7 @@ public class HolePushModule extends RotationModule {
                 }
 
                 Managers.INTERACT.placeBlock(this.pistonPos, Hand.MAIN_HAND, false, false, this.pistonPacket.getValue());
-                switch((HolePushModule.SwapMode)this.swapMode.getValue()) {
+                switch(this.swapMode.getValue()) {
                     case SILENT:
                         InventoryUtil.doSwap(oldSlot);
                     case NORMAL:
@@ -247,7 +247,7 @@ public class HolePushModule extends RotationModule {
 
             int tempSlot = this.redBlock != -1 ? this.redBlock : this.redTorch;
             int oldSlot = mc.player.getInventory().selectedSlot;
-            switch((HolePushModule.SwapMode)this.swapMode.getValue()) {
+            switch(this.swapMode.getValue()) {
                 case SILENT:
                 case NORMAL:
                     InventoryUtil.doSwap(tempSlot);
@@ -264,7 +264,7 @@ public class HolePushModule extends RotationModule {
                 this.setRotation(this.redStonePos);
             }
 
-            switch((HolePushModule.SwapMode)this.swapMode.getValue()) {
+            switch(this.swapMode.getValue()) {
                 case SILENT:
                     InventoryUtil.doSwap(oldSlot);
                 case NORMAL:
@@ -339,7 +339,7 @@ public class HolePushModule extends RotationModule {
         NORMAL,
         SILENT,
         Inventory,
-        Pick;
+        Pick
     }
 }
  

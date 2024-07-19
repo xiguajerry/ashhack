@@ -47,7 +47,7 @@ public final class RayCastUtil implements Globals {
    }
 
    public static HitResult rayCast(double reach, float[] angles) {
-      double eyeHeight = (double)mc.player.getStandingEyeHeight();
+      double eyeHeight = mc.player.getStandingEyeHeight();
       Vec3d eyes = new Vec3d(mc.player.getX(), mc.player.getY() + eyeHeight, mc.player.getZ());
       return rayCast(reach, eyes, angles);
    }

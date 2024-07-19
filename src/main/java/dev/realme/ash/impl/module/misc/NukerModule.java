@@ -19,7 +19,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class NukerModule
 extends ToggleModule {
-    Config<Float> range = new NumberConfig<Float>("Range", "", Float.valueOf(0.0f), Float.valueOf(5.0f), Float.valueOf(6.0f));
+    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 6.0f);
     Config<Boolean> own = new BooleanConfig("Own", "", false);
     private final ArrayList<BlockPos> ownBlocks = new ArrayList();
 
@@ -55,7 +55,7 @@ extends ToggleModule {
     private ShulkerBoxBlockEntity getBlock() {
         for (BlockEntity entity : BlockUtil.getTileEntities()) {
             ShulkerBoxBlockEntity shulker;
-            if (!(entity instanceof ShulkerBoxBlockEntity) || !(MathHelper.sqrt((float)NukerModule.mc.player.squaredDistanceTo((shulker = (ShulkerBoxBlockEntity)((Object)entity)).getPos().toCenterPos())) <= this.range.getValue().floatValue())) continue;
+            if (!(entity instanceof ShulkerBoxBlockEntity) || !(MathHelper.sqrt((float)NukerModule.mc.player.squaredDistanceTo((shulker = (ShulkerBoxBlockEntity) entity).getPos().toCenterPos())) <= this.range.getValue().floatValue())) continue;
             return shulker;
         }
         return null;

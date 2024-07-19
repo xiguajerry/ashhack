@@ -64,10 +64,10 @@ extends ToggleModule {
         if (dis == 1) {
             return BlockUtil.canMovement(pos) && BlockUtil.canMovement(pos.up()) && BlockUtil.canStand(pos);
         }
-        BlockPosX pos1 = new BlockPosX((double)pos.getX() + 0.3, (double)pos.getY(), (double)pos.getZ() + 0.3);
-        BlockPosX pos2 = new BlockPosX((double)pos.getX() - 0.3, (double)pos.getY(), (double)pos.getZ() + 0.3);
-        BlockPosX pos3 = new BlockPosX((double)pos.getX() + 0.3, (double)pos.getY(), (double)pos.getZ() - 0.3);
-        BlockPosX pos4 = new BlockPosX((double)pos.getX() - 0.3, (double)pos.getY(), (double)pos.getZ() - 0.3);
-        return BlockUtil.canMovement(pos1) && BlockUtil.canMovement(pos2) && BlockUtil.canMovement(pos3) && BlockUtil.canMovement(pos4) && BlockUtil.canMovement(((BlockPos)pos1).up()) && BlockUtil.canMovement(((BlockPos)pos2).up()) && BlockUtil.canMovement(((BlockPos)pos3).up()) && BlockUtil.canMovement(((BlockPos)pos4).up()) && (BlockUtil.canStand(pos1) || BlockUtil.canStand(pos2) || BlockUtil.canStand(pos3) || BlockUtil.canStand(pos4));
+        BlockPosX pos1 = new BlockPosX((double)pos.getX() + 0.3, pos.getY(), (double)pos.getZ() + 0.3);
+        BlockPosX pos2 = new BlockPosX((double)pos.getX() - 0.3, pos.getY(), (double)pos.getZ() + 0.3);
+        BlockPosX pos3 = new BlockPosX((double)pos.getX() + 0.3, pos.getY(), (double)pos.getZ() - 0.3);
+        BlockPosX pos4 = new BlockPosX((double)pos.getX() - 0.3, pos.getY(), (double)pos.getZ() - 0.3);
+        return BlockUtil.canMovement(pos1) && BlockUtil.canMovement(pos2) && BlockUtil.canMovement(pos3) && BlockUtil.canMovement(pos4) && BlockUtil.canMovement(pos1.up()) && BlockUtil.canMovement(pos2.up()) && BlockUtil.canMovement(pos3.up()) && BlockUtil.canMovement(pos4.up()) && (BlockUtil.canStand(pos1) || BlockUtil.canStand(pos2) || BlockUtil.canStand(pos3) || BlockUtil.canStand(pos4));
     }
 }

@@ -36,7 +36,7 @@ public class MixinFireworkRocketEntity implements Globals {
       if (removeFireworkEvent.isCanceled()) {
          ci.cancel();
          if (this.life == 0 && !rocketEntity.isSilent()) {
-            mc.world.playSound((PlayerEntity)null, rocketEntity.getX(), rocketEntity.getY(), rocketEntity.getZ(), SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, SoundCategory.AMBIENT, 3.0F, 1.0F);
+            mc.world.playSound(null, rocketEntity.getX(), rocketEntity.getY(), rocketEntity.getZ(), SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, SoundCategory.AMBIENT, 3.0F, 1.0F);
          }
 
          ++this.life;

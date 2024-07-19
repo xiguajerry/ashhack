@@ -29,9 +29,9 @@ import net.minecraft.util.math.Direction;
 
 public class CevBreakerModule
 extends ToggleModule {
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", Float.valueOf(0.0f), Float.valueOf(20.0f), Float.valueOf(2000.0f));
-    public Config<Float> placeDelay = new NumberConfig<Float>("PlaceDelay", "", Float.valueOf(0.0f), Float.valueOf(100.0f), Float.valueOf(2000.0f));
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)InventoryUtil.SwapMode.SILENT, (Enum[])InventoryUtil.SwapMode.values());
+    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 20.0f, 2000.0f);
+    public Config<Float> placeDelay = new NumberConfig<Float>("PlaceDelay", "", 0.0f, 100.0f, 2000.0f);
+    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
     Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
     Config<Boolean> placeRotate = new BooleanConfig("PlaceObsRotate", "", true);
     Config<Boolean> placeCryRotate = new BooleanConfig("PlaceCryRotate", "", false);
@@ -124,7 +124,7 @@ extends ToggleModule {
                 InventoryUtil.doPickSwap(this.obsSlot);
             }
         }
-        Managers.INTERACT.placeBlock(pos, (boolean)this.placeRotate.getValue(), false);
+        Managers.INTERACT.placeBlock(pos, this.placeRotate.getValue(), false);
         switch (this.swapMode.getValue()) {
             case SILENT: {
                 InventoryUtil.doSwap(oldSlot);

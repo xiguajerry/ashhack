@@ -16,7 +16,7 @@ public class BindCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(((RequiredArgumentBuilder)argument("module", ModuleArgumentType.module()).then(argument("key", StringArgumentType.string()).executes((c) -> {
+      builder.then(argument("module", ModuleArgumentType.module()).then(argument("key", StringArgumentType.string()).executes((c) -> {
          Module module = ModuleArgumentType.getModule(c, "module");
          if (module instanceof ToggleModule t) {
             String key = StringArgumentType.getString(c, "key");
@@ -36,10 +36,10 @@ public class BindCommand extends Command {
          }
 
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Must provide a module to keybind!");
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Invalid usage! Usage: " + this.getUsage());
          return 1;
       });

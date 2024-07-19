@@ -1,7 +1,7 @@
 package dev.realme.ash.util.render.animation;
 
 public class Animation {
-   private Easing easing;
+   private final Easing easing;
    private float length;
    private long last;
    private boolean state;
@@ -35,11 +35,11 @@ public class Animation {
    }
 
    public double getLinearFactor() {
-      return this.state ? this.clamp((double)((float)(System.currentTimeMillis() - this.last) / this.length)) : this.clamp((double)(1.0F - (float)(System.currentTimeMillis() - this.last) / this.length));
+      return this.state ? this.clamp((float)(System.currentTimeMillis() - this.last) / this.length) : this.clamp(1.0F - (float)(System.currentTimeMillis() - this.last) / this.length);
    }
 
    public double getCurrent() {
-      return 1.0 + 1.0 * this.getFactor();
+      return 1.0 + this.getFactor();
    }
 
    private double clamp(double in) {
@@ -47,7 +47,7 @@ public class Animation {
    }
 
    public double getLength() {
-      return (double)this.length;
+      return this.length;
    }
 
    public void setLength(float length) {

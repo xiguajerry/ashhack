@@ -20,7 +20,7 @@ public class ModuleFile extends ConfigFile {
    public void save() {
       try {
          Path filepath = this.getFilepath();
-         if (!Files.exists(filepath, new LinkOption[0])) {
+         if (!Files.exists(filepath)) {
             Files.createFile(filepath);
          }
 
@@ -37,7 +37,7 @@ public class ModuleFile extends ConfigFile {
    public void load() {
       try {
          Path filepath = this.getFilepath();
-         if (Files.exists(filepath, new LinkOption[0])) {
+         if (Files.exists(filepath)) {
             String content = this.read(filepath);
             this.module.fromJson(this.parseObject(content));
          }

@@ -25,8 +25,8 @@ import net.minecraft.util.math.Vec2f;
 
 public class LongJumpModule
 extends ToggleModule {
-    Config<JumpMode> modeConfig = new EnumConfig("Mode", "The mode for long jump", (Enum)JumpMode.NORMAL, (Enum[])JumpMode.values());
-    Config<Float> boostConfig = new NumberConfig<Float>("Boost", "The jump boost speed", Float.valueOf(0.1f), Float.valueOf(4.5f), Float.valueOf(10.0f), () -> this.modeConfig.getValue() == JumpMode.NORMAL);
+    Config<JumpMode> modeConfig = new EnumConfig("Mode", "The mode for long jump", JumpMode.NORMAL, JumpMode.values());
+    Config<Float> boostConfig = new NumberConfig<Float>("Boost", "The jump boost speed", 0.1f, 4.5f, 10.0f, () -> this.modeConfig.getValue() == JumpMode.NORMAL);
     Config<Boolean> autoDisableConfig = new BooleanConfig("AutoDisable", "Automatically disables when rubberband is detected", true);
     private int stage;
     private double getDistance;
@@ -285,9 +285,9 @@ extends ToggleModule {
         return 1.0;
     }
 
-    public static enum JumpMode {
+    public enum JumpMode {
         NORMAL,
-        GLIDE;
+        GLIDE
 
     }
 }

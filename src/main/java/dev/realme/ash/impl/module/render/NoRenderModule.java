@@ -58,8 +58,8 @@ extends ToggleModule {
     Config<Boolean> totemConfig = new BooleanConfig("Totems", "Prevents totem particles from rendering", false);
     Config<Boolean> worldBorderConfig = new BooleanConfig("WorldBorder", "Prevents world border from rendering", false);
     Config<Boolean> interpolationConfig = new BooleanConfig("Interpolation", "Entities will be rendered at their server positions", false);
-    Config<FogRender> fogConfig = new EnumConfig("Fog", "Prevents fog from rendering in the world", (Enum)FogRender.OFF, (Enum[])FogRender.values());
-    Config<ItemRender> itemsConfig = new EnumConfig("Items", "Prevents dropped items from rendering", (Enum)ItemRender.OFF, (Enum[])ItemRender.values());
+    Config<FogRender> fogConfig = new EnumConfig("Fog", "Prevents fog from rendering in the world", FogRender.OFF, FogRender.values());
+    Config<ItemRender> itemsConfig = new EnumConfig("Items", "Prevents dropped items from rendering", ItemRender.OFF, ItemRender.values());
     Config<Boolean> guiToastConfig = new BooleanConfig("GuiToast", "Prevents advancements from rendering", true);
 
     public NoRenderModule() {
@@ -84,22 +84,22 @@ extends ToggleModule {
         if (this.antiCrashConfig.getValue().booleanValue()) {
             PlayerPositionLookS2CPacket packet;
             Packet<?> packet2 = event.getPacket();
-            if (packet2 instanceof PlayerPositionLookS2CPacket && ((packet = (PlayerPositionLookS2CPacket)((Object)packet2)).getX() > 3.0E7 || packet.getY() > (double)NoRenderModule.mc.world.getTopY() || packet.getZ() > 3.0E7 || packet.getX() < -3.0E7 || packet.getY() < (double)NoRenderModule.mc.world.getBottomY() || packet.getZ() < -3.0E7)) {
+            if (packet2 instanceof PlayerPositionLookS2CPacket && ((packet = (PlayerPositionLookS2CPacket) packet2).getX() > 3.0E7 || packet.getY() > (double)NoRenderModule.mc.world.getTopY() || packet.getZ() > 3.0E7 || packet.getX() < -3.0E7 || packet.getY() < (double)NoRenderModule.mc.world.getBottomY() || packet.getZ() < -3.0E7)) {
                 event.cancel();
             } else {
                 ExplosionS2CPacket packet3;
                 packet2 = event.getPacket();
-                if (packet2 instanceof ExplosionS2CPacket && ((packet3 = (ExplosionS2CPacket)((Object)packet2)).getX() > 3.0E7 || packet3.getY() > (double)NoRenderModule.mc.world.getTopY() || packet3.getZ() > 3.0E7 || packet3.getX() < -3.0E7 || packet3.getY() < (double)NoRenderModule.mc.world.getBottomY() || packet3.getZ() < -3.0E7 || packet3.getRadius() > 1000.0f || packet3.getAffectedBlocks().size() > 1000 || packet3.getPlayerVelocityX() > 1000.0f || packet3.getPlayerVelocityY() > 1000.0f || packet3.getPlayerVelocityZ() > 1000.0f || packet3.getPlayerVelocityX() < -1000.0f || packet3.getPlayerVelocityY() < -1000.0f || packet3.getPlayerVelocityZ() < -1000.0f)) {
+                if (packet2 instanceof ExplosionS2CPacket && ((packet3 = (ExplosionS2CPacket) packet2).getX() > 3.0E7 || packet3.getY() > (double)NoRenderModule.mc.world.getTopY() || packet3.getZ() > 3.0E7 || packet3.getX() < -3.0E7 || packet3.getY() < (double)NoRenderModule.mc.world.getBottomY() || packet3.getZ() < -3.0E7 || packet3.getRadius() > 1000.0f || packet3.getAffectedBlocks().size() > 1000 || packet3.getPlayerVelocityX() > 1000.0f || packet3.getPlayerVelocityY() > 1000.0f || packet3.getPlayerVelocityZ() > 1000.0f || packet3.getPlayerVelocityX() < -1000.0f || packet3.getPlayerVelocityY() < -1000.0f || packet3.getPlayerVelocityZ() < -1000.0f)) {
                     event.cancel();
                 } else {
                     EntityVelocityUpdateS2CPacket packet4;
                     packet2 = event.getPacket();
-                    if (packet2 instanceof EntityVelocityUpdateS2CPacket && ((packet4 = (EntityVelocityUpdateS2CPacket)((Object)packet2)).getVelocityX() > 1000 || packet4.getVelocityY() > 1000 || packet4.getVelocityZ() > 1000 || packet4.getVelocityX() < -1000 || packet4.getVelocityY() < -1000 || packet4.getVelocityZ() < -1000)) {
+                    if (packet2 instanceof EntityVelocityUpdateS2CPacket && ((packet4 = (EntityVelocityUpdateS2CPacket) packet2).getVelocityX() > 1000 || packet4.getVelocityY() > 1000 || packet4.getVelocityZ() > 1000 || packet4.getVelocityX() < -1000 || packet4.getVelocityY() < -1000 || packet4.getVelocityZ() < -1000)) {
                         event.cancel();
                     } else {
                         ParticleS2CPacket packet5;
                         packet2 = event.getPacket();
-                        if (packet2 instanceof ParticleS2CPacket && (packet5 = (ParticleS2CPacket)((Object)packet2)).getCount() > 500) {
+                        if (packet2 instanceof ParticleS2CPacket && (packet5 = (ParticleS2CPacket) packet2).getCount() > 500) {
                             event.cancel();
                         }
                     }
@@ -250,17 +250,17 @@ extends ToggleModule {
         }
     }
 
-    public static enum FogRender {
+    public enum FogRender {
         CLEAR,
         LIQUID_VISION,
-        OFF;
+        OFF
 
     }
 
-    public static enum ItemRender {
+    public enum ItemRender {
         REMOVE,
         HIDE,
-        OFF;
+        OFF
 
     }
 }

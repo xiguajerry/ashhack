@@ -24,11 +24,11 @@ extends RotationModule {
     Config<Boolean> burrow = new BooleanConfig("Burrow", "", true);
     Config<Boolean> surround = new BooleanConfig("Surround", "", true);
     Config<Boolean> ground = new BooleanConfig("Ground", "", false);
-    Config<Float> minDamage = new NumberConfig<Float>("MinDamage", "", Float.valueOf(0.0f), Float.valueOf(8.0f), Float.valueOf(36.0f));
+    Config<Float> minDamage = new NumberConfig<Float>("MinDamage", "", 0.0f, 8.0f, 36.0f);
     Config<Boolean> forceDouble = new BooleanConfig("ForceDouble", "", false);
     Config<Boolean> selfCheck = new BooleanConfig("SelfCheck", "", false);
     Config<Boolean> holdPickaxe = new BooleanConfig("HoldPickaxe", "", true);
-    Config<Float> targetRange = new NumberConfig<Float>("EnemyRange", "", Float.valueOf(0.0f), Float.valueOf(5.0f), Float.valueOf(8.0f));
+    Config<Float> targetRange = new NumberConfig<Float>("EnemyRange", "", 0.0f, 5.0f, 8.0f);
     PlayerEntity target;
     boolean diggingMine = true;
 
@@ -180,7 +180,7 @@ extends RotationModule {
     }
 
     private boolean isObsidian(BlockPos pos) {
-        return !this.isSelfBlock(pos) && BlockUtil.mineBlocks.contains(BlockUtil.getBlock(pos)) && Managers.INTERACT.getClickDirection(pos) != null && (!pos.equals(Modules.PACKET_DIGGING.secondPos) || !(AutoMineModule.mc.player.getMainHandStack().getItem() instanceof PickaxeItem) && this.holdPickaxe.getValue() != false) && !Managers.BREAK.isFriendMining(pos);
+        return !this.isSelfBlock(pos) && BlockUtil.mineBlocks.contains(BlockUtil.getBlock(pos)) && Managers.INTERACT.getClickDirection(pos) != null && (!pos.equals(Modules.PACKET_DIGGING.secondPos) || !(AutoMineModule.mc.player.getMainHandStack().getItem() instanceof PickaxeItem) && this.holdPickaxe.getValue()) && !Managers.BREAK.isFriendMining(pos);
     }
 
     private boolean isObsidianSur(BlockPos pos) {

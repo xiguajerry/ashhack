@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class ParticlesModule
 extends ToggleModule {
-    Config<TotemParticle> totemConfig = new EnumConfig("Totem", "Renders totem particles", (Enum)TotemParticle.OFF, (Enum[])TotemParticle.values());
+    Config<TotemParticle> totemConfig = new EnumConfig("Totem", "Renders totem particles", TotemParticle.OFF, TotemParticle.values());
     Config<Color> totemColorConfig = new ColorConfig("TotemColor", "Color of the totem particles", new Color(25, 120, 0), false, false, () -> this.totemConfig.getValue() == TotemParticle.COLOR);
     Config<Boolean> fireworkConfig = new BooleanConfig("Firework", "Renders firework particles", false);
     Config<Boolean> potionConfig = new BooleanConfig("Effects", "Renders potion effect particles", true);
@@ -28,7 +28,7 @@ extends ToggleModule {
 
     @EventListener
     public void onParticle(ParticleEvent event) {
-        if (this.potionConfig.getValue() != false && event.getParticleType() == ParticleTypes.ENTITY_EFFECT || this.fireworkConfig.getValue() != false && event.getParticleType() == ParticleTypes.FIREWORK || this.bottleConfig.getValue() != false && (event.getParticleType() == ParticleTypes.EFFECT || event.getParticleType() == ParticleTypes.INSTANT_EFFECT) || this.portalConfig.getValue().booleanValue() && event.getParticleType() == ParticleTypes.PORTAL) {
+        if (this.potionConfig.getValue() && event.getParticleType() == ParticleTypes.ENTITY_EFFECT || this.fireworkConfig.getValue() && event.getParticleType() == ParticleTypes.FIREWORK || this.bottleConfig.getValue() && (event.getParticleType() == ParticleTypes.EFFECT || event.getParticleType() == ParticleTypes.INSTANT_EFFECT) || this.portalConfig.getValue().booleanValue() && event.getParticleType() == ParticleTypes.PORTAL) {
             event.cancel();
         }
     }
@@ -52,10 +52,10 @@ extends ToggleModule {
         }
     }
 
-    private static enum TotemParticle {
+    private enum TotemParticle {
         OFF,
         REMOVE,
-        COLOR;
+        COLOR
 
     }
 }

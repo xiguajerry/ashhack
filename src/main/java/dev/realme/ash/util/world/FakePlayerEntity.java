@@ -23,7 +23,7 @@ public class FakePlayerEntity extends OtherClientPlayerEntity implements Globals
       this.prevHeadYaw = this.headYaw;
       this.bodyYaw = player.bodyYaw;
       this.prevBodyYaw = this.bodyYaw;
-      Byte playerModel = (Byte)player.getDataTracker().get(PlayerEntity.PLAYER_MODEL_PARTS);
+      Byte playerModel = player.getDataTracker().get(PlayerEntity.PLAYER_MODEL_PARTS);
       this.dataTracker.set(PlayerEntity.PLAYER_MODEL_PARTS, playerModel);
       this.getAttributes().setFrom(player.getAttributes());
       this.setPose(player.getPose());
@@ -44,7 +44,7 @@ public class FakePlayerEntity extends OtherClientPlayerEntity implements Globals
       this.prevHeadYaw = this.headYaw;
       this.bodyYaw = player.bodyYaw;
       this.prevBodyYaw = this.bodyYaw;
-      Byte playerModel = (Byte)player.getDataTracker().get(PlayerEntity.PLAYER_MODEL_PARTS);
+      Byte playerModel = player.getDataTracker().get(PlayerEntity.PLAYER_MODEL_PARTS);
       this.dataTracker.set(PlayerEntity.PLAYER_MODEL_PARTS, playerModel);
       this.getAttributes().setFrom(player.getAttributes());
       this.setPose(player.getPose());

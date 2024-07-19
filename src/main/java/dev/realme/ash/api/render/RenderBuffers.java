@@ -38,12 +38,11 @@ public class RenderBuffers {
       RenderSystem.disableCull();
       GL11.glDisable(2848);
       isSetup = false;
-      Iterator var0 = postRenderCallbacks.iterator();
 
-      while(var0.hasNext()) {
-         Runnable callback = (Runnable)var0.next();
-         callback.run();
-      }
+       for (Object postRenderCallback : postRenderCallbacks) {
+           Runnable callback = (Runnable) postRenderCallback;
+           callback.run();
+       }
 
       postRenderCallbacks.clear();
    }

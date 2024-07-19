@@ -17,7 +17,7 @@ public abstract class Config<T> implements Identifiable, Serializable {
    protected T value;
    private final T defaultValue;
    private ConfigContainer container;
-   private Supplier visible;
+   private Supplier<Boolean> visible;
    protected final Animation configAnimation;
 
    public Config(String name, String desc, T value) {
@@ -32,7 +32,7 @@ public abstract class Config<T> implements Identifiable, Serializable {
       }
    }
 
-   public Config(String name, String desc, T value, Supplier<T> visible) {
+   public Config(String name, String desc, T value, Supplier<Boolean> visible) {
       this(name, desc, value);
       this.visible = visible;
    }

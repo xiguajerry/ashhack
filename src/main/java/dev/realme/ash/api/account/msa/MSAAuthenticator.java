@@ -238,11 +238,11 @@ public final class MSAAuthenticator {
       String encodedPassword = URLEncoder.encode(password);
       httpPost.setEntity(new StringEntity(this.makeQueryString(new String[][]{{"login", encodedEmail}, {"loginfmt", encodedEmail}, {"passwd", encodedPassword}, {"PPFT", result.getSfttTag()}}), ContentType.create(contentTypeRaw)));
       HttpClientContext ctx = HttpClientContext.create();
-      try (CloseableHttpResponse response = HTTP_CLIENT.execute(httpPost, ctx);){
-         List redirectLocations = ctx.getRedirectLocations();
+      try (CloseableHttpResponse response = HTTP_CLIENT.execute(httpPost, ctx)){
+         List<URI> redirectLocations = ctx.getRedirectLocations();
          if (redirectLocations == null) throw new MSAAuthException("Failed to get valid response from Microsoft");
          if (redirectLocations.isEmpty()) throw new MSAAuthException("Failed to get valid response from Microsoft");
-         String query = ((URI)redirectLocations.get(redirectLocations.size() - 1)).toString().split("#")[1];
+         String query = redirectLocations.get(redirectLocations.size() - 1).toString().split("#")[1];
          for (String param : query.split("&")) {
             String[] parameter = param.split("=");
             if (!parameter[0].equals("access_token")) continue;

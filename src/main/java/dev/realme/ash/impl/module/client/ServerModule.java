@@ -27,7 +27,7 @@ extends ConcurrentModule {
     public void onPacketInbound(PacketEvent.Receive event) {
         GameStateChangeS2CPacket packet;
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof GameStateChangeS2CPacket && (packet = (GameStateChangeS2CPacket)((Object)packet2)).getReason() == GameStateChangeS2CPacket.DEMO_MESSAGE_SHOWN && !mc.isDemo() && this.demoConfig.getValue().booleanValue()) {
+        if (packet2 instanceof GameStateChangeS2CPacket && (packet = (GameStateChangeS2CPacket) packet2).getReason() == GameStateChangeS2CPacket.DEMO_MESSAGE_SHOWN && !mc.isDemo() && this.demoConfig.getValue().booleanValue()) {
             Ash.info("Server attempted to use Demo mode features on you!");
             event.cancel();
         }

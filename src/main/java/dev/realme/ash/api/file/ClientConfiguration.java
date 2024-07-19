@@ -43,22 +43,22 @@ public class ClientConfiguration
       }
       finally {
          Path configDir;
-         if (this.clientDir == null || !Files.exists(this.clientDir, new LinkOption[0]) || !Files.isWritable(this.clientDir)) {
+         if (this.clientDir == null || !Files.exists(this.clientDir) || !Files.isWritable(this.clientDir)) {
             this.clientDir = runningDir;
          }
          this.clientDir = this.clientDir.resolve("Ash");
-         if (!Files.exists(this.clientDir, new LinkOption[0])) {
+         if (!Files.exists(this.clientDir)) {
             try {
-               Files.createDirectory(this.clientDir, new FileAttribute[0]);
+               Files.createDirectory(this.clientDir);
             }
             catch (IOException e) {
                Ash.error("Could not create client dir");
                e.printStackTrace();
             }
          }
-         if (!Files.exists(configDir = this.clientDir.resolve("Configs"), new LinkOption[0])) {
+         if (!Files.exists(configDir = this.clientDir.resolve("Configs"))) {
             try {
-               Files.createDirectory(configDir, new FileAttribute[0]);
+               Files.createDirectory(configDir);
             }
             catch (IOException e) {
                Ash.error("Could not create config dir");

@@ -27,9 +27,8 @@ public final class AntiCheatManager implements Globals {
    public void onPacketInbound(PacketEvent.Receive event) {
       if (!Module.nullCheck()) {
          Packet var4 = event.getPacket();
-         if (var4 instanceof CommonPingS2CPacket) {
-            CommonPingS2CPacket packet = (CommonPingS2CPacket)var4;
-            if (this.index > 3) {
+         if (var4 instanceof CommonPingS2CPacket packet) {
+             if (this.index > 3) {
                return;
             }
 
@@ -41,9 +40,8 @@ public final class AntiCheatManager implements Globals {
             }
          } else {
             var4 = event.getPacket();
-            if (var4 instanceof PlayerPositionLookS2CPacket) {
-               PlayerPositionLookS2CPacket packet = (PlayerPositionLookS2CPacket)var4;
-               this.lastSetback = new SetbackData(new Vec3d(packet.getX(), packet.getY(), packet.getZ()), System.currentTimeMillis(), packet.getTeleportId());
+            if (var4 instanceof PlayerPositionLookS2CPacket packet) {
+                this.lastSetback = new SetbackData(new Vec3d(packet.getX(), packet.getY(), packet.getZ()), System.currentTimeMillis(), packet.getTeleportId());
             }
          }
 

@@ -22,7 +22,7 @@ extends ToggleModule {
     Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotates the player to prevent AFK kick", true);
     Config<Boolean> autoReplyConfig = new BooleanConfig("AutoReply", "Replies to players messaging you in chat", true);
     Config<String> replyConfig = new StringConfig("Reply", "The reply message for AutoReply", "[Ash] I am currently AFK.");
-    Config<Float> delayConfig = new NumberConfig<Float>("Delay", "The delay between actions", Float.valueOf(5.0f), Float.valueOf(60.0f), Float.valueOf(270.0f));
+    Config<Float> delayConfig = new NumberConfig<Float>("Delay", "The delay between actions", 5.0f, 60.0f, 270.0f);
 
     public AntiAFKModule() {
         super("AntiAFK", "Prevents the player from being kicked for AFK", ModuleCategory.MISCELLANEOUS);
@@ -44,7 +44,7 @@ extends ToggleModule {
         Packet<?> packet = event.getPacket();
         if (packet instanceof ChatMessageS2CPacket) {
             String[] words;
-            ChatMessageS2CPacket packet2 = (ChatMessageS2CPacket)((Object)packet);
+            ChatMessageS2CPacket packet2 = (ChatMessageS2CPacket) packet;
             if (this.autoReplyConfig.getValue().booleanValue() && (words = packet2.body().content().split(" "))[1].startsWith("whispers:")) {
                 ChatUtil.serverSendMessage("/r " + this.replyConfig.getValue());
             }

@@ -56,13 +56,13 @@ public class PositionManager implements Globals {
    }
 
    public Vec3d getEyePos() {
-      return this.getPos().add(0.0, (double)mc.player.getStandingEyeHeight(), 0.0);
+      return this.getPos().add(0.0, mc.player.getStandingEyeHeight(), 0.0);
    }
 
    public final Vec3d getCameraPosVec(float tickDelta) {
-      double d = MathHelper.lerp((double)tickDelta, mc.player.prevX, this.getX());
-      double e = MathHelper.lerp((double)tickDelta, mc.player.prevY, this.getY()) + (double)mc.player.getStandingEyeHeight();
-      double f = MathHelper.lerp((double)tickDelta, mc.player.prevZ, this.getZ());
+      double d = MathHelper.lerp(tickDelta, mc.player.prevX, this.getX());
+      double e = MathHelper.lerp(tickDelta, mc.player.prevY, this.getY()) + (double)mc.player.getStandingEyeHeight();
+      double f = MathHelper.lerp(tickDelta, mc.player.prevZ, this.getZ());
       return new Vec3d(d, e, f);
    }
 
@@ -70,7 +70,7 @@ public class PositionManager implements Globals {
       float f = (float)(this.getX() - entity.getX());
       float g = (float)(this.getY() - entity.getY());
       float h = (float)(this.getZ() - entity.getZ());
-      return MathHelper.squaredMagnitude((double)f, (double)g, (double)h);
+      return MathHelper.squaredMagnitude(f, g, h);
    }
 
    public double squaredReachDistanceTo(Entity entity) {
@@ -78,16 +78,15 @@ public class PositionManager implements Globals {
       float f = (float)(cam.getX() - entity.getX());
       float g = (float)(cam.getY() - entity.getY());
       float h = (float)(cam.getZ() - entity.getZ());
-      return MathHelper.squaredMagnitude((double)f, (double)g, (double)h);
+      return MathHelper.squaredMagnitude(f, g, h);
    }
 
    @EventListener
    public void onPacketOutbound(PacketEvent.Send event) {
       if (mc.player != null && mc.world != null) {
          Packet var4 = event.getPacket();
-         if (var4 instanceof PlayerMoveC2SPacket) {
-            PlayerMoveC2SPacket packet = (PlayerMoveC2SPacket)var4;
-            this.onGround = packet.isOnGround();
+         if (var4 instanceof PlayerMoveC2SPacket packet) {
+             this.onGround = packet.isOnGround();
             if (packet.changesPosition()) {
                this.x = packet.getX(this.x);
                this.y = packet.getY(this.y);
@@ -96,9 +95,8 @@ public class PositionManager implements Globals {
             }
          } else {
             var4 = event.getPacket();
-            if (var4 instanceof ClientCommandC2SPacket) {
-               ClientCommandC2SPacket packet = (ClientCommandC2SPacket)var4;
-               switch (packet.getMode()) {
+            if (var4 instanceof ClientCommandC2SPacket packet) {
+                switch (packet.getMode()) {
                   case START_SPRINTING -> this.sprinting = true;
                   case STOP_SPRINTING -> this.sprinting = false;
                   case PRESS_SHIFT_KEY -> this.sneaking = true;

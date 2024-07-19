@@ -42,13 +42,13 @@ public class NetworkManager
    public void sendQuietPacket(Packet<?> p) {
       if (mc.getNetworkHandler() != null) {
          PACKET_CACHE.add(p);
-         ((IClientPlayNetworkHandler)((Object)mc.getNetworkHandler())).sendQuietPacket(p);
+         ((IClientPlayNetworkHandler) mc.getNetworkHandler()).sendQuietPacket(p);
       }
    }
 
    public void sendSequencedPacket(SequencedPacketCreator p) {
       if (NetworkManager.mc.world != null) {
-         PendingUpdateManager updater = ((AccessorClientWorld)((Object)NetworkManager.mc.world)).hookGetPendingUpdateManager().incrementSequence();
+         PendingUpdateManager updater = ((AccessorClientWorld) NetworkManager.mc.world).hookGetPendingUpdateManager().incrementSequence();
          try {
             int i = updater.getSequence();
             Packet packet = p.predict(i);

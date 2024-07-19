@@ -19,9 +19,9 @@ import net.minecraft.util.math.Box;
 
 public class FastFallModule
 extends ToggleModule {
-    Config<Float> heightConfig = new NumberConfig<Float>("Height", "The maximum fall height", Float.valueOf(1.0f), Float.valueOf(3.0f), Float.valueOf(10.0f));
-    Config<FallMode> fallModeConfig = new EnumConfig("Mode", "The mode for falling down blocks", (Enum)FallMode.STEP, (Enum[])FallMode.values());
-    Config<Integer> shiftTicksConfig = new NumberConfig<Integer>("ShiftTicks", "Number of ticks to shift ahead", Integer.valueOf(1), Integer.valueOf(3), Integer.valueOf(5), () -> this.fallModeConfig.getValue() == FallMode.SHIFT);
+    Config<Float> heightConfig = new NumberConfig<Float>("Height", "The maximum fall height", 1.0f, 3.0f, 10.0f);
+    Config<FallMode> fallModeConfig = new EnumConfig("Mode", "The mode for falling down blocks", FallMode.STEP, FallMode.values());
+    Config<Integer> shiftTicksConfig = new NumberConfig<Integer>("ShiftTicks", "Number of ticks to shift ahead", 1, 3, 5, () -> this.fallModeConfig.getValue() == FallMode.SHIFT);
     private boolean prevOnGround;
     private boolean cancelFallMovement;
     private int fallTicks;
@@ -100,9 +100,9 @@ extends ToggleModule {
         return false;
     }
 
-    public static enum FallMode {
+    public enum FallMode {
         STEP,
-        SHIFT;
+        SHIFT
 
     }
 }

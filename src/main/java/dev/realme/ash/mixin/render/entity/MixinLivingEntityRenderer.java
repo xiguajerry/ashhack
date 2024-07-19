@@ -73,7 +73,7 @@ public abstract class MixinLivingEntityRenderer {
    private boolean redirectRender$isInvisibleTo(LivingEntity entity, PlayerEntity player) {
       RenderEntityInvisibleEvent event = new RenderEntityInvisibleEvent(entity);
       Ash.EVENT_HANDLER.dispatch(event);
-      return event.isCanceled() ? false : entity.isInvisibleTo(player);
+      return !event.isCanceled() && entity.isInvisibleTo(player);
    }
 
    @Inject(

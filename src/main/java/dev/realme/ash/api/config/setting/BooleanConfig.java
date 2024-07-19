@@ -10,7 +10,7 @@ public class BooleanConfig extends Config<Boolean> {
       super(name, desc, val);
    }
 
-   public BooleanConfig(String name, String desc, Boolean val, Supplier visible) {
+   public BooleanConfig(String name, String desc, Boolean val, Supplier<Boolean> visible) {
       super(name, desc, val, visible);
       this.configAnimation.setState(val);
    }
@@ -22,7 +22,7 @@ public class BooleanConfig extends Config<Boolean> {
 
    public JsonObject toJson() {
       JsonObject configObj = super.toJson();
-      configObj.addProperty("value", (Boolean)this.getValue());
+      configObj.addProperty("value", this.getValue());
       return configObj;
    }
 

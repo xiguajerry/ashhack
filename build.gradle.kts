@@ -45,11 +45,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${loader_version}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fapi_version}")
 //    modImplementation("baritone-api-fabric:baritone-api-fabric:1.6.3")
-    implementation(files("src/main/resources/baritone-api-fabric-1.10.2.jar"))
-//    modImplementation("org.ladysnake:satin:1.15.0")
-    // Include Satin as a Jar-in-Jar dependency (optional)
-//    include("org.ladysnake:satin:1.15.0")
-//    implementation(files("src/main/resources/META-INF/jars/satin-1.15.0.jar"))
+//    implementation(files("src/main/resources/baritone-unoptimized-fabric-1.10.2.jar"))
 }
 
 loom {

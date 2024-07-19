@@ -140,8 +140,8 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             double d = x - this.lastX;
             double e = y - this.lastBaseY;
             double f = z - this.lastZ;
-            double g = (double)(yaw - this.lastYaw);
-            double h = (double)(pitch - this.lastPitch);
+            double g = yaw - this.lastYaw;
+            double h = pitch - this.lastPitch;
             ++this.ticksSinceLastPositionPacketSent;
             boolean bl2 = MathHelper.squaredMagnitude(d, e, f) > MathHelper.square(2.0E-4) || this.ticksSinceLastPositionPacketSent >= 20;
             boolean bl3 = g != 0.0 || h != 0.0;
@@ -172,7 +172,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             }
 
             this.lastOnGround = ground;
-            this.autoJumpEnabled = (Boolean)this.client.options.getAutoJump().getValue();
+            this.autoJumpEnabled = this.client.options.getAutoJump().getValue();
          }
       }
 

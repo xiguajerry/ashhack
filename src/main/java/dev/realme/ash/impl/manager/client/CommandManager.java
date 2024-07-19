@@ -30,128 +30,122 @@ import dev.realme.ash.impl.event.gui.chat.ChatMessageEvent;
 import dev.realme.ash.impl.event.keyboard.KeyboardInputEvent;
 import dev.realme.ash.init.Managers;
 import dev.realme.ash.util.Globals;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.network.ClientCommandSource;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.command.CommandSource;
 
 public class CommandManager implements Globals {
-   private final List commands = new ArrayList();
-   private String prefix = ".";
-   private int prefixKey = 46;
-   private final CommandDispatcher dispatcher = new CommandDispatcher();
-   private final CommandSource source;
+    private final List<Command> commands = new ArrayList<>();
+    private String prefix = ".";
+    private int prefixKey = 46;
+    private final CommandDispatcher<ClientCommandSource> dispatcher = new CommandDispatcher<>();
+    private final ClientCommandSource source;
 
-   public CommandManager() {
-      this.source = new ClientCommandSource((ClientPlayNetworkHandler)null, mc);
-      Ash.EVENT_HANDLER.subscribe(this);
-      this.register(new BindCommand(), new ConfigCommand(), new DisableAllCommand(), new DrawnCommand(), new FriendCommand(), new HClipCommand(), new HelpCommand(), new HideAllCommand(), new ModulesCommand(), new NbtCommand(), new OpenFolderCommand(), new PrefixCommand(), new ResetCommand(), new ReloadSoundCommand(), new ToggleCommand(), new VanishCommand(), new VClipCommand());
-      Iterator var1 = Managers.MODULE.getModules().iterator();
+    public CommandManager() {
+        this.source = new ClientCommandSource(null, mc);
+        Ash.EVENT_HANDLER.subscribe(this);
+        this.register(new BindCommand(), new ConfigCommand(), new DisableAllCommand(), new DrawnCommand(),
+                new FriendCommand(), new HClipCommand(), new HelpCommand(), new HideAllCommand(),
+                new ModulesCommand(), new NbtCommand(), new OpenFolderCommand(), new PrefixCommand(),
+                new ResetCommand(), new ReloadSoundCommand(), new ToggleCommand(), new VanishCommand(),
+                new VClipCommand());
 
-      while(var1.hasNext()) {
-         Module module = (Module)var1.next();
-         this.register((Command)(new ModuleCommand(module)));
-      }
+        for (Module module : Managers.MODULE.getModules()) {
+            this.register(new ModuleCommand(module));
+        }
 
-      Ash.info("Registered {} commands!", this.commands.size());
-      var1 = this.commands.iterator();
+        Ash.info("Registered {} commands!", this.commands.size());
 
-      while(var1.hasNext()) {
-         Command command = (Command)var1.next();
-         command.buildCommand(command.getCommandBuilder());
-         this.dispatcher.register(command.getCommandBuilder());
-      }
+        for (Command command : this.commands) {
+            command.buildCommand(command.getCommandBuilder());
+            this.dispatcher.register(command.getCommandBuilder());
+        }
+    }
 
-   }
+    @EventListener
+    public void onChatMessage(ChatMessageEvent.Client event) {
+        String text = event.getMessage().trim();
+        if (text.startsWith(this.prefix)) {
+            String literal = text.substring(1);
+            event.cancel();
+            mc.inGameHud.getChatHud().addToMessageHistory(text);
 
-   @EventListener
-   public void onChatMessage(ChatMessageEvent.Client event) {
-      String text = event.getMessage().trim();
-      if (text.startsWith(this.prefix)) {
-         String literal = text.substring(1);
-         event.cancel();
-         mc.inGameHud.getChatHud().addToMessageHistory(text);
+            try {
+                this.dispatcher.execute(this.dispatcher.parse(literal, this.source));
+            } catch (Exception ignored) {
+            }
+        }
 
-         try {
-            this.dispatcher.execute(this.dispatcher.parse(literal, this.source));
-         } catch (Exception var5) {
-         }
-      }
+    }
 
-   }
+    @EventListener
+    public void onKeyboardInput(KeyboardInputEvent event) {
+        if (event.getAction() == 1 && event.getKeycode() == this.prefixKey && mc.currentScreen == null) {
+            event.cancel();
+            mc.setScreen(new ChatScreen(""));
+        }
 
-   @EventListener
-   public void onKeyboardInput(KeyboardInputEvent event) {
-      if (event.getAction() == 1 && event.getKeycode() == this.prefixKey && mc.currentScreen == null) {
-         event.cancel();
-         mc.setScreen(new ChatScreen(""));
-      }
+    }
 
-   }
+    private <S> LiteralArgumentBuilder<S> redirectBuilder(String alias, LiteralCommandNode<S> destination) {
+        LiteralArgumentBuilder<S> literalArgumentBuilder = LiteralArgumentBuilder.<S>literal(alias.toLowerCase())
+                .requires(destination.getRequirement())
+                .forward(destination.getRedirect(), destination.getRedirectModifier(), destination.isFork())
+                .executes(destination.getCommand());
+        for (CommandNode<S> o : destination.getChildren()) {
+            literalArgumentBuilder.then(o);
+        }
 
-   private LiteralArgumentBuilder redirectBuilder(String alias, LiteralCommandNode destination) {
-      LiteralArgumentBuilder literalArgumentBuilder = (LiteralArgumentBuilder)((LiteralArgumentBuilder)((LiteralArgumentBuilder)LiteralArgumentBuilder.literal(alias.toLowerCase()).requires(destination.getRequirement())).forward(destination.getRedirect(), destination.getRedirectModifier(), destination.isFork())).executes(destination.getCommand());
-      Iterator var4 = destination.getChildren().iterator();
+        return literalArgumentBuilder;
+    }
 
-      while(var4.hasNext()) {
-         CommandNode child = (CommandNode)var4.next();
-         literalArgumentBuilder.then(child);
-      }
+    private void register(Command... commands) {
+        for (Command command : commands) {
+            this.register(command);
+        }
+    }
 
-      return literalArgumentBuilder;
-   }
+    private void register(Command command) {
+        this.commands.add(command);
+    }
 
-   private void register(Command... commands) {
-      Command[] var2 = commands;
-      int var3 = commands.length;
+    public List<Command> getCommands() {
+        return this.commands;
+    }
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Command command = var2[var4];
-         this.register(command);
-      }
+    public Command getCommand(String name) {
+        Iterator<Command> var2 = this.commands.iterator();
 
-   }
+        Command command;
+        do {
+            if (!var2.hasNext()) {
+                return null;
+            }
+            command = var2.next();
+        } while (!command.getName().equalsIgnoreCase(name));
 
-   private void register(Command command) {
-      this.commands.add(command);
-   }
+        return command;
+    }
 
-   public List getCommands() {
-      return this.commands;
-   }
+    public String getPrefix() {
+        return this.prefix;
+    }
 
-   public Command getCommand(String name) {
-      Iterator var2 = this.commands.iterator();
+    public void setPrefix(String prefix, int prefixKey) {
+        this.prefix = prefix;
+        this.prefixKey = prefixKey;
+    }
 
-      Command command;
-      do {
-         if (!var2.hasNext()) {
-            return null;
-         }
+    public CommandDispatcher<ClientCommandSource> getDispatcher() {
+        return this.dispatcher;
+    }
 
-         command = (Command)var2.next();
-      } while(!command.getName().equalsIgnoreCase(name));
-
-      return command;
-   }
-
-   public String getPrefix() {
-      return this.prefix;
-   }
-
-   public void setPrefix(String prefix, int prefixKey) {
-      this.prefix = prefix;
-      this.prefixKey = prefixKey;
-   }
-
-   public CommandDispatcher getDispatcher() {
-      return this.dispatcher;
-   }
-
-   public CommandSource getSource() {
-      return this.source;
-   }
+    public ClientCommandSource getSource() {
+        return this.source;
+    }
 }

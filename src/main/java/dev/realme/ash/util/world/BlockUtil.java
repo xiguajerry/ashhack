@@ -121,7 +121,7 @@ public class BlockUtil implements Globals {
 
    public static boolean canClickThrough(BlockPos pos) {
       BlockState blockState = mc.world.getBlockState(pos);
-      return blockState.getBlock() instanceof FluidBlock || blockState.getBlock() == Blocks.AIR || !blockState.isFullCube(mc.world, pos) || getBlock(pos) == Blocks.COBWEB || getBlock(pos) == Blocks.PISTON_HEAD || getBlock(pos) instanceof PistonBlock && (Boolean)getState(pos).get(Properties.EXTENDED);
+      return blockState.getBlock() instanceof FluidBlock || blockState.getBlock() == Blocks.AIR || !blockState.isFullCube(mc.world, pos) || getBlock(pos) == Blocks.COBWEB || getBlock(pos) == Blocks.PISTON_HEAD || getBlock(pos) instanceof PistonBlock && getState(pos).get(Properties.EXTENDED);
    }
 
    public static boolean isStrictDirection(BlockPos pos, Direction side) {
@@ -154,7 +154,7 @@ public class BlockUtil implements Globals {
    }
 
    public static boolean isAir(BlockPos pos) {
-      return pos == null ? false : mc.world.isAir(pos);
+      return pos != null && mc.world.isAir(pos);
    }
 
    public static boolean solid(BlockPos blockPos) {
@@ -170,10 +170,10 @@ public class BlockUtil implements Globals {
       ArrayList<BlockPos> list = new ArrayList<>();
       BlockPos playerPos = BlockPos.ofFloored(center);
 
-      for(int x = (int)Math.floor((double)((float)playerPos.getX() - range)); (double)x <= Math.ceil((double)((float)playerPos.getX() + range)); ++x) {
-         for(int y = (int)Math.floor((double)((float)playerPos.getY() - range)); (double)y <= Math.ceil((double)((float)playerPos.getY() + range)); ++y) {
-            for(int z = (int)Math.floor((double)((float)playerPos.getZ() - range)); (double)z <= Math.ceil((double)((float)playerPos.getZ() + range)); ++z) {
-               BlockPos curPos = new BlockPosX((double)x, (double)y, (double)z);
+      for(int x = (int)Math.floor((float)playerPos.getX() - range); (double)x <= Math.ceil((float)playerPos.getX() + range); ++x) {
+         for(int y = (int)Math.floor((float)playerPos.getY() - range); (double)y <= Math.ceil((float)playerPos.getY() + range); ++y) {
+            for(int z = (int)Math.floor((float)playerPos.getZ() - range); (double)z <= Math.ceil((float)playerPos.getZ() + range); ++z) {
+               BlockPos curPos = new BlockPosX(x, y, z);
                if (MathHelper.sqrt((float)center.squaredDistanceTo(curPos.toCenterPos())) <= range) {
                   list.add(curPos);
                }
@@ -185,14 +185,14 @@ public class BlockUtil implements Globals {
    }
 
    public static double distanceTo(BlockPos blockPos1, BlockPos blockPos2) {
-      double d = (double)(blockPos1.getX() - blockPos2.getX());
-      double e = (double)(blockPos1.getY() - blockPos2.getY());
-      double f = (double)(blockPos1.getZ() - blockPos2.getZ());
-      return (double)MathHelper.sqrt((float)(d * d + e * e + f * f));
+      double d = blockPos1.getX() - blockPos2.getX();
+      double e = blockPos1.getY() - blockPos2.getY();
+      double f = blockPos1.getZ() - blockPos2.getZ();
+      return MathHelper.sqrt((float)(d * d + e * e + f * f));
    }
 
    public static boolean isWithin(BlockPos blockPos, double r) {
-      return squaredDistanceTo((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ()) <= r * r;
+      return squaredDistanceTo(blockPos.getX(), blockPos.getY(), blockPos.getZ()) <= r * r;
    }
 
    public static double squaredDistanceTo(double x, double y, double z) {
@@ -203,7 +203,7 @@ public class BlockUtil implements Globals {
       float f = (float)(x1 - x2);
       float g = (float)(y1 - y2);
       float h = (float)(z1 - z2);
-      return (double)org.joml.Math.fma(f, f, org.joml.Math.fma(g, g, h * h));
+      return org.joml.Math.fma(f, f, org.joml.Math.fma(g, g, h * h));
    }
 
    public static boolean isAir(Vec3d vec3d) {
@@ -228,7 +228,7 @@ public class BlockUtil implements Globals {
 
    public static List loadedChunks() {
       List chunks = new ArrayList();
-      int viewDist = (Integer)mc.options.getViewDistance().getValue();
+      int viewDist = mc.options.getViewDistance().getValue();
 
       for(int x = -viewDist; x <= viewDist; ++x) {
          for(int z = -viewDist; z <= viewDist; ++z) {
@@ -248,7 +248,7 @@ public class BlockUtil implements Globals {
 
    public static boolean isBlockLoaded(double x, double z) {
       ChunkManager chunkManager = mc.world.getChunkManager();
-      return chunkManager != null ? chunkManager.isChunkLoaded(ChunkSectionPos.getSectionCoord(x), ChunkSectionPos.getSectionCoord(z)) : false;
+      return chunkManager != null && chunkManager.isChunkLoaded(ChunkSectionPos.getSectionCoord(x), ChunkSectionPos.getSectionCoord(z));
    }
 
    public static boolean canPlace(BlockPos pos, boolean ignoreCrystal) {

@@ -39,7 +39,7 @@ public class MixinBufferBuilderStorage {
       at = {@At("TAIL")}
    )
    private void hookInit(int maxBlockBuildersPoolSize, CallbackInfo ci) {
-      SortedMap sortedMap = (SortedMap)Util.make(new Object2ObjectLinkedOpenHashMap(), (map) -> {
+      SortedMap sortedMap = Util.make(new Object2ObjectLinkedOpenHashMap(), (map) -> {
          map.put(TexturedRenderLayers.getEntitySolid(), this.blockBufferBuilders.get(RenderLayer.getSolid()));
          map.put(TexturedRenderLayers.getEntityCutout(), this.blockBufferBuilders.get(RenderLayer.getCutout()));
          map.put(TexturedRenderLayers.getBannerPatterns(), this.blockBufferBuilders.get(RenderLayer.getCutoutMipped()));

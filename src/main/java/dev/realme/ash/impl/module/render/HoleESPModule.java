@@ -19,8 +19,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class HoleESPModule
 extends ToggleModule {
-    Config<Float> rangeConfig = new NumberConfig<Float>("Range", "Range to display holes", Float.valueOf(3.0f), Float.valueOf(5.0f), Float.valueOf(25.0f));
-    Config<Float> heightConfig = new NumberConfig<Float>("Size", "Render height of holes", Float.valueOf(-1.0f), Float.valueOf(1.0f), Float.valueOf(1.0f));
+    Config<Float> rangeConfig = new NumberConfig<Float>("Range", "Range to display holes", 3.0f, 5.0f, 25.0f);
+    Config<Float> heightConfig = new NumberConfig<Float>("Size", "Render height of holes", -1.0f, 1.0f, 1.0f);
     Config<Boolean> obsidianCheckConfig = new BooleanConfig("Obsidian", "Displays obsidian holes", true);
     Config<Boolean> obsidianBedrockConfig = new BooleanConfig("Obsidian-Bedrock", "Displays mixed obsidian and bedrock holes", true);
     Config<Boolean> doubleConfig = new BooleanConfig("Double", "Displays double holes where the player can stand in the middle of two blocks to block explosion damage", false);

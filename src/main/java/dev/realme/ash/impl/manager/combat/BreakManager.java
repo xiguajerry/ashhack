@@ -24,9 +24,8 @@ public class BreakManager implements Globals {
    public void onPacketInbound(PacketEvent.Receive event) {
       if (mc.player != null && mc.world != null) {
          Packet var3 = event.getPacket();
-         if (var3 instanceof BlockBreakingProgressS2CPacket) {
-            BlockBreakingProgressS2CPacket packet = (BlockBreakingProgressS2CPacket)var3;
-            if (packet.getPos() == null) {
+         if (var3 instanceof BlockBreakingProgressS2CPacket packet) {
+             if (packet.getPos() == null) {
                return;
             }
 
@@ -75,7 +74,7 @@ public class BreakManager implements Globals {
       return mining;
    }
 
-   public static record BreakData(BlockPos pos, int entityId) {
+   public record BreakData(BlockPos pos, int entityId) {
       public BreakData(BlockPos pos, int entityId) {
          this.pos = pos;
          this.entityId = entityId;

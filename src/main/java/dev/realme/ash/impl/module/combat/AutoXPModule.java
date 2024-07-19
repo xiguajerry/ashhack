@@ -23,9 +23,9 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class AutoXPModule
 extends RotationModule {
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)InventoryUtil.SwapMode.SILENT, (Enum[])InventoryUtil.SwapMode.values());
+    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
     Config<Boolean> rotate = new BooleanConfig("Rotate", "Rotates the player while throwing xp.", true);
-    Config<Float> delay = new NumberConfig<Float>("Delay", "Delay to throw xp in ticks.", Float.valueOf(0.0f), Float.valueOf(1.0f), Float.valueOf(10.0f), NumberDisplay.DEFAULT);
+    Config<Float> delay = new NumberConfig<Float>("Delay", "Delay to throw xp in ticks.", 0.0f, 1.0f, 10.0f, NumberDisplay.DEFAULT);
     Config<Boolean> durabilityCheck = new BooleanConfig("DurabilityCheck", "Check if your armor and held item durability is full then disables if it is.", true);
     Config<Boolean> usingPause = new BooleanConfig("UsingPause", "", true);
     private final Timer delayTimer = new CacheTimer();

@@ -22,21 +22,19 @@ public class ItemArgumentType implements ArgumentType {
 
    public Item parse(StringReader reader) throws CommandSyntaxException {
       String string = reader.readString();
-      Item item = (Item)Registries.ITEM.get(new Identifier("minecraft", string));
+      Item item = Registries.ITEM.get(new Identifier("minecraft", string));
       if (item == null) {
-         throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherParseException().createWithContext(reader, (Object)null);
+         throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherParseException().createWithContext(reader, null);
       } else {
          return item;
       }
    }
 
    public CompletableFuture listSuggestions(CommandContext context, SuggestionsBuilder builder) {
-      Iterator var3 = Registries.ITEM.iterator();
 
-      while(var3.hasNext()) {
-         Item item = (Item)var3.next();
-         builder.suggest(Registries.ITEM.getId(item).getPath());
-      }
+       for (Item item : Registries.ITEM) {
+           builder.suggest(Registries.ITEM.getId(item).getPath());
+       }
 
       return builder.buildFuture();
    }

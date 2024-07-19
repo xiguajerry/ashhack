@@ -44,8 +44,8 @@ import net.minecraft.world.RaycastContext;
 
 public class AutoCrystalModule
 extends ToggleModule {
-    Config<Float> updateDelay = new NumberConfig<Float>("UpdateDelay", "", Float.valueOf(0.0f), Float.valueOf(32.0f), Float.valueOf(500.0f));
-    Config<Float> targetRange = new NumberConfig<Float>("TargetRange", "", Float.valueOf(0.0f), Float.valueOf(8.0f), Float.valueOf(13.0f));
+    Config<Float> updateDelay = new NumberConfig<Float>("UpdateDelay", "", 0.0f, 32.0f, 500.0f);
+    Config<Float> targetRange = new NumberConfig<Float>("TargetRange", "", 0.0f, 8.0f, 13.0f);
     Config<Boolean> place = new BooleanConfig("Place", "", true);
     Config<Boolean> extraPlace = new BooleanConfig("SpamPlace", "", false);
     Config<Boolean> Break = new BooleanConfig("Break", "", true);
@@ -53,12 +53,12 @@ extends ToggleModule {
     Config<Boolean> noUsing = new BooleanConfig("NoUsing", "", true);
     Config<Double> antiSuicide = new NumberConfig<Double>("AntiSuicide", "", 0.0, 5.0, 10.0);
     public Config<Integer> predictTicks = new NumberConfig<Integer>("PredictTicks", "", 0, 8, 20);
-    Config<SwapMode> autoSwap = new EnumConfig("SwapMode", "", (Enum)SwapMode.SILENT, (Enum[])SwapMode.values());
+    Config<SwapMode> autoSwap = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
     Config<Double> placeDelay = new NumberConfig<Double>("PlaceDelay", "", 0.0, 72.0, 1000.0);
     Config<Double> breakDelay = new NumberConfig<Double>("BreakDelay", "", 0.0, 72.0, 1000.0);
-    Config<Float> placeRange = new NumberConfig<Float>("PlaceRange", "", Float.valueOf(0.0f), Float.valueOf(5.2f), Float.valueOf(6.0f));
-    Config<Float> breakRange = new NumberConfig<Float>("BreakRange", "", Float.valueOf(0.0f), Float.valueOf(5.2f), Float.valueOf(6.0f));
-    Config<Float> breakWall = new NumberConfig<Float>("BreakWallRange", "", Float.valueOf(0.0f), Float.valueOf(3.0f), Float.valueOf(6.0f));
+    Config<Float> placeRange = new NumberConfig<Float>("PlaceRange", "", 0.0f, 5.2f, 6.0f);
+    Config<Float> breakRange = new NumberConfig<Float>("BreakRange", "", 0.0f, 5.2f, 6.0f);
+    Config<Float> breakWall = new NumberConfig<Float>("BreakWallRange", "", 0.0f, 3.0f, 6.0f);
     Config<Double> placeMinDamage = new NumberConfig<Double>("PlaceMinDmg", "", 0.0, 5.0, 36.0);
     Config<Double> placeMaxSelf = new NumberConfig<Double>("PlaceMaxSelfDmg", "", 0.0, 6.0, 36.0);
     Config<Double> breakMinDamage = new NumberConfig<Double>("BreakMinDmg", "", 0.0, 5.0, 36.0);
@@ -68,8 +68,8 @@ extends ToggleModule {
     Config<Integer> pauseDiggingCount = new NumberConfig<Integer>("PauseCount", "", 0, 1, 4);
     Config<Boolean> helper = new BooleanConfig("Helper", "", false);
     Config<Double> placeBaseMinDamage = new NumberConfig<Double>("PlaceBaseMinDmg", "", 0.0, 7.0, 36.0);
-    Config<Float> obsPlaceDelay = new NumberConfig<Float>("ObsPlaceDelay", "", Float.valueOf(0.0f), Float.valueOf(50.0f), Float.valueOf(500.0f));
-    Config<Float> calcDelay = new NumberConfig<Float>("CalcDelay", "", Float.valueOf(0.0f), Float.valueOf(50.0f), Float.valueOf(500.0f));
+    Config<Float> obsPlaceDelay = new NumberConfig<Float>("ObsPlaceDelay", "", 0.0f, 50.0f, 500.0f);
+    Config<Float> calcDelay = new NumberConfig<Float>("CalcDelay", "", 0.0f, 50.0f, 500.0f);
     Config<Boolean> obsRotate = new BooleanConfig("PlaceRotate", "", false);
     Config<Boolean> slowFace = new BooleanConfig("SlowPlaceFace", "", false);
     Config<Double> slowDelay = new NumberConfig<Double>("SlowPlaceDelay", "", 0.0, 300.0, 2000.0);
@@ -77,11 +77,11 @@ extends ToggleModule {
     Config<Boolean> forcePlace = new BooleanConfig("ForcePlace", "", false);
     Config<Double> forceMaxHealth = new NumberConfig<Double>("ForceMaxHealth", "", 0.0, 10.0, 36.0);
     Config<Double> forceMin = new NumberConfig<Double>("ForceMin", "", 0.0, 5.0, 36.0);
-    Config<Rotate> rotate = new EnumConfig("Rotate", "", (Enum)Rotate.Place, (Enum[])Rotate.values());
+    Config<Rotate> rotate = new EnumConfig("Rotate", "", Rotate.Place, Rotate.values());
     Config<Boolean> newRotate = new BooleanConfig("YawStep", "", false);
-    Config<Float> yawStep = new NumberConfig<Float>("Step", "", Float.valueOf(0.0f), Float.valueOf(0.1f), Float.valueOf(1.0f));
+    Config<Float> yawStep = new NumberConfig<Float>("Step", "", 0.0f, 0.1f, 1.0f);
     Config<Boolean> checkLook = new BooleanConfig("CheckLook", "", true);
-    Config<Float> fov = new NumberConfig<Float>("Fov", "", Float.valueOf(0.0f), Float.valueOf(10.0f), Float.valueOf(30.0f));
+    Config<Float> fov = new NumberConfig<Float>("Fov", "", 0.0f, 10.0f, 30.0f);
     Config<Boolean> render = new BooleanConfig("Render", "", true);
     Config<Boolean> smooth = new BooleanConfig("Smooth", "", true);
     Config<Boolean> shrink = new BooleanConfig("Shrink", "", true);
@@ -91,7 +91,7 @@ extends ToggleModule {
     Config<Color> color = new ColorConfig("Color", "", new Color(90, 90, 255), false, false);
     Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
     Config<Integer> outlineAlpha = new NumberConfig<Integer>("OutlineAlpha", "", 0, 80, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
+    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
     Config<Double> animationTime = new NumberConfig<Double>("AnimationTime", "", 0.1, 2.0, 10.0);
     Config<Double> startFadeTime = new NumberConfig<Double>("StartFadeTime", "", 0.1, 0.5, 1.0);
     Config<Double> fadeTime = new NumberConfig<Double>("FadeTime", "", 0.0, 5.0, 10.0);
@@ -331,7 +331,7 @@ extends ToggleModule {
         for (Entity crystal : AutoCrystalModule.mc.world.getEntities()) {
             if (!(crystal instanceof EndCrystalEntity) || EntityUtil.getEyesPos().distanceTo(crystal.getPos()) > (double)this.breakRange.getValue().floatValue() || !AutoCrystalModule.mc.player.canSee(crystal) && AutoCrystalModule.mc.player.distanceTo(crystal) > this.breakWall.getValue().floatValue()) continue;
             damage = this.calculateDamage(crystal.getPos(), this.target);
-            selfDamage = this.calculateDamage(crystal.getPos(), (PlayerEntity)AutoCrystalModule.mc.player);
+            selfDamage = this.calculateDamage(crystal.getPos(), AutoCrystalModule.mc.player);
             if ((double)selfDamage > this.breakMaxSelf.getValue() || this.antiSuicide.getValue() > 0.0 && (double)selfDamage > (double)(AutoCrystalModule.mc.player.getHealth() + AutoCrystalModule.mc.player.getAbsorptionAmount()) - this.antiSuicide.getValue() || damage < EntityUtil.getHealth(this.target) && (double)damage < this.getBreakDamage(this.target) || breakPos != null && !(damage > this.lastDamage)) continue;
             breakPos = new BlockPosX(crystal.getPos());
             this.lastDamage = damage;
@@ -340,7 +340,7 @@ extends ToggleModule {
             for (BlockPos pos : BlockUtil.getSphere(this.placeRange.getValue().floatValue())) {
                 if (!this.canPlaceCrystal(pos, true, false) || this.behindWall(pos) || !this.canTouch(pos.down())) continue;
                 damage = this.calculateDamage(pos, this.target);
-                selfDamage = this.calculateDamage(pos, (PlayerEntity)AutoCrystalModule.mc.player);
+                selfDamage = this.calculateDamage(pos, AutoCrystalModule.mc.player);
                 if ((double)selfDamage > this.placeMaxSelf.getValue() || this.antiSuicide.getValue() > 0.0 && (double)selfDamage > (double)(AutoCrystalModule.mc.player.getHealth() + AutoCrystalModule.mc.player.getAbsorptionAmount()) - this.antiSuicide.getValue() || damage < EntityUtil.getHealth(this.target) && (double)damage < this.getPlaceDamage(this.target) || this.placePos != null && !(damage > this.lastDamage)) continue;
                 this.placePos = pos;
                 breakPos = null;
@@ -442,7 +442,7 @@ extends ToggleModule {
             if (crystal == -1) {
                 return;
             }
-            if (this.autoSwap.getValue().equals((Object)SwapMode.Pick) && crystal <= 9) {
+            if (this.autoSwap.getValue().equals(SwapMode.Pick) && crystal <= 9) {
                 return;
             }
             switch (this.autoSwap.getValue()) {
@@ -530,8 +530,7 @@ extends ToggleModule {
         Direction side = Managers.INTERACT.getClickDirection(pos);
         if (side == null) return false;
         Vec3d vec3d = new Vec3d((double)side.getVector().getX() * 0.5, (double)side.getVector().getY() * 0.5, (double)side.getVector().getZ() * 0.5);
-        if (!(pos.toCenterPos().add(vec3d).distanceTo(AutoCrystalModule.mc.player.getEyePos()) <= (double)this.placeRange.getValue().floatValue())) return false;
-        return true;
+        return pos.toCenterPos().add(vec3d).distanceTo(AutoCrystalModule.mc.player.getEyePos()) <= (double) this.placeRange.getValue().floatValue();
     }
 
     private int getCrystal() {
@@ -589,7 +588,7 @@ extends ToggleModule {
     public boolean canPlaceCrystal(BlockPos pos, boolean ignoreCrystal, boolean ignoreItem) {
         BlockPos obsPos = pos.down();
         BlockPos boost = obsPos.up();
-        return !(BlockUtil.getBlock(obsPos) != Blocks.BEDROCK && BlockUtil.getBlock(obsPos) != Blocks.OBSIDIAN || Managers.INTERACT.getClickDirection(obsPos) == null || BlockUtil.hasEntityBlockCrystal(boost, ignoreCrystal, ignoreItem) || BlockUtil.hasEntityBlockCrystal(boost.up(), ignoreCrystal, ignoreItem) || !BlockUtil.isAir(boost.up()) && Modules.COMBAT_SETTING.oldVersion.getValue() != false || !BlockUtil.isAir(boost) && (!BlockUtil.hasEntityBlockCrystal(boost, false, ignoreItem) || BlockUtil.getBlock(boost) != Blocks.FIRE));
+        return !(BlockUtil.getBlock(obsPos) != Blocks.BEDROCK && BlockUtil.getBlock(obsPos) != Blocks.OBSIDIAN || Managers.INTERACT.getClickDirection(obsPos) == null || BlockUtil.hasEntityBlockCrystal(boost, ignoreCrystal, ignoreItem) || BlockUtil.hasEntityBlockCrystal(boost.up(), ignoreCrystal, ignoreItem) || !BlockUtil.isAir(boost.up()) && Modules.COMBAT_SETTING.oldVersion.getValue() || !BlockUtil.isAir(boost) && (!BlockUtil.hasEntityBlockCrystal(boost, false, ignoreItem) || BlockUtil.getBlock(boost) != Blocks.FIRE));
     }
 
     public boolean behindWall(BlockPos pos) {
@@ -611,7 +610,7 @@ extends ToggleModule {
         if (Math.abs(MathHelper.wrapDegrees(angle[0] - this.lastYaw)) < this.fov.getValue().floatValue() && Math.abs(MathHelper.wrapDegrees(angle[1] - this.lastPitch)) < this.fov.getValue().floatValue()) {
             return true;
         }
-        return this.checkLook.getValue() == false;
+        return !this.checkLook.getValue();
     }
 
     private float[] injectStep(float[] angle, float steps) {
@@ -635,20 +634,20 @@ extends ToggleModule {
         return new float[]{angle[0], angle[1]};
     }
 
-    public static enum SwapMode {
+    public enum SwapMode {
         OFF,
         NORMAL,
         SILENT,
         Inventory,
-        Pick;
+        Pick
 
     }
 
-    public static enum Rotate {
+    public enum Rotate {
         OFF,
         Place,
         Break,
-        Both;
+        Both
 
     }
 }

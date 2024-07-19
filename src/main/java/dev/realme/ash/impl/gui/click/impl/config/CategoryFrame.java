@@ -75,7 +75,7 @@ public class CategoryFrame extends Frame {
                RenderManager.renderText(context, this.name, this.x + 3.0F, this.y + 4.0F, -1);
                if (this.categoryAnimation.getFactor() > 0.009999999776482582) {
                   this.enableScissor((int)this.x, (int)(this.y + this.height), (int)(this.x + this.width), (int)((double)(this.y + this.height) + (double)this.fheight * this.categoryAnimation.getFactor()));
-                  this.fill(context, (double)this.x, (double)(this.y + this.height), (double)this.width, (double)this.fheight, 1996488704);
+                  this.fill(context, this.x, this.y + this.height, this.width, this.fheight, 1996488704);
                   this.off = this.y + this.height + 1.0F;
                   this.inner = this.off;
 
@@ -104,9 +104,8 @@ public class CategoryFrame extends Frame {
             ConfigButton configButton = (ConfigButton)var7.next();
             if (configButton.getConfig().isVisible()) {
                this.fheight += configButton.getHeight() * moduleButton.getScaledTime();
-               if (configButton instanceof ColorButton) {
-                  ColorButton colorPicker = (ColorButton)configButton;
-                  if (colorPicker.getScaledTime() > 0.01F) {
+               if (configButton instanceof ColorButton colorPicker) {
+                   if (colorPicker.getScaledTime() > 0.01F) {
                      this.fheight += colorPicker.getPickerHeight() * colorPicker.getScaledTime() * moduleButton.getScaledTime();
                   }
                }
@@ -161,7 +160,7 @@ public class CategoryFrame extends Frame {
    }
 
    public boolean isWithinTotal(float mx, float my) {
-      return this.isMouseOver((double)mx, (double)my, (double)this.x, (double)this.y, (double)this.width, (double)this.getTotalHeight());
+      return this.isMouseOver(mx, my, this.x, this.y, this.width, this.getTotalHeight());
    }
 
    public void offset(float in) {

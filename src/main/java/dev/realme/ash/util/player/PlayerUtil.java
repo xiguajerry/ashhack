@@ -33,7 +33,7 @@ public final class PlayerUtil implements Globals {
    }
 
    public static void doSwing() {
-      switch ((CombatSettingModule.SwingMode)Modules.COMBAT_SETTING.swingMode.getValue()) {
+      switch (Modules.COMBAT_SETTING.swingMode.getValue()) {
          case Normal -> mc.player.swingHand(Hand.MAIN_HAND);
          case Client -> mc.player.swingHand(Hand.MAIN_HAND, false);
          case Server -> Managers.NETWORK.sendPacket(new HandSwingC2SPacket(Hand.MAIN_HAND));
@@ -42,7 +42,7 @@ public final class PlayerUtil implements Globals {
    }
 
    public static void doSwing(Hand hand) {
-      switch ((CombatSettingModule.SwingMode)Modules.COMBAT_SETTING.swingMode.getValue()) {
+      switch (Modules.COMBAT_SETTING.swingMode.getValue()) {
          case Normal -> mc.player.swingHand(hand);
          case Client -> mc.player.swingHand(hand, false);
          case Server -> Managers.NETWORK.sendPacket(new HandSwingC2SPacket(hand));
@@ -244,11 +244,11 @@ public final class PlayerUtil implements Globals {
    }
 
    public static boolean isInsideBlock(PlayerEntity player) {
-      return BlockUtil.getBlock(playerPos(player)) == Blocks.ENDER_CHEST ? true : mc.world.canCollide(player, player.getBoundingBox());
+      return BlockUtil.getBlock(playerPos(player)) == Blocks.ENDER_CHEST || mc.world.canCollide(player, player.getBoundingBox());
    }
 
    public static boolean isInsideBlock() {
-      return BlockUtil.getBlock(playerPos(mc.player)) == Blocks.ENDER_CHEST ? true : mc.world.canCollide(mc.player, mc.player.getBoundingBox());
+      return BlockUtil.getBlock(playerPos(mc.player)) == Blocks.ENDER_CHEST || mc.world.canCollide(mc.player, mc.player.getBoundingBox());
    }
 
    public static boolean isHolding(Item item) {

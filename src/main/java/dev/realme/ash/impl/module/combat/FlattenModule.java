@@ -21,9 +21,9 @@ import net.minecraft.util.math.BlockPos;
 
 public class FlattenModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", Float.valueOf(0.0f), Float.valueOf(60.0f), Float.valueOf(500.0f));
+    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 60.0f, 500.0f);
     Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)InventoryUtil.SwapMode.SILENT, (Enum[])InventoryUtil.SwapMode.values());
+    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
     Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
     Config<Boolean> onlyInBlock = new BooleanConfig("OnlyInBlock", "", true);
     Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
@@ -66,7 +66,7 @@ extends RotationModule {
                 slot = InventoryUtil.findInventorySlot(Items.OBSIDIAN, true);
             }
         }
-        if (slot == -1 && !this.swapMode.getValue().equals((Object)InventoryUtil.SwapMode.OFF)) {
+        if (slot == -1 && !this.swapMode.getValue().equals(InventoryUtil.SwapMode.OFF)) {
             return;
         }
         BlockPosX pos1 = new BlockPosX(FlattenModule.mc.player.getX() + 0.3, FlattenModule.mc.player.getY() - 1.0, FlattenModule.mc.player.getZ() + 0.3);
@@ -114,7 +114,7 @@ extends RotationModule {
             return;
         }
         if (this.canPlace(pos)) {
-            Managers.INTERACT.placeBlock(pos, (boolean)this.rotate.getValue(), this.swing.getValue());
+            Managers.INTERACT.placeBlock(pos, this.rotate.getValue(), this.swing.getValue());
             this.delayTimer.reset();
             ++this.progress;
         }

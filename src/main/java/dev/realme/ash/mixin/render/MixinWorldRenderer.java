@@ -58,6 +58,6 @@ public class MixinWorldRenderer implements Globals {
    public boolean hookRender(Camera instance) {
       PerspectiveEvent perspectiveEvent = new PerspectiveEvent(instance);
       Ash.EVENT_HANDLER.dispatch(perspectiveEvent);
-      return perspectiveEvent.isCanceled() ? true : instance.isThirdPerson();
+      return perspectiveEvent.isCanceled() || instance.isThirdPerson();
    }
 }

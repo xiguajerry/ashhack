@@ -17,7 +17,7 @@ import net.minecraft.world.biome.BiomeParticleConfig;
 
 public class NoWeatherModule
 extends ToggleModule {
-    Config<Weather> weatherConfig = new EnumConfig("Weather", "The world weather", (Enum)Weather.CLEAR, (Enum[])Weather.values());
+    Config<Weather> weatherConfig = new EnumConfig("Weather", "The world weather", Weather.CLEAR, Weather.values());
     private Weather weather;
 
     public NoWeatherModule() {
@@ -86,16 +86,16 @@ extends ToggleModule {
     public void onPacketInbound(PacketEvent.Receive event) {
         GameStateChangeS2CPacket packet;
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof GameStateChangeS2CPacket && ((packet = (GameStateChangeS2CPacket)((Object)packet2)).getReason() == GameStateChangeS2CPacket.RAIN_STARTED || packet.getReason() == GameStateChangeS2CPacket.RAIN_STOPPED || packet.getReason() == GameStateChangeS2CPacket.RAIN_GRADIENT_CHANGED || packet.getReason() == GameStateChangeS2CPacket.THUNDER_GRADIENT_CHANGED)) {
+        if (packet2 instanceof GameStateChangeS2CPacket && ((packet = (GameStateChangeS2CPacket) packet2).getReason() == GameStateChangeS2CPacket.RAIN_STARTED || packet.getReason() == GameStateChangeS2CPacket.RAIN_STOPPED || packet.getReason() == GameStateChangeS2CPacket.RAIN_GRADIENT_CHANGED || packet.getReason() == GameStateChangeS2CPacket.THUNDER_GRADIENT_CHANGED)) {
             event.cancel();
         }
     }
 
-    public static enum Weather {
+    public enum Weather {
         CLEAR,
         RAIN,
         THUNDER,
-        ASH;
+        ASH
 
     }
 }

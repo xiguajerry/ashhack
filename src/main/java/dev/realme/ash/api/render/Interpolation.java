@@ -8,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class Interpolation implements Globals {
    public static Vec3d getRenderPosition(Entity entity, float tickDelta) {
-      return new Vec3d(entity.getX() - MathHelper.lerp((double)tickDelta, entity.lastRenderX, entity.getX()), entity.getY() - MathHelper.lerp((double)tickDelta, entity.lastRenderY, entity.getY()), entity.getZ() - MathHelper.lerp((double)tickDelta, entity.lastRenderZ, entity.getZ()));
+      return new Vec3d(entity.getX() - MathHelper.lerp(tickDelta, entity.lastRenderX, entity.getX()), entity.getY() - MathHelper.lerp(tickDelta, entity.lastRenderY, entity.getY()), entity.getZ() - MathHelper.lerp(tickDelta, entity.lastRenderZ, entity.getZ()));
    }
 
    public static Vec3d getInterpolatedPosition(Entity entity, float tickDelta) {

@@ -17,7 +17,7 @@ public class BreadcrumbsModule
 extends ToggleModule {
     private final Map<Vec3d, Long> positions = new ConcurrentHashMap<Vec3d, Long>();
     Config<Boolean> infiniteConfig = new BooleanConfig("Infinite", "Renders breadcrumbs for all positions since toggle", true);
-    Config<Float> maxTimeConfig = new NumberConfig<Float>("MaxPosition", "The maximum time for a given position", Float.valueOf(1.0f), Float.valueOf(2.0f), Float.valueOf(20.0f));
+    Config<Float> maxTimeConfig = new NumberConfig<Float>("MaxPosition", "The maximum time for a given position", 1.0f, 2.0f, 20.0f);
 
     public BreadcrumbsModule() {
         super("Breadcrumbs", "Renders a line connecting all previous positions", ModuleCategory.RENDER);

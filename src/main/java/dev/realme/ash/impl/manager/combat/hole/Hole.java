@@ -78,14 +78,14 @@ public class Hole implements Position {
    }
 
    public double getX() {
-      return (double)this.origin.getX();
+      return this.origin.getX();
    }
 
    public double getY() {
-      return (double)this.origin.getY();
+      return this.origin.getY();
    }
 
    public double getZ() {
-      return (double)this.origin.getZ();
+      return this.origin.getZ();
    }
 }

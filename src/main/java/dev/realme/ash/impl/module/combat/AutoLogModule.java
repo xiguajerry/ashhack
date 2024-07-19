@@ -18,7 +18,7 @@ import net.minecraft.text.Text;
 
 public class AutoLogModule
 extends ToggleModule {
-    Config<Float> healthConfig = new NumberConfig<Float>("Health", "Disconnects when player reaches this health", Float.valueOf(0.1f), Float.valueOf(5.0f), Float.valueOf(19.0f));
+    Config<Float> healthConfig = new NumberConfig<Float>("Health", "Disconnects when player reaches this health", 0.1f, 5.0f, 19.0f);
     Config<Boolean> healthTotemConfig = new BooleanConfig("HealthTotems", "Totem check for health config", true);
     Config<Boolean> onRenderConfig = new BooleanConfig("OnRender", "Disconnects when a player enters render distance", false);
     Config<Boolean> noTotemConfig = new BooleanConfig("NoTotems", "Disconnects when player has no totems in the inventory", false);
@@ -36,7 +36,7 @@ extends ToggleModule {
         if (event.getStage() != EventStage.PRE) {
             return;
         }
-        if (this.onRenderConfig.getValue().booleanValue() && (player = (AbstractClientPlayerEntity)AutoLogModule.mc.world.getPlayers().stream().filter(p -> this.checkEnemy((AbstractClientPlayerEntity)p)).findFirst().orElse(null)) != null) {
+        if (this.onRenderConfig.getValue().booleanValue() && (player = AutoLogModule.mc.world.getPlayers().stream().filter(p -> this.checkEnemy(p)).findFirst().orElse(null)) != null) {
             this.playerDisconnect("[AutoLog] %s came into render distance.", player.getName().getString());
             return;
         }

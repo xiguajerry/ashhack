@@ -75,8 +75,8 @@ public abstract class MixinChatHud implements IChatHud {
    )
    private int get(int i) {
       this.last = (ChatHudLine.Visible)this.visibleMessages.get(i);
-      if (this.last != null && !this.map.containsKey(this.last) && (Boolean)Modules.CLIENT_SETTING.animation.getValue()) {
-         this.map.put(this.last, (new FadeUtils((long)(Integer)Modules.CLIENT_SETTING.animationTime.getValue())).reset());
+      if (this.last != null && !this.map.containsKey(this.last) && Modules.CLIENT_SETTING.animation.getValue()) {
+         this.map.put(this.last, (new FadeUtils((long) Modules.CLIENT_SETTING.animationTime.getValue())).reset());
       }
 
       return i;
@@ -92,8 +92,8 @@ public abstract class MixinChatHud implements IChatHud {
 )}
    )
    private void translate(DrawContext context, int currentTick, int mouseX, int mouseY, CallbackInfo ci) {
-      if (this.map.containsKey(this.last) && (Boolean)Modules.CLIENT_SETTING.animation.getValue()) {
-         context.getMatrices().translate((double)(Integer)Modules.CLIENT_SETTING.animationOffset.getValue() * (1.0 - ((FadeUtils)this.map.get(this.last)).easeOutQuad()), 0.0, 0.0);
+      if (this.map.containsKey(this.last) && Modules.CLIENT_SETTING.animation.getValue()) {
+         context.getMatrices().translate((double) Modules.CLIENT_SETTING.animationOffset.getValue() * (1.0 - ((FadeUtils)this.map.get(this.last)).easeOutQuad()), 0.0, 0.0);
       }
 
    }

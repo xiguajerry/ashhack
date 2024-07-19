@@ -11,8 +11,8 @@ import dev.realme.ash.util.player.PlayerUtil;
 
 public class AntiWebModule
 extends ToggleModule {
-    Config<Float> ySpeed = new NumberConfig<Float>("DownSpeed", "", Float.valueOf(0.0f), Float.valueOf(1.5f), Float.valueOf(5.0f));
-    Config<Float> xzSpeed = new NumberConfig<Float>("XZSpeed", "", Float.valueOf(0.0f), Float.valueOf(2.0f), Float.valueOf(10.0f));
+    Config<Float> ySpeed = new NumberConfig<Float>("DownSpeed", "", 0.0f, 1.5f, 5.0f);
+    Config<Float> xzSpeed = new NumberConfig<Float>("XZSpeed", "", 0.0f, 2.0f, 10.0f);
 
     public AntiWebModule() {
         super("AntiWeb", "mio client", ModuleCategory.MOVEMENT);

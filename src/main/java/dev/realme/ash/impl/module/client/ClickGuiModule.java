@@ -57,6 +57,6 @@ extends ToggleModule {
     }
 
     public Float getScale() {
-        return Float.valueOf(this.scaleConfig);
+        return this.scaleConfig;
     }
 }

@@ -25,7 +25,7 @@ import net.minecraft.util.shape.VoxelShape;
 
 public class BlockHighlightModule
 extends ToggleModule {
-    Config<BoxRender> boxModeConfig = new EnumConfig("BoxMode", "Box rendering mode", (Enum)BoxRender.OUTLINE, (Enum[])BoxRender.values());
+    Config<BoxRender> boxModeConfig = new EnumConfig("BoxMode", "Box rendering mode", BoxRender.OUTLINE, BoxRender.values());
     Config<Boolean> entitiesConfig = new BooleanConfig("Debug-Entities", "Highlights entity bounding boxes for debug purposes", false);
     private double getDistance;
 

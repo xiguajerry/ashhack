@@ -28,21 +28,21 @@ public class ColorButton extends ConfigButton {
    public void render(DrawContext context, float ix, float iy, float mouseX, float mouseY, float delta) {
       this.x = ix;
       this.y = iy;
-      this.fill(context, (double)(ix + this.width - 11.0F), (double)(iy + 2.0F), 10.0, 10.0, ((ColorConfig)this.config).getRgb());
+      this.fill(context, ix + this.width - 11.0F, iy + 2.0F, 10.0, 10.0, ((ColorConfig)this.config).getRgb());
       RenderManager.renderText(context, this.config.getName(), ix + 2.0F, iy + 4.0F, -1);
       if (this.pickerAnimation.getFactor() > 0.009999999776482582) {
          ColorConfig colorConfig = (ColorConfig)this.config;
          if (ClickGuiScreen.MOUSE_LEFT_HOLD) {
-            if (this.isMouseOver((double)mouseX, (double)mouseY, (double)(this.x + 1.0F), (double)(this.y + this.height + 2.0F), (double)(this.width - 2.0F), (double)this.width) && !colorConfig.isGlobal()) {
+            if (this.isMouseOver(mouseX, mouseY, this.x + 1.0F, this.y + this.height + 2.0F, this.width - 2.0F, this.width) && !colorConfig.isGlobal()) {
                this.selectedColor[1] = (mouseX - (this.x + 1.0F)) / (this.width - 1.0F);
                this.selectedColor[2] = (mouseY - (this.y + this.height + 2.0F)) / this.width;
             }
 
-            if (this.isMouseOver((double)mouseX, (double)mouseY, (double)(this.x + 1.0F), (double)(this.y + this.height + 4.0F + this.width), (double)(this.width - 2.0F), 10.0) && !colorConfig.isGlobal()) {
+            if (this.isMouseOver(mouseX, mouseY, this.x + 1.0F, this.y + this.height + 4.0F + this.width, this.width - 2.0F, 10.0) && !colorConfig.isGlobal()) {
                this.selectedColor[0] = (mouseX - (this.x + 1.0F)) / (this.width - 1.0F);
             }
 
-            if (colorConfig.allowAlpha() && this.isMouseOver((double)mouseX, (double)mouseY, (double)(this.x + 1.0F), (double)(this.y + this.height + 17.0F + this.width), (double)(this.width - 2.0F), 10.0)) {
+            if (colorConfig.allowAlpha() && this.isMouseOver(mouseX, mouseY, this.x + 1.0F, this.y + this.height + 17.0F + this.width, this.width - 2.0F, 10.0)) {
                this.selectedColor[3] = (mouseX - (this.x + 1.0F)) / (this.width - 1.0F);
             }
 
@@ -57,22 +57,22 @@ public class ColorButton extends ConfigButton {
 
          for(float i = 0.0F; i < this.width - 2.0F; ++i) {
             float hue = i / (this.width - 2.0F);
-            this.fill(context, (double)(this.x + 1.0F + i), (double)(this.y + this.height + 4.0F + this.width), 1.0, 10.0, Color.getHSBColor(hue, 1.0F, 1.0F).getRGB());
+            this.fill(context, this.x + 1.0F + i, this.y + this.height + 4.0F + this.width, 1.0, 10.0, Color.getHSBColor(hue, 1.0F, 1.0F).getRGB());
          }
 
-         this.fill(context, (double)(this.x + 1.0F + (this.width - 2.0F) * hsb[0]), (double)(this.y + this.height + 4.0F + this.width), 1.0, 10.0, -1);
+         this.fill(context, this.x + 1.0F + (this.width - 2.0F) * hsb[0], this.y + this.height + 4.0F + this.width, 1.0, 10.0, -1);
          this.fillGradientQuad(context, this.x + 1.0F, this.y + this.height + 2.0F, this.x + this.width - 1.0F, this.y + this.height + 2.0F + this.width, -1, color, true);
          this.fillGradientQuad(context, this.x + 1.0F, this.y + this.height + 2.0F, this.x + this.width - 1.0F, this.y + this.height + 2.0F + this.width, 0, -16777216, false);
-         this.fill(context, (double)(this.x + this.width * hsb[1]), (double)(this.y + this.height + 1.0F + this.width * (1.0F - hsb[2])), 2.0, 2.0, -1);
+         this.fill(context, this.x + this.width * hsb[1], this.y + this.height + 1.0F + this.width * (1.0F - hsb[2]), 2.0, 2.0, -1);
          if (colorConfig.allowAlpha()) {
-            this.fillGradient(context, (double)(this.x + 1.0F), (double)(this.y + this.height + 17.0F + this.width), (double)(this.x + this.width - 1.0F), (double)(this.y + this.height + 27.0F + this.width), color, -16777216);
-            this.fill(context, (double)(this.x + 1.0F + (this.width - 2.0F) * hsb[3]), (double)(this.y + this.height + 17.0F + this.width), 1.0, 10.0, -1);
+            this.fillGradient(context, this.x + 1.0F, this.y + this.height + 17.0F + this.width, this.x + this.width - 1.0F, this.y + this.height + 27.0F + this.width, color, -16777216);
+            this.fill(context, this.x + 1.0F + (this.width - 2.0F) * hsb[3], this.y + this.height + 17.0F + this.width, 1.0, 10.0, -1);
          }
 
          if (!this.config.getContainer().getName().equalsIgnoreCase("Colors")) {
             Animation globalAnimation = colorConfig.getAnimation();
             if (globalAnimation.getFactor() > 0.01) {
-               this.fill(context, (double)(this.x + 1.0F), (double)(this.y + this.height + (colorConfig.allowAlpha() ? 29.0F : 17.0F) + this.width), (double)(this.width - 2.0F), 13.0, Modules.CLICK_GUI.getColor((float)globalAnimation.getFactor()));
+               this.fill(context, this.x + 1.0F, this.y + this.height + (colorConfig.allowAlpha() ? 29.0F : 17.0F) + this.width, this.width - 2.0F, 13.0, Modules.CLICK_GUI.getColor((float)globalAnimation.getFactor()));
             }
 
             RenderManager.renderText(context, "ClientColor", this.x + 3.0F, this.y + this.height + (colorConfig.allowAlpha() ? 31.0F : 21.0F) + this.width, -1);
@@ -91,7 +91,7 @@ public class ColorButton extends ConfigButton {
          this.pickerAnimation.setState(this.open);
       }
 
-      if (!this.config.getContainer().getName().equalsIgnoreCase("Colors") && this.isMouseOver(mouseX, mouseY, (double)(this.x + 1.0F), (double)(this.y + this.height + (((ColorConfig)this.config).allowAlpha() ? 29.0F : 17.0F) + this.width), (double)(this.width - 2.0F), 13.0) && button == 0) {
+      if (!this.config.getContainer().getName().equalsIgnoreCase("Colors") && this.isMouseOver(mouseX, mouseY, this.x + 1.0F, this.y + this.height + (((ColorConfig)this.config).allowAlpha() ? 29.0F : 17.0F) + this.width, this.width - 2.0F, 13.0) && button == 0) {
          ColorConfig colorConfig = (ColorConfig)this.config;
          boolean val = !colorConfig.isGlobal();
          colorConfig.setGlobal(val);

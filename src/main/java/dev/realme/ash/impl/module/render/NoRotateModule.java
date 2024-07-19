@@ -31,13 +31,13 @@ extends ToggleModule {
         }
         Packet<?> packet = event.getPacket();
         if (packet instanceof PlayerPositionLookS2CPacket) {
-            PlayerPositionLookS2CPacket packet2 = (PlayerPositionLookS2CPacket)((Object)packet);
+            PlayerPositionLookS2CPacket packet2 = (PlayerPositionLookS2CPacket) packet;
             this.yaw = packet2.getYaw();
             this.pitch = packet2.getPitch();
             float yaw = NoRotateModule.mc.player.getYaw();
             float pitch = NoRotateModule.mc.player.getPitch();
-            ((AccessorPlayerPositionLookS2CPacket)((Object)packet2)).setYaw(yaw);
-            ((AccessorPlayerPositionLookS2CPacket)((Object)packet2)).setPitch(pitch);
+            ((AccessorPlayerPositionLookS2CPacket) packet2).setYaw(yaw);
+            ((AccessorPlayerPositionLookS2CPacket) packet2).setPitch(pitch);
             this.cancelRotate = true;
         }
     }
@@ -45,12 +45,11 @@ extends ToggleModule {
     @EventListener
     public void onPacketOutbound(PacketEvent.Send event) {
         Packet<?> packet = event.getPacket();
-        if (packet instanceof PlayerMoveC2SPacket.Full) {
-            PlayerMoveC2SPacket.Full packet2 = (PlayerMoveC2SPacket.Full)packet;
+        if (packet instanceof PlayerMoveC2SPacket.Full packet2) {
             if (this.cancelRotate) {
                 if (this.positionAdjustConfig.getValue().booleanValue()) {
-                    ((AccessorPlayerMoveC2SPacket)((Object)packet2)).hookSetYaw(this.yaw);
-                    ((AccessorPlayerMoveC2SPacket)((Object)packet2)).hookSetPitch(this.pitch);
+                    ((AccessorPlayerMoveC2SPacket) packet2).hookSetYaw(this.yaw);
+                    ((AccessorPlayerMoveC2SPacket) packet2).hookSetPitch(this.pitch);
                 }
                 this.cancelRotate = false;
             }

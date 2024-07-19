@@ -30,8 +30,8 @@ import net.minecraft.screen.slot.SlotActionType;
 
 public class AutoTotemModule
 extends ToggleModule {
-    EnumConfig<OffhandItem> itemConfig = new EnumConfig("Item", "The item to wield in your offhand", (Enum)OffhandItem.TOTEM, (Enum[])OffhandItem.values());
-    NumberConfig<Float> healthConfig = new NumberConfig<Float>("Health", "The health required to fall below before swapping to a totem", Float.valueOf(0.0f), Float.valueOf(14.0f), Float.valueOf(20.0f));
+    EnumConfig<OffhandItem> itemConfig = new EnumConfig("Item", "The item to wield in your offhand", OffhandItem.TOTEM, OffhandItem.values());
+    NumberConfig<Float> healthConfig = new NumberConfig<Float>("Health", "The health required to fall below before swapping to a totem", 0.0f, 14.0f, 20.0f);
     Config<Boolean> gappleConfig = new BooleanConfig("OffhandGapple", "If to equip a golden apple if holding down the item use button", true);
     Config<Boolean> crappleConfig = new BooleanConfig("Crapple", "If to use a normal golden apple if Absorption is present", true);
     Config<Boolean> lethalConfig = new BooleanConfig("Lethal", "Calculate lethal damage sources", false);
@@ -87,7 +87,7 @@ extends ToggleModule {
     public void onPacketInbound(PacketEvent.Receive event) {
         HealthUpdateS2CPacket packet;
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof HealthUpdateS2CPacket && (packet = (HealthUpdateS2CPacket)((Object)packet2)).getHealth() <= 0.0f && this.debugConfig.getValue().booleanValue()) {
+        if (packet2 instanceof HealthUpdateS2CPacket && (packet = (HealthUpdateS2CPacket) packet2).getHealth() <= 0.0f && this.debugConfig.getValue().booleanValue()) {
             LinkedHashSet<Object> reasons = new LinkedHashSet<Object>();
             if (this.lastTotemCount <= 0) {
                 reasons.add("no_totems");
@@ -99,7 +99,7 @@ extends ToggleModule {
                 reasons.add("cursor_stack=" + AutoTotemModule.mc.player.currentScreenHandler.getCursorStack().getItem());
             }
             if (!reasons.isEmpty()) {
-                this.sendModuleMessage("Possible failure reasons: " + String.join((CharSequence)", ", (CharSequence) reasons));
+                this.sendModuleMessage("Possible failure reasons: " + String.join(", ", (CharSequence) reasons));
             } else {
                 int totemCount = InventoryUtil.count(Items.TOTEM_OF_UNDYING);
                 this.sendModuleMessage("Could not figure out possible reasons. meta:{totemCount=" + totemCount + ", matchesCache=" + ((totemCount = InventoryUtil.count(Items.TOTEM_OF_UNDYING)) == this.lastTotemCount) + ", cached=" + this.lastTotemCount + "}");
@@ -125,7 +125,7 @@ extends ToggleModule {
 
     private Item getItemToWield() {
         float health = PlayerUtil.getLocalPlayerHealth();
-        if (health <= ((Float)this.healthConfig.getValue()).floatValue()) {
+        if (health <= this.healthConfig.getValue().floatValue()) {
             return Items.TOTEM_OF_UNDYING;
         }
         if ((float)PlayerUtil.computeFallDamage(AutoTotemModule.mc.player.fallDistance, 1.0f) + 0.5f > AutoTotemModule.mc.player.getHealth()) {
@@ -135,8 +135,7 @@ extends ToggleModule {
             ArrayList<Entity> entities = Lists.newArrayList(AutoTotemModule.mc.world.getEntities());
             for (Entity e : entities) {
                 double potential;
-                if (e == null || !e.isAlive() || !(e instanceof EndCrystalEntity)) continue;
-                EndCrystalEntity crystal = (EndCrystalEntity)e;
+                if (e == null || !e.isAlive() || !(e instanceof EndCrystalEntity crystal)) continue;
                 if (AutoTotemModule.mc.player.squaredDistanceTo(e) > 144.0 || (double)health + 0.5 > (potential = ExplosionUtil.getDamageTo(AutoTotemModule.mc.player, crystal.getPos()))) continue;
                 return Items.TOTEM_OF_UNDYING;
             }
@@ -144,7 +143,7 @@ extends ToggleModule {
         if (this.gappleConfig.getValue().booleanValue() && AutoTotemModule.mc.options.useKey.isPressed() && (AutoTotemModule.mc.player.getMainHandStack().getItem() instanceof SwordItem || AutoTotemModule.mc.player.getMainHandStack().getItem() instanceof TridentItem || AutoTotemModule.mc.player.getMainHandStack().getItem() instanceof AxeItem)) {
             return this.getGoldenAppleType();
         }
-        return ((OffhandItem)((Object)this.itemConfig.getValue())).getItem();
+        return this.itemConfig.getValue().getItem();
     }
 
     private Item getGoldenAppleType() {
@@ -154,14 +153,14 @@ extends ToggleModule {
         return Items.ENCHANTED_GOLDEN_APPLE;
     }
 
-    private static enum OffhandItem {
+    private enum OffhandItem {
         TOTEM(Items.TOTEM_OF_UNDYING),
         GAPPLE(Items.ENCHANTED_GOLDEN_APPLE),
         CRYSTAL(Items.END_CRYSTAL);
 
         private final Item item;
 
-        private OffhandItem(Item item) {
+        OffhandItem(Item item) {
             this.item = item;
         }
 

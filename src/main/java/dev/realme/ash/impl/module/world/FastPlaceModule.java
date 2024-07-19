@@ -29,7 +29,7 @@ public class FastPlaceModule
 extends ToggleModule {
     Config<Selection> selectionConfig = new EnumConfig<Selection>("Selection", "The selection of items to apply fast placements", Selection.WHITELIST, Selection.values());
     Config<Integer> delayConfig = new NumberConfig<Integer>("Delay", "Fast place click delay", 0, 1, 4);
-    Config<Float> startDelayConfig = new NumberConfig<Float>("StartDelay", "Fast place start delay", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(1.0f));
+    Config<Float> startDelayConfig = new NumberConfig<Float>("StartDelay", "Fast place start delay", 0.0f, 0.0f, 1.0f);
     Config<Boolean> ghostFixConfig = new BooleanConfig("GhostFix", "Fixes item ghosting issue on some servers", false);
     Config<List<Item>> whitelistConfig = new ItemListConfig("Whitelist", "Valid item whitelist", Items.EXPERIENCE_BOTTLE, Items.SNOWBALL, Items.EGG);
     Config<List<Item>> blacklistConfig = new ItemListConfig("Blacklist", "Valid item blacklist", Items.ENDER_PEARL, Items.ENDER_EYE);
@@ -46,11 +46,11 @@ extends ToggleModule {
         }
         if (!FastPlaceModule.mc.options.useKey.isPressed()) {
             this.startTimer.reset();
-        } else if (this.startTimer.passed(this.startDelayConfig.getValue(), TimeUnit.SECONDS) && ((AccessorMinecraftClient)((Object)mc)).hookGetItemUseCooldown() > this.delayConfig.getValue() && this.placeCheck(FastPlaceModule.mc.player.getMainHandStack())) {
+        } else if (this.startTimer.passed(this.startDelayConfig.getValue(), TimeUnit.SECONDS) && ((AccessorMinecraftClient) mc).hookGetItemUseCooldown() > this.delayConfig.getValue() && this.placeCheck(FastPlaceModule.mc.player.getMainHandStack())) {
             if (this.ghostFixConfig.getValue().booleanValue()) {
                 Managers.NETWORK.sendSequencedPacket(id -> new PlayerInteractItemC2SPacket(FastPlaceModule.mc.player.getActiveHand(), id));
             }
-            ((AccessorMinecraftClient)((Object)mc)).hookSetItemUseCooldown(this.delayConfig.getValue());
+            ((AccessorMinecraftClient) mc).hookSetItemUseCooldown(this.delayConfig.getValue());
         }
     }
 
@@ -60,9 +60,8 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet = event.getPacket();
-        if (packet instanceof PlayerInteractBlockC2SPacket) {
+        if (packet instanceof PlayerInteractBlockC2SPacket packet2) {
             BlockState state;
-            PlayerInteractBlockC2SPacket packet2 = (PlayerInteractBlockC2SPacket)packet;
             if (this.ghostFixConfig.getValue().booleanValue() && !event.isClientPacket() && this.placeCheck(FastPlaceModule.mc.player.getStackInHand(packet2.getHand())) && !SneakBlocks.isSneakBlock(state = FastPlaceModule.mc.world.getBlockState(packet2.getBlockHitResult().getBlockPos()))) {
                 event.cancel();
             }
@@ -78,10 +77,10 @@ extends ToggleModule {
         };
     }
 
-    public static enum Selection {
+    public enum Selection {
         WHITELIST,
         BLACKLIST,
-        ALL;
+        ALL
 
     }
 }

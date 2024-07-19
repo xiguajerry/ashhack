@@ -14,7 +14,7 @@ import net.minecraft.entity.passive.LlamaEntity;
 
 public class YawModule
 extends ToggleModule {
-    Config<Float> pitch = new NumberConfig<Float>("Pitch", "", Float.valueOf(-90.0f), Float.valueOf(0.0f), Float.valueOf(90.0f));
+    Config<Float> pitch = new NumberConfig<Float>("Pitch", "", -90.0f, 0.0f, 90.0f);
     Config<Boolean> lockConfig = new BooleanConfig("Lock", "Locks the yaw in cardinal direction", false);
 
     public YawModule() {
@@ -29,7 +29,7 @@ extends ToggleModule {
             if (vehicle != null) {
                 vehicle.setYaw(yaw);
                 if (vehicle instanceof LlamaEntity) {
-                    LlamaEntity llama = (LlamaEntity)((Object)vehicle);
+                    LlamaEntity llama = (LlamaEntity) vehicle;
                     llama.setHeadYaw(yaw);
                 }
                 return;

@@ -11,15 +11,15 @@ import net.minecraft.util.math.RotationAxis;
 
 public class ViewModelModule
 extends ToggleModule {
-    Config<Float> positionXConfig = new NumberConfig<Float>("X", "Translation in x-direction", Float.valueOf(-3.0f), Float.valueOf(0.0f), Float.valueOf(3.0f));
-    Config<Float> positionYConfig = new NumberConfig<Float>("Y", "Translation in y-direction", Float.valueOf(-3.0f), Float.valueOf(0.0f), Float.valueOf(3.0f));
-    Config<Float> positionZConfig = new NumberConfig<Float>("Z", "Translation in z-direction", Float.valueOf(-3.0f), Float.valueOf(0.0f), Float.valueOf(3.0f));
-    Config<Float> scaleXConfig = new NumberConfig<Float>("ScaleX", "Scaling in x-direction", Float.valueOf(0.1f), Float.valueOf(1.0f), Float.valueOf(2.0f));
-    Config<Float> scaleYConfig = new NumberConfig<Float>("ScaleY", "Scaling in y-direction", Float.valueOf(0.1f), Float.valueOf(1.0f), Float.valueOf(2.0f));
-    Config<Float> scaleZConfig = new NumberConfig<Float>("ScaleZ", "Scaling in z-direction", Float.valueOf(0.1f), Float.valueOf(1.0f), Float.valueOf(2.0f));
-    Config<Float> rotateXConfig = new NumberConfig<Float>("RotateX", "Rotation in x-direction", Float.valueOf(-180.0f), Float.valueOf(0.0f), Float.valueOf(180.0f));
-    Config<Float> rotateYConfig = new NumberConfig<Float>("RotateY", "Rotation in y-direction", Float.valueOf(-180.0f), Float.valueOf(0.0f), Float.valueOf(180.0f));
-    Config<Float> rotateZConfig = new NumberConfig<Float>("RotateZ", "Rotation in z-direction", Float.valueOf(-180.0f), Float.valueOf(0.0f), Float.valueOf(180.0f));
+    Config<Float> positionXConfig = new NumberConfig<Float>("X", "Translation in x-direction", -3.0f, 0.0f, 3.0f);
+    Config<Float> positionYConfig = new NumberConfig<Float>("Y", "Translation in y-direction", -3.0f, 0.0f, 3.0f);
+    Config<Float> positionZConfig = new NumberConfig<Float>("Z", "Translation in z-direction", -3.0f, 0.0f, 3.0f);
+    Config<Float> scaleXConfig = new NumberConfig<Float>("ScaleX", "Scaling in x-direction", 0.1f, 1.0f, 2.0f);
+    Config<Float> scaleYConfig = new NumberConfig<Float>("ScaleY", "Scaling in y-direction", 0.1f, 1.0f, 2.0f);
+    Config<Float> scaleZConfig = new NumberConfig<Float>("ScaleZ", "Scaling in z-direction", 0.1f, 1.0f, 2.0f);
+    Config<Float> rotateXConfig = new NumberConfig<Float>("RotateX", "Rotation in x-direction", -180.0f, 0.0f, 180.0f);
+    Config<Float> rotateYConfig = new NumberConfig<Float>("RotateY", "Rotation in y-direction", -180.0f, 0.0f, 180.0f);
+    Config<Float> rotateZConfig = new NumberConfig<Float>("RotateZ", "Rotation in z-direction", -180.0f, 0.0f, 180.0f);
 
     public ViewModelModule() {
         super("ViewModel", "Changes the first-person viewmodel", ModuleCategory.RENDER);

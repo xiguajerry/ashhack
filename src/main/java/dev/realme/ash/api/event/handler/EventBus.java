@@ -3,7 +3,6 @@
 package dev.realme.ash.api.event.handler;
 
 import dev.realme.ash.api.event.Event;
-import dev.realme.ash.api.event.handler.EventHandler;
 import dev.realme.ash.api.event.listener.EventListener;
 import dev.realme.ash.api.event.listener.Listener;
 import java.lang.reflect.Method;
@@ -32,7 +31,7 @@ public class EventBus
          if (!method.isAnnotationPresent(EventListener.class)) continue;
          EventListener listener = method.getAnnotation(EventListener.class);
          if (method.getReturnType() != Void.TYPE || (params = method.getParameterTypes()).length != 1) continue;
-         PriorityQueue active = this.listeners.computeIfAbsent(params[0], v -> new PriorityQueue());
+         PriorityQueue<Listener> active = this.listeners.computeIfAbsent(params[0], v -> new PriorityQueue());
          active.add(new Listener(method, obj, listener.receiveCanceled(), listener.priority()));
       }
    }
@@ -41,7 +40,7 @@ public class EventBus
    public void unsubscribe(Object obj) {
       if (this.subscribers.remove(obj)) {
          this.listeners.values().forEach(set -> set.removeIf(l -> l.getSubscriber() == obj));
-         this.listeners.entrySet().removeIf(e -> ((PriorityQueue)e.getValue()).isEmpty());
+         this.listeners.entrySet().removeIf(e -> e.getValue().isEmpty());
       }
    }
 

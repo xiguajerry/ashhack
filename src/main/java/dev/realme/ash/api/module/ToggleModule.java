@@ -26,7 +26,7 @@ public class ToggleModule extends Module implements Hideable {
          this.toggle();
       }));
       this.hiddenConfig = new BooleanConfig("Hidden", "The hidden state of the module in the Arraylist", false);
-      this.register(new Config[]{this.keybindingConfig, this.enabledConfig, this.hiddenConfig});
+      this.register(this.keybindingConfig, this.enabledConfig, this.hiddenConfig);
    }
 
    public ToggleModule(String name, String desc, ModuleCategory category, Integer keycode) {
@@ -64,11 +64,11 @@ public class ToggleModule extends Module implements Hideable {
    }
 
    public int hashCode(Objects objects) {
-      return Objects.hash(new Object[]{objects});
+      return Objects.hash(objects);
    }
 
    public int hashCode() {
-      return Objects.hash(new Object[]{this.name});
+      return Objects.hash(this.name);
    }
 
    protected void onEnable() {

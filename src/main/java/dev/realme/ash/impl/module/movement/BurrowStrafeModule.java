@@ -10,7 +10,7 @@ import dev.realme.ash.util.player.PlayerUtil;
 
 public class BurrowStrafeModule
 extends ToggleModule {
-    Config<Float> speed = new NumberConfig<Float>("Speed", "The speed for alternative modes", Float.valueOf(0.0f), Float.valueOf(10.0f), Float.valueOf(20.0f));
+    Config<Float> speed = new NumberConfig<Float>("Speed", "The speed for alternative modes", 0.0f, 10.0f, 20.0f);
 
     public BurrowStrafeModule() {
         super("BurrowStrafe", "Move in block", ModuleCategory.MOVEMENT);

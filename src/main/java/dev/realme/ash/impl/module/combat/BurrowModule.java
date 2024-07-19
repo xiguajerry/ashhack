@@ -37,12 +37,12 @@ import net.minecraft.util.math.Vec3d;
 
 public class BurrowModule
 extends RotationModule {
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)InventoryUtil.SwapMode.SILENT, (Enum[])InventoryUtil.SwapMode.values());
+    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
     Config<Boolean> wait = new BooleanConfig("Wait", "", false);
     Config<Boolean> noSelfPos = new BooleanConfig("NoSelfPos", "", false);
     Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<RotateMode> rotateMode = new EnumConfig("RotateMode", "", (Enum)RotateMode.Down, (Enum[])RotateMode.values());
-    Config<LagBackMode> lagBackMode = new EnumConfig("LagBackMode", "", (Enum)LagBackMode.Troll, (Enum[])LagBackMode.values());
+    Config<RotateMode> rotateMode = new EnumConfig("RotateMode", "", RotateMode.Down, RotateMode.values());
+    Config<LagBackMode> lagBackMode = new EnumConfig("LagBackMode", "", LagBackMode.Troll, LagBackMode.values());
     Config<Boolean> swing = new BooleanConfig("Swing", "", false);
     int progress = 0;
     int slot;
@@ -173,7 +173,7 @@ extends RotationModule {
                 InventoryUtil.doPickSwap(this.slot);
             }
         }
-        if (this.rotateMode.getValue().equals((Object)RotateMode.Test)) {
+        if (this.rotateMode.getValue().equals(RotateMode.Test)) {
             if (this.rotatePos == null) {
                 this.cancelRotate = true;
                 this.setRotation(BurrowModule.mc.player.getYaw(), 90.0f);
@@ -182,7 +182,7 @@ extends RotationModule {
                 this.setRotation(this.rotatePos, true);
             }
         }
-        if (this.rotateMode.getValue().equals((Object)RotateMode.Down)) {
+        if (this.rotateMode.getValue().equals(RotateMode.Down)) {
             this.cancelRotate = true;
             this.setRotation(Managers.ROTATION.lastYaw, 90.0f);
         }
@@ -240,7 +240,7 @@ extends RotationModule {
                 return (int)(Math.sqrt(BurrowModule.mc.player.squaredDistanceTo(offVec1[0].x, BurrowModule.mc.player.getY(), offVec1[0].z)) - Math.sqrt(BurrowModule.mc.player.squaredDistanceTo(offVec2[0].x, BurrowModule.mc.player.getY(), offVec2[0].z)));
             });
             if (!facList.isEmpty()) {
-                off = new Vec3d(((Direction)facList.get(0)).getOffsetX(), ((Direction)facList.get(0)).getOffsetY(), ((Direction)facList.get(0)).getOffsetZ());
+                off = new Vec3d(facList.get(0).getOffsetX(), facList.get(0).getOffsetY(), facList.get(0).getOffsetZ());
             }
         }
         return off;
@@ -365,21 +365,21 @@ extends RotationModule {
         return !BlockUtil.getState(pos).blocksMovement() && !BlockUtil.getState(pos.up()).blocksMovement();
     }
 
-    public static enum RotateMode {
+    public enum RotateMode {
         Test,
         Down,
         Normal,
-        None;
+        None
 
     }
 
-    public static enum LagBackMode {
+    public enum LagBackMode {
         OBS,
         XIN,
         OLD,
         Troll,
         Rotate,
-        None;
+        None
 
     }
 }

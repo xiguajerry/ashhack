@@ -11,15 +11,15 @@ import dev.realme.ash.util.math.timer.Timer;
 
 public class CombatSettingModule
 extends ConcurrentModule {
-    public Config<Priority> priority = new EnumConfig("Priority", "", (Enum)Priority.HEALTH, (Enum[])Priority.values());
-    public Config<MaxHeight> maxHeight = new EnumConfig("MaxHeight", "", (Enum)MaxHeight.New, (Enum[])MaxHeight.values());
-    public Config<Placement> placement = new EnumConfig("Placement", "", (Enum)Placement.Vanilla, (Enum[])Placement.values());
-    public Config<Float> placeRange = new NumberConfig<Float>("PlaceRange", "", Float.valueOf(0.0f), Float.valueOf(5.2f), Float.valueOf(6.0f));
+    public Config<Priority> priority = new EnumConfig("Priority", "", Priority.HEALTH, Priority.values());
+    public Config<MaxHeight> maxHeight = new EnumConfig("MaxHeight", "", MaxHeight.New, MaxHeight.values());
+    public Config<Placement> placement = new EnumConfig("Placement", "", Placement.Vanilla, Placement.values());
+    public Config<Float> placeRange = new NumberConfig<Float>("PlaceRange", "", 0.0f, 5.2f, 6.0f);
     public Config<Boolean> packetPlace = new BooleanConfig("PacketPlace", "", true);
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", Float.valueOf(0.0f), Float.valueOf(0.2f), Float.valueOf(5.0f));
-    public Config<Float> rotateTime = new NumberConfig<Float>("RotateTime", "", Float.valueOf(0.0f), Float.valueOf(0.29f), Float.valueOf(2.0f));
+    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 0.2f, 5.0f);
+    public Config<Float> rotateTime = new NumberConfig<Float>("RotateTime", "", 0.0f, 0.29f, 2.0f);
     public Config<Boolean> movementFix = new BooleanConfig("MovementFix", "", false);
-    public Config<SwingMode> swingMode = new EnumConfig("SwingMode", "", (Enum)SwingMode.Normal, (Enum[])SwingMode.values());
+    public Config<SwingMode> swingMode = new EnumConfig("SwingMode", "", SwingMode.Normal, SwingMode.values());
     public Config<Boolean> oldVersion = new BooleanConfig("OldVersion", "", false);
     public final Timer attackTimer = new CacheTimer();
 
@@ -27,33 +27,33 @@ extends ConcurrentModule {
         super("CombatSetting", "Manages combat setting.", ModuleCategory.CLIENT);
     }
 
-    public static enum Priority {
+    public enum Priority {
         FOV,
         HEALTH,
         DISTANCE,
-        ARMOR;
+        ARMOR
 
     }
 
-    public static enum MaxHeight {
+    public enum MaxHeight {
         Old,
         New,
-        Disabled;
+        Disabled
 
     }
 
-    public static enum Placement {
+    public enum Placement {
         Vanilla,
         Strict,
-        AirPlace;
+        AirPlace
 
     }
 
-    public static enum SwingMode {
+    public enum SwingMode {
         Normal,
         Client,
         Server,
-        None;
+        None
 
     }
 }

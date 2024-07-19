@@ -32,7 +32,7 @@ import net.minecraft.util.shape.VoxelShapes;
 
 public class JesusModule
 extends ToggleModule {
-    Config<JesusMode> modeConfig = new EnumConfig("Mode", "The mode for walking on water", (Enum)JesusMode.SOLID, (Enum[])JesusMode.values());
+    Config<JesusMode> modeConfig = new EnumConfig("Mode", "The mode for walking on water", JesusMode.SOLID, JesusMode.values());
     Config<Boolean> strictConfig = new BooleanConfig("Strict", "NCP Updated bypass for floating offsets", false, () -> this.modeConfig.getValue() == JesusMode.SOLID);
     private int floatTimer = 1000;
     private boolean fluidState;
@@ -51,7 +51,7 @@ extends ToggleModule {
     public void onDisable() {
         this.floatOffset = 0.0;
         this.floatTimer = 1000;
-        KeyBinding.setKeyPressed(((AccessorKeyBinding)((Object)JesusModule.mc.options.jumpKey)).getBoundKey(), false);
+        KeyBinding.setKeyPressed(((AccessorKeyBinding) JesusModule.mc.options.jumpKey).getBoundKey(), false);
     }
 
     @EventListener
@@ -102,7 +102,7 @@ extends ToggleModule {
                     ++this.floatTimer;
                 }
             } else if (this.modeConfig.getValue() == JesusMode.DOLPHIN && this.isInFluid() && !JesusModule.mc.options.sneakKey.isPressed() && !JesusModule.mc.options.jumpKey.isPressed()) {
-                KeyBinding.setKeyPressed(((AccessorKeyBinding)((Object)JesusModule.mc.options.jumpKey)).getBoundKey(), true);
+                KeyBinding.setKeyPressed(((AccessorKeyBinding) JesusModule.mc.options.jumpKey).getBoundKey(), true);
             }
         }
     }
@@ -133,7 +133,7 @@ extends ToggleModule {
                 return;
             }
             if (!this.isInFluid() && block instanceof FluidBlock && JesusModule.mc.player.getVelocity().y < 0.2) {
-                MovementUtil.setMotionY(this.strictConfig.getValue() != false ? 0.184 : 0.5);
+                MovementUtil.setMotionY(this.strictConfig.getValue() ? 0.184 : 0.5);
                 this.fluidState = true;
             }
         }
@@ -146,12 +146,12 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof PlayerMoveC2SPacket && (packet = (PlayerMoveC2SPacket)((Object)packet2)).changesPosition() && this.modeConfig.getValue() == JesusMode.SOLID && !this.isInFluid() && this.isOnFluid() && JesusModule.mc.player.fallDistance <= 3.0f) {
+        if (packet2 instanceof PlayerMoveC2SPacket && (packet = (PlayerMoveC2SPacket) packet2).changesPosition() && this.modeConfig.getValue() == JesusMode.SOLID && !this.isInFluid() && this.isOnFluid() && JesusModule.mc.player.fallDistance <= 3.0f) {
             double y = packet.getY(JesusModule.mc.player.getY());
             if (!this.strictConfig.getValue().booleanValue()) {
                 this.floatOffset = JesusModule.mc.player.age % 2 == 0 ? 0.0 : 0.05;
             }
-            ((AccessorPlayerMoveC2SPacket)((Object)packet)).hookSetY(y - this.floatOffset);
+            ((AccessorPlayerMoveC2SPacket) packet).hookSetY(y - this.floatOffset);
             if (this.strictConfig.getValue().booleanValue()) {
                 this.floatOffset += 0.12;
                 if (this.floatOffset > 0.4) {
@@ -200,10 +200,10 @@ extends ToggleModule {
         return onLiquid;
     }
 
-    public static enum JesusMode {
+    public enum JesusMode {
         SOLID,
         DOLPHIN,
-        TRAMPOLINE;
+        TRAMPOLINE
 
     }
 }

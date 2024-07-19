@@ -26,7 +26,7 @@ public class ModuleCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(((RequiredArgumentBuilder)argument("setting", ConfigArgumentType.config(this.module)).then(((RequiredArgumentBuilder)argument("value", StringArgumentType.string()).executes((c) -> {
+      builder.then(argument("setting", ConfigArgumentType.config(this.module)).then(argument("value", StringArgumentType.string()).executes((c) -> {
          Config config = ConfigArgumentType.getConfig(c, "setting");
          String value = StringArgumentType.getString(c, "value");
          if (value.equalsIgnoreCase("list")) {
@@ -38,15 +38,15 @@ public class ModuleCommand extends Command {
          } else {
             return this.updateValue(config, value);
          }
-      })).then(argument("item", ItemArgumentType.item()).executes((c) -> {
+      }).then(argument("item", ItemArgumentType.item()).executes((c) -> {
          Config config = ConfigArgumentType.getConfig(c, "setting");
          String action = StringArgumentType.getString(c, "value");
          Item value = ItemArgumentType.getItem(c, "item");
          return this.addDeleteItem(config, action, value);
-      })))).executes((c) -> {
+      }))).executes((c) -> {
          ChatUtil.error("Must provide a value!");
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          Module patt2799$temp = this.module;
          if (patt2799$temp instanceof ToggleModule m) {
             m.toggle();
@@ -131,7 +131,7 @@ public class ModuleCommand extends Command {
             config.setValue(val);
             ChatUtil.clientSendMessage("§7%s§f was set to §s%s", config.getName(), val ? "True" : "False");
          } else if (config.getValue() instanceof Enum) {
-            String[] values = (String[])Arrays.stream((Enum[])((Enum)config.getValue()).getClass().getEnumConstants()).map(Enum::name).toArray((x$0) -> {
+            String[] values = Arrays.stream((Enum[])((Enum)config.getValue()).getClass().getEnumConstants()).map(Enum::name).toArray((x$0) -> {
                return new String[x$0];
             });
             int ix = -1;
@@ -153,9 +153,8 @@ public class ModuleCommand extends Command {
             ChatUtil.clientSendMessage("§7%s§f was set to mode §s%s", config.getName(), value);
          } else {
             Object var12 = config.getValue();
-            if (var12 instanceof Macro) {
-               Macro macro = (Macro)var12;
-               if (config.getName().equalsIgnoreCase("Keybind")) {
+            if (var12 instanceof Macro macro) {
+                if (config.getName().equalsIgnoreCase("Keybind")) {
                   ChatUtil.error("Use the 'bind' command to keybind modules!");
                   return 0;
                }

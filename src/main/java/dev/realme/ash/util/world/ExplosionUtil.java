@@ -35,11 +35,11 @@ public class ExplosionUtil implements Globals {
 
    public static double getDamageTo(Entity entity, Vec3d explosion, boolean ignoreTerrain, float power) {
       double d = Math.sqrt(entity.squaredDistanceTo(explosion));
-      double ab = (double)getExposure(explosion, entity, ignoreTerrain);
+      double ab = getExposure(explosion, entity, ignoreTerrain);
       double w = d / (double)power;
       double ac = (1.0D - w) * ab;
-      double dmg = (double)((float)((int)((ac * ac + ac) / 2.0D * 7.0D * 12.0D + 1.0D)));
-      dmg = getReduction(entity, mc.world.getDamageSources().explosion((Explosion)null), dmg);
+      double dmg = (float)((int)((ac * ac + ac) / 2.0D * 7.0D * 12.0D + 1.0D));
+      dmg = getReduction(entity, mc.world.getDamageSources().explosion(null), dmg);
       return Math.max(0.0D, dmg);
    }
 
@@ -49,11 +49,11 @@ public class ExplosionUtil implements Globals {
       double dy = pos.getY() - bb.minY;
       double dz = pos.getZ() - bb.minZ;
       Box box = bb.offset(dx, dy, dz);
-      double ab = (double)getExposure(explosion, box, ignoreTerrain);
+      double ab = getExposure(explosion, box, ignoreTerrain);
       double w = Math.sqrt(pos.squaredDistanceTo(explosion)) / 12.0D;
       double ac = (1.0D - w) * ab;
-      double dmg = (double)((float)((int)((ac * ac + ac) / 2.0D * 7.0D * 12.0D + 1.0D)));
-      dmg = getReduction(entity, mc.world.getDamageSources().explosion((Explosion)null), dmg);
+      double dmg = (float)((int)((ac * ac + ac) / 2.0D * 7.0D * 12.0D + 1.0D));
+      dmg = getReduction(entity, mc.world.getDamageSources().explosion(null), dmg);
       return Math.max(0.0D, dmg);
    }
 
@@ -68,10 +68,9 @@ public class ExplosionUtil implements Globals {
          }
       }
 
-      if (entity instanceof LivingEntity) {
-         LivingEntity livingEntity = (LivingEntity)entity;
-         damage = (double)DamageUtil.getDamageLeft((float)damage, getArmor(livingEntity), (float)getAttributeValue(livingEntity, EntityAttributes.GENERIC_ARMOR_TOUGHNESS));
-         damage = (double)getProtectionReduction(entity, damage, damageSource);
+      if (entity instanceof LivingEntity livingEntity) {
+          damage = DamageUtil.getDamageLeft((float)damage, getArmor(livingEntity), (float)getAttributeValue(livingEntity, EntityAttributes.GENERIC_ARMOR_TOUGHNESS));
+         damage = getProtectionReduction(entity, damage, damageSource);
       }
 
       return Math.max(damage, 0.0D);
@@ -170,10 +169,10 @@ public class ExplosionUtil implements Globals {
    }
 
    private static BlockHitResult raycast(ExplosionUtil.ExposureRaycastContext context, ExplosionUtil.RaycastFactory raycastFactory) {
-      return (BlockHitResult)BlockView.raycast(context.start, context.end, context, raycastFactory, (ctx) -> null);
+      return BlockView.raycast(context.start, context.end, context, raycastFactory, (ctx) -> null);
    }
 
-   public static record ExposureRaycastContext(Vec3d start, Vec3d end) {
+   public record ExposureRaycastContext(Vec3d start, Vec3d end) {
    }
 
    @FunctionalInterface

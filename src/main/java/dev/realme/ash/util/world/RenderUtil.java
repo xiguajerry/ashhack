@@ -8,7 +8,7 @@ public class RenderUtil implements Globals {
          int x = (int)mc.player.getX();
          int y = (int)mc.player.getY();
          int z = (int)mc.player.getZ();
-         int d = (Integer)mc.options.getViewDistance().getValue() * 16;
+         int d = mc.options.getViewDistance().getValue() * 16;
          mc.worldRenderer.scheduleBlockRenders(x - d, y - d, z - d, x + d, y + d, z + d);
       } else {
          mc.worldRenderer.reload();

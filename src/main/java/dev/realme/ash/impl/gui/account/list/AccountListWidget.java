@@ -26,7 +26,7 @@ public final class AccountListWidget
          for (MinecraftAccount account : accounts) {
             this.addEntry(new AccountEntry(account));
          }
-         this.setSelected((AccountEntry)this.getEntry(0));
+         this.setSelected(this.getEntry(0));
       }
    }
 
@@ -62,7 +62,7 @@ public final class AccountListWidget
          this.setSelected(entry);
       }
       if (this.getSelectedOrNull() != null) {
-         return ((AccountEntry)this.getSelectedOrNull()).mouseClicked(mouseX, mouseY, button);
+         return this.getSelectedOrNull().mouseClicked(mouseX, mouseY, button);
       }
       return true;
    }

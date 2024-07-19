@@ -86,7 +86,7 @@ public class MixinGameRenderer implements Globals {
       cancellable = true
    )
    public void getBasicProjectionMatrixHook(double fov, CallbackInfoReturnable cir) {
-      if ((Boolean)Modules.CLIENT_SETTING.aspectRatio.getValue()) {
+      if (Modules.CLIENT_SETTING.aspectRatio.getValue()) {
          MatrixStack matrixStack = new MatrixStack();
          matrixStack.peek().getPositionMatrix().identity();
          if (this.zoom != 1.0F) {
@@ -94,7 +94,7 @@ public class MixinGameRenderer implements Globals {
             matrixStack.scale(this.zoom, this.zoom, 1.0F);
          }
 
-         matrixStack.peek().getPositionMatrix().mul((new Matrix4f()).setPerspective((float)(fov * 0.01745329238474369), (Float)Modules.CLIENT_SETTING.ratio.getValue(), 0.05F, this.viewDistance * 4.0F));
+         matrixStack.peek().getPositionMatrix().mul((new Matrix4f()).setPerspective((float)(fov * 0.01745329238474369), Modules.CLIENT_SETTING.ratio.getValue(), 0.05F, this.viewDistance * 4.0F));
          cir.setReturnValue(matrixStack.peek().getPositionMatrix());
       }
 

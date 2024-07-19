@@ -37,7 +37,7 @@ extends ToggleModule {
             ItemStack mainhand = AutoBowReleaseModule.mc.player.getMainHandStack();
             if (mainhand.getItem() == Items.BOW) {
                 float off;
-                float f = off = this.tpsSyncConfig.getValue() != false ? 20.0f - Managers.TICK.getTpsAverage() : 0.0f;
+                float f = off = this.tpsSyncConfig.getValue() ? 20.0f - Managers.TICK.getTpsAverage() : 0.0f;
                 if ((float)AutoBowReleaseModule.mc.player.getItemUseTime() + off >= (float)this.ticksConfig.getValue().intValue()) {
                     Managers.NETWORK.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, Direction.DOWN));
                     AutoBowReleaseModule.mc.player.stopUsingItem();

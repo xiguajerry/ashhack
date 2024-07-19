@@ -22,7 +22,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntitySpeedModule
 extends ToggleModule {
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The speed of the entity while moving", Float.valueOf(0.1f), Float.valueOf(0.5f), Float.valueOf(4.0f));
+    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The speed of the entity while moving", 0.1f, 0.5f, 4.0f);
     Config<Boolean> antiStuckConfig = new BooleanConfig("AntiStuck", "Prevents entities from getting stuck when moving up", false);
     Config<Boolean> strictConfig = new BooleanConfig("Strict", "The NCP-Updated bypass for speeding up entity movement", false);
     private final Timer entityJumpTimer = new CacheTimer();

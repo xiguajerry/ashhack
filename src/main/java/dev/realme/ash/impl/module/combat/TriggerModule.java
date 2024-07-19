@@ -19,9 +19,9 @@ import net.minecraft.util.hit.HitResult;
 
 public class TriggerModule
 extends ToggleModule {
-    Config<TriggerMode> modeConfig = new EnumConfig("Mode", "The mode for activating the trigger bot", (Enum)TriggerMode.MOUSE_BUTTON, (Enum[])TriggerMode.values());
-    Config<Float> attackSpeedConfig = new NumberConfig<Float>("AttackSpeed", "The speed to attack entities", Float.valueOf(0.1f), Float.valueOf(8.0f), Float.valueOf(20.0f));
-    Config<Float> randomSpeedConfig = new NumberConfig<Float>("RandomSpeed", "The speed randomizer for attacks", Float.valueOf(0.1f), Float.valueOf(2.0f), Float.valueOf(10.0f));
+    Config<TriggerMode> modeConfig = new EnumConfig("Mode", "The mode for activating the trigger bot", TriggerMode.MOUSE_BUTTON, TriggerMode.values());
+    Config<Float> attackSpeedConfig = new NumberConfig<Float>("AttackSpeed", "The speed to attack entities", 0.1f, 8.0f, 20.0f);
+    Config<Float> randomSpeedConfig = new NumberConfig<Float>("RandomSpeed", "The speed randomizer for attacks", 0.1f, 2.0f, 10.0f);
     private final Timer triggerTimer = new CacheTimer();
 
     public TriggerModule() {
@@ -47,16 +47,16 @@ extends ToggleModule {
         };
         double d = Math.random() * (double)this.randomSpeedConfig.getValue().floatValue() * 2.0 - (double)this.randomSpeedConfig.getValue().floatValue();
         if (buttonDown && this.triggerTimer.passed(1000.0 - Math.max((double)this.attackSpeedConfig.getValue().floatValue() + d, 0.5) * 50.0)) {
-            ((IMinecraftClient)((Object)mc)).leftClick();
-            ((AccessorMinecraftClient)((Object)mc)).hookSetAttackCooldown(0);
+            ((IMinecraftClient) mc).leftClick();
+            ((AccessorMinecraftClient) mc).hookSetAttackCooldown(0);
             this.triggerTimer.reset();
         }
     }
 
-    public static enum TriggerMode {
+    public enum TriggerMode {
         MOUSE_BUTTON,
         MOUSE_OVER,
-        MOUSE_CLICK;
+        MOUSE_CLICK
 
     }
 }

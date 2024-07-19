@@ -33,13 +33,13 @@ import net.minecraft.util.math.Vec3d;
 
 public class SpeedModule
 extends ToggleModule {
-    Config<Speed> speedModeConfig = new EnumConfig("Mode", "Speed mode", (Enum)Speed.STRAFE, (Enum[])Speed.values());
+    Config<Speed> speedModeConfig = new EnumConfig<>("Mode", "Speed mode", Speed.STRAFE, Speed.values());
     Config<Boolean> vanillaStrafeConfig = new BooleanConfig("Strafe-Vanilla", "Applies strafe speeds to vanilla speed", false, () -> this.speedModeConfig.getValue() == Speed.VANILLA);
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The speed for alternative modes", Float.valueOf(0.1f), Float.valueOf(4.0f), Float.valueOf(10.0f));
+    Config<Float> speedConfig = new NumberConfig<>("Speed", "The speed for alternative modes", 0.1f, 4.0f, 10.0f);
     Config<Boolean> timerConfig = new BooleanConfig("UseTimer", "Uses timer to increase acceleration", false);
     Config<Boolean> strafeBoostConfig = new BooleanConfig("StrafeBoost", "Uses explosion velocity to boost Strafe", false);
-    Config<Float> multiply = new NumberConfig<Float>("Multiply", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(10.0f));
-    Config<Integer> boostTicksConfig = new NumberConfig<Integer>("BoostTicks", "The number of ticks to boost strafe", Integer.valueOf(10), Integer.valueOf(20), Integer.valueOf(40), () -> this.strafeBoostConfig.getValue());
+    Config<Float> multiply = new NumberConfig<>("Multiply", "", 0.1f, 1.5f, 10.0f);
+    Config<Integer> boostTicksConfig = new NumberConfig<>("BoostTicks", "The number of ticks to boost strafe", 10, 20, 40, () -> this.strafeBoostConfig.getValue());
     Config<Boolean> speedWaterConfig = new BooleanConfig("SpeedInWater", "Applies speed even in water and lava", false);
     private int strafe = 4;
     private boolean accel;
@@ -372,7 +372,7 @@ extends ToggleModule {
                 event.setZ(motion.y);
                 ++this.strafe;
             } else if (this.speedModeConfig.getValue() == Speed.VANILLA) {
-                Vec2f motion = this.handleVanillaMotion(this.vanillaStrafeConfig.getValue() != false ? (float)base : this.speedConfig.getValue().floatValue() / 10.0f);
+                Vec2f motion = this.handleVanillaMotion(this.vanillaStrafeConfig.getValue() ? (float)base : this.speedConfig.getValue().floatValue() / 10.0f);
                 event.setX(motion.x);
                 event.setZ(motion.y);
             }
@@ -424,8 +424,7 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet = event.getPacket();
-        if (packet instanceof ExplosionS2CPacket) {
-            ExplosionS2CPacket packet2 = (ExplosionS2CPacket)((Object)packet);
+        if (packet instanceof ExplosionS2CPacket packet2) {
             double x = packet2.getPlayerVelocityX();
             double z = packet2.getPlayerVelocityZ();
             this.boostSpeed = Math.sqrt(x * x + z * z) / 100000.0;
@@ -433,7 +432,7 @@ extends ToggleModule {
         } else {
             EntityVelocityUpdateS2CPacket packet3;
             Packet<?> x = event.getPacket();
-            if (x instanceof EntityVelocityUpdateS2CPacket && (packet3 = (EntityVelocityUpdateS2CPacket)((Object)x)).getId() == SpeedModule.mc.player.getId()) {
+            if (x instanceof EntityVelocityUpdateS2CPacket && (packet3 = (EntityVelocityUpdateS2CPacket) x).getId() == SpeedModule.mc.player.getId()) {
                 double x2 = packet3.getVelocityX();
                 double z = packet3.getVelocityZ();
                 this.boostSpeed = Math.sqrt(x2 * x2 + z * z) / 100000.0;
@@ -474,7 +473,7 @@ extends ToggleModule {
     }
 
     public boolean isUsingTimer() {
-        return this.isEnabled() && this.timerConfig.getValue() != false;
+        return this.isEnabled() && this.timerConfig.getValue();
     }
 
     public void resetStrafe() {
@@ -489,7 +488,7 @@ extends ToggleModule {
         return this.speedModeConfig.getValue() != Speed.FIREWORK && this.speedModeConfig.getValue() != Speed.GRIM_COLLIDE && this.speedModeConfig.getValue() != Speed.VANILLA;
     }
 
-    private static enum Speed {
+    private enum Speed {
         STRAFE,
         STRAFE_STRICT,
         STRAFE_B_HOP,
@@ -499,7 +498,7 @@ extends ToggleModule {
         B_HOP,
         VANILLA,
         GRIM_COLLIDE,
-        FIREWORK;
+        FIREWORK
 
     }
 }

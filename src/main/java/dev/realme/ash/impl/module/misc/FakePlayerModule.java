@@ -19,7 +19,7 @@ extends ToggleModule {
     @Override
     public void onEnable() {
         if (FakePlayerModule.mc.player != null && FakePlayerModule.mc.world != null) {
-            this.fakePlayer = new FakePlayerEntity((PlayerEntity)FakePlayerModule.mc.player, "FakePlayer");
+            this.fakePlayer = new FakePlayerEntity(FakePlayerModule.mc.player, "FakePlayer");
             this.fakePlayer.spawnPlayer();
         }
     }

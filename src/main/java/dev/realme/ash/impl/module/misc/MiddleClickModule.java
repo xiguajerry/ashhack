@@ -25,7 +25,7 @@ public class MiddleClickModule
 extends RotationModule {
     Config<Boolean> friend = new BooleanConfig("Friend", "Friends players when middle click", true);
     Config<Boolean> pearl = new BooleanConfig("Pearl", "Throws a pearl when middle click", true);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)SwapMode.SILENT, (Enum[])SwapMode.values());
+    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
     boolean click = false;
 
     public MiddleClickModule() {
@@ -110,12 +110,12 @@ extends RotationModule {
         }
     }
 
-    public static enum SwapMode {
+    public enum SwapMode {
         OFF,
         NORMAL,
         SILENT,
         Inventory,
-        Pick;
+        Pick
 
     }
 }

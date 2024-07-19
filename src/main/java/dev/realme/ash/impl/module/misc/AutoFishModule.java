@@ -21,7 +21,7 @@ public class AutoFishModule
 extends ToggleModule {
     Config<Boolean> openInventoryConfig = new BooleanConfig("OpenInventory", "Allows you to fish while in the inventory", true);
     Config<Integer> castDelayConfig = new NumberConfig<Integer>("CastingDelay", "The delay between fishing rod casts", 10, 15, 25);
-    Config<Float> maxSoundDistConfig = new NumberConfig<Float>("MaxSoundDist", "The maximum distance from the splash sound", Float.valueOf(0.0f), Float.valueOf(2.0f), Float.valueOf(5.0f));
+    Config<Float> maxSoundDistConfig = new NumberConfig<Float>("MaxSoundDist", "The maximum distance from the splash sound", 0.0f, 2.0f, 5.0f);
     private boolean autoReel;
     private int autoReelTicks;
     private int autoCastTicks;
@@ -37,7 +37,7 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof PlaySoundS2CPacket && (packet = (PlaySoundS2CPacket)((Object)packet2)).getSound().value() == SoundEvents.ENTITY_FISHING_BOBBER_SPLASH && AutoFishModule.mc.player.getMainHandStack().getItem() == Items.FISHING_ROD) {
+        if (packet2 instanceof PlaySoundS2CPacket && (packet = (PlaySoundS2CPacket) packet2).getSound().value() == SoundEvents.ENTITY_FISHING_BOBBER_SPLASH && AutoFishModule.mc.player.getMainHandStack().getItem() == Items.FISHING_ROD) {
             FishingBobberEntity fishHook = AutoFishModule.mc.player.fishHook;
             if (fishHook == null || fishHook.getPlayerOwner() != AutoFishModule.mc.player) {
                 return;
@@ -61,13 +61,13 @@ extends ToggleModule {
             }
             FishingBobberEntity fishHook = AutoFishModule.mc.player.fishHook;
             if ((fishHook == null || fishHook.getHookedEntity() != null) && this.autoCastTicks <= 0) {
-                ((IMinecraftClient)((Object)mc)).rightClick();
+                ((IMinecraftClient) mc).rightClick();
                 this.autoCastTicks = this.castDelayConfig.getValue();
                 return;
             }
             if (this.autoReel) {
                 if (this.autoReelTicks <= 0) {
-                    ((IMinecraftClient)((Object)mc)).rightClick();
+                    ((IMinecraftClient) mc).rightClick();
                     this.autoReel = false;
                     return;
                 }

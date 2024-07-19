@@ -10,7 +10,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class RotationUtil implements Globals {
    public static void facePos(BlockPos pos) {
-      float[] angle = MathUtil.calcAngle(mc.player.getEyePos(), new Vec3d((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F)));
+      float[] angle = MathUtil.calcAngle(mc.player.getEyePos(), new Vec3d((float)pos.getX() + 0.5F, (float)pos.getY() + 0.5F, (float)pos.getZ() + 0.5F));
       mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(angle[0], angle[1], Managers.POSITION.isOnGround()));
    }
 
@@ -27,6 +27,6 @@ public class RotationUtil implements Globals {
       float i = MathHelper.sin(g);
       float j = MathHelper.cos(f);
       float k = MathHelper.sin(f);
-      return new Vec3d((double)(i * j), (double)(-k), (double)(h * j));
+      return new Vec3d(i * j, -k, h * j);
    }
 }

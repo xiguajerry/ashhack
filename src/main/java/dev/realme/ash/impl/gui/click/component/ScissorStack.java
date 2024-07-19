@@ -11,7 +11,7 @@ public class ScissorStack {
    public ScreenRect push(ScreenRect rect) {
       ScreenRect screenRect = (ScreenRect)this.stack.peekLast();
       if (screenRect != null) {
-         ScreenRect screenRect2 = (ScreenRect)Objects.requireNonNullElse(rect.intersection(screenRect), ScreenRect.empty());
+         ScreenRect screenRect2 = Objects.requireNonNullElse(rect.intersection(screenRect), ScreenRect.empty());
          this.stack.addLast(screenRect2);
          return screenRect2;
       } else {

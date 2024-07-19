@@ -31,15 +31,15 @@ import net.minecraft.util.math.MathHelper;
 
 public class ESPModule
 extends ToggleModule {
-    Config<ESPMode> modeConfig = new EnumConfig("Mode", "ESP rendering mode", (Enum)ESPMode.GLOW, (Enum[])ESPMode.values());
+    Config<ESPMode> modeConfig = new EnumConfig("Mode", "ESP rendering mode", ESPMode.GLOW, ESPMode.values());
     Config<Boolean> renderBox = new BooleanConfig("Box", "", true);
     Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
     Config<Boolean> line = new BooleanConfig("lines", "", true);
     Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 255, 255);
-    Config<Float> widthConfig = new NumberConfig<Float>("Linewidth", "ESP rendering line width", Float.valueOf(0.1f), Float.valueOf(1.25f), Float.valueOf(5.0f));
+    Config<Float> widthConfig = new NumberConfig<Float>("Linewidth", "ESP rendering line width", 0.1f, 1.25f, 5.0f);
     Config<Boolean> playersConfig = new BooleanConfig("Players", "Render players through walls", true);
     Config<Boolean> selfConfig = new BooleanConfig("Self", "Render self through walls", true);
-    Config<Color> playersColorConfig = new ColorConfig("PlayersColor", "The render color for players", new Color(200, 60, 60, 80), true, () -> this.playersConfig.getValue() != false || this.selfConfig.getValue() != false);
+    Config<Color> playersColorConfig = new ColorConfig("PlayersColor", "The render color for players", new Color(200, 60, 60, 80), true, () -> this.playersConfig.getValue() || this.selfConfig.getValue());
     Config<Boolean> monstersConfig = new BooleanConfig("Monsters", "Render monsters through walls", true);
     Config<Color> monstersColorConfig = new ColorConfig("MonstersColor", "The render color for monsters", new Color(200, 60, 60, 80), true, () -> this.monstersConfig.getValue());
     Config<Boolean> animalsConfig = new BooleanConfig("Animals", "Render animals through walls", true);
@@ -89,10 +89,10 @@ extends ToggleModule {
             }
         }
         for (Entity entity : ESPModule.mc.world.getEntities()) {
-            if (!this.modeConfig.getValue().equals((Object)ESPMode.BOX) || !this.checkESP(entity)) continue;
-            double x = MathHelper.lerp((double)event.getTickDelta(), entity.lastRenderX, entity.getX()) - entity.getX();
-            double y = MathHelper.lerp((double)event.getTickDelta(), entity.lastRenderY, entity.getY()) - entity.getY();
-            double z = MathHelper.lerp((double)event.getTickDelta(), entity.lastRenderZ, entity.getZ()) - entity.getZ();
+            if (!this.modeConfig.getValue().equals(ESPMode.BOX) || !this.checkESP(entity)) continue;
+            double x = MathHelper.lerp(event.getTickDelta(), entity.lastRenderX, entity.getX()) - entity.getX();
+            double y = MathHelper.lerp(event.getTickDelta(), entity.lastRenderY, entity.getY()) - entity.getY();
+            double z = MathHelper.lerp(event.getTickDelta(), entity.lastRenderZ, entity.getZ()) - entity.getZ();
             Box box = entity.getBoundingBox();
             ColorConfig sb = (ColorConfig)this.itemsColorConfig;
             if (this.renderBox.getValue().booleanValue()) {
@@ -172,19 +172,19 @@ extends ToggleModule {
         if (blockEntity instanceof HopperBlockEntity && this.hoppersConfig.getValue().booleanValue()) {
             return true;
         }
-        return blockEntity instanceof FurnaceBlockEntity && this.furnacesConfig.getValue() != false;
+        return blockEntity instanceof FurnaceBlockEntity && this.furnacesConfig.getValue();
     }
 
     public boolean checkESP(Entity entity) {
         if (entity instanceof PlayerEntity && this.playersConfig.getValue().booleanValue()) {
-            return this.selfConfig.getValue() != false || entity != ESPModule.mc.player;
+            return this.selfConfig.getValue() || entity != ESPModule.mc.player;
         }
-        return EntityUtil.isMonster(entity) && this.monstersConfig.getValue() != false || (EntityUtil.isNeutral(entity) || EntityUtil.isPassive(entity)) && this.animalsConfig.getValue() != false || EntityUtil.isVehicle(entity) && this.vehiclesConfig.getValue() != false || entity instanceof EndCrystalEntity && this.crystalsConfig.getValue() != false || entity instanceof ItemEntity && this.itemsConfig.getValue() != false;
+        return EntityUtil.isMonster(entity) && this.monstersConfig.getValue() || (EntityUtil.isNeutral(entity) || EntityUtil.isPassive(entity)) && this.animalsConfig.getValue() || EntityUtil.isVehicle(entity) && this.vehiclesConfig.getValue() || entity instanceof EndCrystalEntity && this.crystalsConfig.getValue() || entity instanceof ItemEntity && this.itemsConfig.getValue();
     }
 
-    public static enum ESPMode {
+    public enum ESPMode {
         BOX,
-        GLOW;
+        GLOW
 
     }
 }

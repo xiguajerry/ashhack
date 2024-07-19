@@ -34,8 +34,8 @@ extends ToggleModule {
     Config<Color> vehiclesColorConfig = new ColorConfig("VehiclesColor", "The render color for vehicles", new Color(200, 100, 0), false, () -> this.vehiclesConfig.getValue());
     Config<Boolean> itemsConfig = new BooleanConfig("Items", "Render tracers to items", false);
     Config<Color> itemsColorConfig = new ColorConfig("ItemsColor", "The render color for items", new Color(255, 255, 255), false, () -> this.itemsConfig.getValue());
-    Config<Target> targetConfig = new EnumConfig("Target", "The body part of the entity to target", (Enum)Target.FEET, (Enum[])Target.values());
-    Config<Float> widthConfig = new NumberConfig<Float>("Width", "The line width of the tracer", Float.valueOf(1.0f), Float.valueOf(1.5f), Float.valueOf(10.0f));
+    Config<Target> targetConfig = new EnumConfig("Target", "The body part of the entity to target", Target.FEET, Target.values());
+    Config<Float> widthConfig = new NumberConfig<Float>("Width", "The line width of the tracer", 1.0f, 1.5f, 10.0f);
 
     public TracersModule() {
         super("Tracers", "Draws a tracer to all entities in render distance", ModuleCategory.RENDER);
@@ -46,7 +46,7 @@ extends ToggleModule {
         if (TracersModule.mc.player == null) {
             return;
         }
-        boolean prevBobView = (Boolean)TracersModule.mc.options.getBobView().getValue();
+        boolean prevBobView = TracersModule.mc.options.getBobView().getValue();
         TracersModule.mc.options.getBobView().setValue(false);
         Camera cameraPos = TracersModule.mc.gameRenderer.getCamera();
         Vec3d pos = new Vec3d(0.0, 0.0, 1.0).rotateX(-((float)Math.toRadians(cameraPos.getPitch()))).rotateY(-((float)Math.toRadians(cameraPos.getYaw()))).add(TracersModule.mc.cameraEntity.getEyePos());
@@ -63,8 +63,7 @@ extends ToggleModule {
         if (entity.isInvisible() && this.invisiblesConfig.getValue().booleanValue()) {
             return this.invisiblesColorConfig.getValue();
         }
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity)entity;
+        if (entity instanceof PlayerEntity player) {
             if (this.playersConfig.getValue().booleanValue()) {
                 if (Managers.SOCIAL.isFriend(player.getName())) {
                     return new Color(85, 200, 200, 255);
@@ -95,10 +94,10 @@ extends ToggleModule {
         };
     }
 
-    public static enum Target {
+    public enum Target {
         FEET,
         TORSO,
-        HEAD;
+        HEAD
 
     }
 }

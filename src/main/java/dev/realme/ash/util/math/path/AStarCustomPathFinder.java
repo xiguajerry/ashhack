@@ -64,7 +64,7 @@ public class AStarCustomPathFinder implements Globals {
       this.hubsToWork.clear();
       ArrayList initPath = new ArrayList();
       initPath.add(this.startVec3);
-      this.hubsToWork.add(new Hub(this.startVec3, (Hub)null, initPath, this.startVec3.squareDistanceTo(this.endVec3), 0.0, 0.0));
+      this.hubsToWork.add(new Hub(this.startVec3, null, initPath, this.startVec3.squareDistanceTo(this.endVec3), 0.0, 0.0));
 
       label54:
       for(int i = 0; i < loops; ++i) {

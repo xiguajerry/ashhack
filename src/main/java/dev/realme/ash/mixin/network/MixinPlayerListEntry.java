@@ -40,7 +40,7 @@ public class MixinPlayerListEntry implements Globals {
       cancellable = true
    )
    private void hookGetSkinTextures(CallbackInfoReturnable cir) {
-      if (this.capeTexture != null && Modules.CAPES.isEnabled() && (Boolean)Modules.CAPES.getOptifineConfig().getValue()) {
+      if (this.capeTexture != null && Modules.CAPES.isEnabled() && Modules.CAPES.getOptifineConfig().getValue()) {
          SkinTextures t = (SkinTextures)cir.getReturnValue();
          SkinTextures customCapeTexture = new SkinTextures(t.texture(), t.textureUrl(), this.capeTexture, this.capeTexture, t.model(), t.secure());
          cir.setReturnValue(customCapeTexture);

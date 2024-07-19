@@ -14,7 +14,7 @@ public class DrawnCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(argument("module", ModuleArgumentType.module()).executes((c) -> {
+      builder.then(argument("module", ModuleArgumentType.module()).executes((c) -> {
          Module module = ModuleArgumentType.getModule(c, "module");
          if (module instanceof ToggleModule toggle) {
             boolean hide = !toggle.isHidden();
@@ -24,7 +24,7 @@ public class DrawnCommand extends Command {
          }
 
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Must provide module to draw!");
          return 1;
       });

@@ -62,7 +62,7 @@ public class NametagsModule
     Config<Boolean> healthConfig = new BooleanConfig("Health", "Displays the player's current health", true);
     Config<Boolean> totemsConfig = new BooleanConfig("Totems", "Displays the player's popped totem count", false);
     Config<Boolean> turtle = new BooleanConfig("Turtle", "", true);
-    Config<Float> scalingConfig = new NumberConfig<Float>("Scaling", "The nametag label scale", Float.valueOf(0.001f), Float.valueOf(0.003f), Float.valueOf(0.01f));
+    Config<Float> scalingConfig = new NumberConfig<Float>("Scaling", "The nametag label scale", 0.001f, 0.003f, 0.01f);
     Config<Boolean> borderedConfig = new BooleanConfig("TextBorder", "Renders a border behind the nametag", true);
 
     public NametagsModule() {
@@ -145,7 +145,7 @@ public class NametagsModule
         }
         player.getInventory().armor.forEach(armorStack -> {
             if (!armorStack.isEmpty()) {
-                displayItems.add((ItemStack) armorStack);
+                displayItems.add(armorStack);
             }
         });
         if (!player.getMainHandStack().isEmpty()) {
@@ -186,7 +186,7 @@ public class NametagsModule
         }
         matrixStack.scale(0.5f, 0.5f, 0.5f);
         if (this.itemNameConfig.getValue().booleanValue()) {
-            this.renderItemName(matrixStack, itemStack, 0.0f, this.durabilityConfig.getValue() != false ? m2 - 9.0f : m2 - 4.5f);
+            this.renderItemName(matrixStack, itemStack, 0.0f, this.durabilityConfig.getValue() ? m2 - 9.0f : m2 - 4.5f);
         }
         matrixStack.scale(2.0f, 2.0f, 2.0f);
     }
@@ -208,9 +208,9 @@ public class NametagsModule
         bakedModel.getTransformation().getTransformation(renderMode).apply(false, matrices);
         matrices.translate(-0.5f, -0.5f, -0.5f);
         if (bakedModel.isBuiltin() || stack.isOf(Items.TRIDENT) && !bl) {
-            ((AccessorItemRenderer) ((Object) mc.getItemRenderer())).hookGetBuiltinModelItemRenderer().render(stack, renderMode, matrices, vertexConsumers, light, overlay);
+            ((AccessorItemRenderer) mc.getItemRenderer()).hookGetBuiltinModelItemRenderer().render(stack, renderMode, matrices, vertexConsumers, light, overlay);
         } else {
-            ((AccessorItemRenderer) ((Object) mc.getItemRenderer())).hookRenderBakedItemModel(bakedModel, stack, light, overlay, matrices, NametagsModule.getItemGlintConsumer(vertexConsumers, RenderLayersClient.ITEM_ENTITY_TRANSLUCENT_CULL, stack.hasGlint()));
+            ((AccessorItemRenderer) mc.getItemRenderer()).hookRenderBakedItemModel(bakedModel, stack, light, overlay, matrices, NametagsModule.getItemGlintConsumer(vertexConsumers, RenderLayersClient.ITEM_ENTITY_TRANSLUCENT_CULL, stack.hasGlint()));
         }
     }
 

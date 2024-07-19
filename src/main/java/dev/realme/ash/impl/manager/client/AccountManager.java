@@ -14,7 +14,7 @@ import net.minecraft.client.session.Session;
 
 public final class AccountManager implements Globals {
    public static final MSAAuthenticator MSA_AUTHENTICATOR = new MSAAuthenticator();
-   private final List accounts = new LinkedList();
+   private final List<MinecraftAccount> accounts = new LinkedList<>();
    private AccountFile configFile;
 
    public void postInit() {
@@ -43,7 +43,7 @@ public final class AccountManager implements Globals {
       Ash.info("Set session to {} ({})", session.getUsername(), session.getUuidOrNull());
    }
 
-   public List getAccounts() {
+   public List<MinecraftAccount> getAccounts() {
       return this.accounts;
    }
 

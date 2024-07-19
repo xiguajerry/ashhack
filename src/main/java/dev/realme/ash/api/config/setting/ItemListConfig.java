@@ -26,7 +26,7 @@ public class ItemListConfig extends Config<List<Item>> {
         JsonObject jsonObj = super.toJson();
         JsonArray array = new JsonArray();
 
-        for (Object o : (List) this.getValue()) {
+        for (Object o : this.getValue()) {
             Item item = (Item) o;
             Identifier id = Registries.ITEM.getId(item);
             array.add(id.toString());

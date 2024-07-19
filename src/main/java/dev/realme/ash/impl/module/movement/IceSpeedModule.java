@@ -16,10 +16,10 @@ extends ToggleModule {
         if (IceSpeedModule.mc.world == null) {
             return;
         }
-        ((AccessorAbstractBlock)((Object)Blocks.ICE)).setSlipperiness(0.4f);
-        ((AccessorAbstractBlock)((Object)Blocks.PACKED_ICE)).setSlipperiness(0.4f);
-        ((AccessorAbstractBlock)((Object)Blocks.BLUE_ICE)).setSlipperiness(0.4f);
-        ((AccessorAbstractBlock)((Object)Blocks.FROSTED_ICE)).setSlipperiness(0.4f);
+        ((AccessorAbstractBlock) Blocks.ICE).setSlipperiness(0.4f);
+        ((AccessorAbstractBlock) Blocks.PACKED_ICE).setSlipperiness(0.4f);
+        ((AccessorAbstractBlock) Blocks.BLUE_ICE).setSlipperiness(0.4f);
+        ((AccessorAbstractBlock) Blocks.FROSTED_ICE).setSlipperiness(0.4f);
     }
 
     @Override
@@ -27,9 +27,9 @@ extends ToggleModule {
         if (IceSpeedModule.mc.world == null) {
             return;
         }
-        ((AccessorAbstractBlock)((Object)Blocks.ICE)).setSlipperiness(0.98f);
-        ((AccessorAbstractBlock)((Object)Blocks.PACKED_ICE)).setSlipperiness(0.98f);
-        ((AccessorAbstractBlock)((Object)Blocks.BLUE_ICE)).setSlipperiness(0.98f);
-        ((AccessorAbstractBlock)((Object)Blocks.FROSTED_ICE)).setSlipperiness(0.98f);
+        ((AccessorAbstractBlock) Blocks.ICE).setSlipperiness(0.98f);
+        ((AccessorAbstractBlock) Blocks.PACKED_ICE).setSlipperiness(0.98f);
+        ((AccessorAbstractBlock) Blocks.BLUE_ICE).setSlipperiness(0.98f);
+        ((AccessorAbstractBlock) Blocks.FROSTED_ICE).setSlipperiness(0.98f);
     }
 }

@@ -190,7 +190,7 @@ public class RenderManager implements Globals {
    }
 
    public static void renderText(DrawContext context, String text, float x, float y, int color) {
-      context.drawText(mc.textRenderer, text, (int)x, (int)y, color, (Boolean)Modules.CLIENT_SETTING.shadow.getValue());
+      context.drawText(mc.textRenderer, text, (int)x, (int)y, color, Modules.CLIENT_SETTING.shadow.getValue());
    }
 
    public static int textWidth(String text) {

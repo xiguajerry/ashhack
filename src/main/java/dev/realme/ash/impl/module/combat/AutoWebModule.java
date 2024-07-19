@@ -31,13 +31,13 @@ import net.minecraft.util.math.Vec3d;
 
 public class AutoWebModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", Float.valueOf(0.0f), Float.valueOf(60.0f), Float.valueOf(500.0f));
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)SwapMode.SILENT, (Enum[])SwapMode.values());
+    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 60.0f, 500.0f);
+    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
     Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
     Config<Integer> predictTicks = new NumberConfig<Integer>("PredictTicks", "", 0, 8, 20);
     Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
     Config<Integer> surCheck = new NumberConfig<Integer>("SurCheck", "", 0, 3, 4);
-    Config<Float> range = new NumberConfig<Float>("Range", "", Float.valueOf(0.0f), Float.valueOf(5.0f), Float.valueOf(8.0f));
+    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 8.0f);
     Config<Boolean> face = new BooleanConfig("Face", "", true);
     Config<Boolean> feet = new BooleanConfig("Feet", "", true);
     Config<Boolean> down = new BooleanConfig("Down", "", true);
@@ -48,8 +48,8 @@ extends RotationModule {
     Config<Boolean> noAnchor = new BooleanConfig("NoAnchor", "", false);
     Config<Boolean> swing = new BooleanConfig("Swing", "", false);
     Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
-    Config<Float> yawStep = new NumberConfig<Float>("Step", "", Float.valueOf(0.0f), Float.valueOf(0.1f), Float.valueOf(1.0f));
-    Config<Float> fov = new NumberConfig<Float>("Fov", "", Float.valueOf(0.0f), Float.valueOf(10.0f), Float.valueOf(30.0f));
+    Config<Float> yawStep = new NumberConfig<Float>("Step", "", 0.0f, 0.1f, 1.0f);
+    Config<Float> fov = new NumberConfig<Float>("Fov", "", 0.0f, 10.0f, 30.0f);
     private final Timer delayTimer = new CacheTimer();
     int progress = 0;
     PlayerEntity target;
@@ -164,7 +164,7 @@ extends RotationModule {
         if (!this.extend.getValue().booleanValue()) {
             return false;
         }
-        return Modules.AUTO_CRYSTAL.placePos == null || this.checkAutoCrystal.getValue() == false;
+        return Modules.AUTO_CRYSTAL.placePos == null || !this.checkAutoCrystal.getValue();
     }
 
     public boolean surCheck(PlayerEntity player) {
@@ -293,12 +293,12 @@ extends RotationModule {
         return new float[]{angle[0], angle[1]};
     }
 
-    public static enum SwapMode {
+    public enum SwapMode {
         OFF,
         NORMAL,
         SILENT,
         Inventory,
-        Pick;
+        Pick
 
     }
 }

@@ -12,15 +12,15 @@ public class HClipCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(argument("getDistance", DoubleArgumentType.doubleArg()).executes((c) -> {
+      builder.then(argument("getDistance", DoubleArgumentType.doubleArg()).executes((c) -> {
          double dist = DoubleArgumentType.getDouble(c, "getDistance");
-         double rad = Math.toRadians((double)(mc.player.getYaw() + 90.0F));
+         double rad = Math.toRadians(mc.player.getYaw() + 90.0F);
          double x = Math.cos(rad) * dist;
          double z = Math.sin(rad) * dist;
          Managers.POSITION.setPositionXZ(x, z);
          ChatUtil.clientSendMessage("Horizontally clipped §s" + dist + "§f blocks");
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Must provide distance!");
          return 1;
       });

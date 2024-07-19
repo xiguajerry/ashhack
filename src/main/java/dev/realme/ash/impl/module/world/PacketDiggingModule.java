@@ -51,10 +51,10 @@ import net.minecraft.util.math.Vec3d;
 
 public class PacketDiggingModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "Added delays", Float.valueOf(0.0f), Float.valueOf(50.0f), Float.valueOf(500.0f));
+    Config<Float> delay = new NumberConfig<Float>("Delay", "Added delays", 0.0f, 50.0f, 500.0f);
     Config<Double> damage = new NumberConfig<Double>("Damage", "The speed to mine blocks", 0.0, 1.0, 1.0);
     Config<Integer> maxBreak = new NumberConfig<Integer>("BreakCount", "", 0, 8, 50);
-    Config<Float> range = new NumberConfig<Float>("Range", "", Float.valueOf(0.0f), Float.valueOf(5.0f), Float.valueOf(8.0f));
+    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 8.0f);
     Config<Boolean> doubleBreak = new BooleanConfig("DoubleBreak", "", true);
     Config<Boolean> autoSwap = new BooleanConfig("AutoSwap", "", false);
     Config<Boolean> clickSlot = new BooleanConfig("ClickSlot", "", false);
@@ -63,8 +63,8 @@ extends RotationModule {
     Config<Double> failedDamage = new NumberConfig<Double>("FailedDamage", "", 1.0, 1.5, 2.5);
     Config<Boolean> startingRotate = new BooleanConfig("StartingRotate", "", false);
     Config<Boolean> endingRotate = new BooleanConfig("EndingRotate", "", false);
-    Config<Float> time = new NumberConfig<Float>("Time", "", Float.valueOf(0.0f), Float.valueOf(100.0f), Float.valueOf(2000.0f));
-    Config<Float> subtractTime = new NumberConfig<Float>("SubtractTime", "", Float.valueOf(0.0f), Float.valueOf(100.0f), Float.valueOf(2000.0f));
+    Config<Float> time = new NumberConfig<Float>("Time", "", 0.0f, 100.0f, 2000.0f);
+    Config<Float> subtractTime = new NumberConfig<Float>("SubtractTime", "", 0.0f, 100.0f, 2000.0f);
     Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
     Config<Boolean> checkGround = new BooleanConfig("CheckGround", "", true);
     Config<Boolean> retry = new BooleanConfig("Retry", "", false);
@@ -73,20 +73,20 @@ extends RotationModule {
     Config<Boolean> instant = new BooleanConfig("Instant", "", true);
     Config<Boolean> hotBar = new BooleanConfig("HotBarSwap", "", true);
     Config<Color> color = new ColorConfig("Color", "", new Color(90, 90, 255), false, false);
-    Config<RenderMode> renderMode = new EnumConfig("RenderMode", "", (Enum)RenderMode.Grow, (Enum[])RenderMode.values());
+    Config<RenderMode> renderMode = new EnumConfig("RenderMode", "", RenderMode.Grow, RenderMode.values());
     Config<Double> expandLine = new NumberConfig<Double>("ExpandLine", "", 0.0, 0.1, 0.5);
     Config<Boolean> box = new BooleanConfig("Box", "", true);
     Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
     Config<Boolean> line = new BooleanConfig("lines", "", false);
     Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 255, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
+    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
     Config<Boolean> ignoreSame = new BooleanConfig("IgnoreSame", "", true);
     Config<Color> double_color = new ColorConfig("Double_Color", "", new Color(255, 255, 255), false, false);
     Config<Boolean> double_box = new BooleanConfig("Double_Box", "", true);
     Config<Integer> double_boxAlpha = new NumberConfig<Integer>("Double_BoxAlpha", "", 0, 80, 255);
     Config<Boolean> double_line = new BooleanConfig("Double_lines", "", false);
     Config<Integer> double_olAlpha = new NumberConfig<Integer>("Double_OLAlpha", "", 0, 255, 255);
-    Config<Float> double_olWidth = new NumberConfig<Float>("Double_OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
+    Config<Float> double_olWidth = new NumberConfig<Float>("Double_OLWidth", "", 0.1f, 1.5f, 5.0f);
     public static final List<Block> godBlocks = Arrays.asList(Blocks.COMMAND_BLOCK, Blocks.LAVA_CAULDRON, Blocks.LAVA, Blocks.WATER_CAULDRON, Blocks.WATER, Blocks.BEDROCK, Blocks.BARRIER, Blocks.END_PORTAL, Blocks.NETHER_PORTAL, Blocks.END_PORTAL_FRAME);
     public BlockPos breakPos;
     public BlockPos secondPos;
@@ -202,7 +202,7 @@ extends RotationModule {
                     slot = PacketDiggingModule.mc.player.getInventory().selectedSlot;
                 }
                 if ((breakTime = this.getBreakTime(this.breakPos, slot, this.damage.getValue(), this.checkGround.getValue()) - (double)this.subtractTime.getValue().floatValue()) <= 0.0 || this.mineTimer.passed((long)breakTime)) {
-                    ((IPlayerMoveC2SPacket)((Object)event.getPacket())).setOnGround(true);
+                    ((IPlayerMoveC2SPacket) event.getPacket()).setOnGround(true);
                 }
             }
             return;
@@ -568,9 +568,9 @@ extends RotationModule {
         this.startMine();
     }
 
-    public static enum RenderMode {
+    public enum RenderMode {
         Grow,
-        Double;
+        Double
 
     }
 }

@@ -72,7 +72,7 @@ public class MixinBackgroundRenderer {
       Ash.EVENT_HANDLER.dispatch(blindnessEvent);
       if (blindnessEvent.isCanceled()) {
          cir.cancel();
-         cir.setReturnValue((Object)null);
+         cir.setReturnValue(null);
       }
 
    }

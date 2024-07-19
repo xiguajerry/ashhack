@@ -12,7 +12,7 @@ public class VClipCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(argument("getDistance", DoubleArgumentType.doubleArg()).executes((c) -> {
+      builder.then(argument("getDistance", DoubleArgumentType.doubleArg()).executes((c) -> {
          double dist = DoubleArgumentType.getDouble(c, "getDistance");
          double y = Managers.POSITION.getY();
          if (Math.abs(y) != 256.0) {
@@ -21,7 +21,7 @@ public class VClipCommand extends Command {
          }
 
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Must provide distance!");
          return 1;
       });

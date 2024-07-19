@@ -15,7 +15,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 public class CriticalsModule
 extends ToggleModule {
-    Config<Mode> mode = new EnumConfig("Mode", "Mode for critical attack modifier", (Enum)Mode.NCP, (Enum[])Mode.values());
+    Config<Mode> mode = new EnumConfig("Mode", "Mode for critical attack modifier", Mode.NCP, Mode.values());
 
     public CriticalsModule() {
         super("Criticals", "Modifies attacks to always land critical hits", ModuleCategory.COMBAT);
@@ -25,7 +25,7 @@ extends ToggleModule {
     public void onPacketSend(PacketEvent.Send event) {
         IPlayerInteractEntityC2SPacket packet;
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof IPlayerInteractEntityC2SPacket && (packet = (IPlayerInteractEntityC2SPacket)((Object)packet2)).getType() == InteractType.ATTACK && !(((IPlayerInteractEntityC2SPacket)((Object)event.getPacket())).getEntity() instanceof EndCrystalEntity)) {
+        if (packet2 instanceof IPlayerInteractEntityC2SPacket && (packet = (IPlayerInteractEntityC2SPacket) packet2).getType() == InteractType.ATTACK && !(((IPlayerInteractEntityC2SPacket) event.getPacket()).getEntity() instanceof EndCrystalEntity)) {
             this.doCrit();
         }
     }
@@ -51,11 +51,11 @@ extends ToggleModule {
         }
     }
 
-    public static enum Mode {
+    public enum Mode {
         NCP,
         Strict,
         Normal,
-        New2b2t;
+        New2b2t
 
     }
 }

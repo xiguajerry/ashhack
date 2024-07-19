@@ -36,9 +36,9 @@ public class VelocityModule
 extends ToggleModule {
     Config<Boolean> knockbackConfig = new BooleanConfig("Knockback", "Removes player knockback velocity", true);
     Config<Boolean> explosionConfig = new BooleanConfig("Explosion", "Removes player explosion velocity", true);
-    Config<VelocityMode> modeConfig = new EnumConfig("Mode", "The mode for velocity", (Enum)VelocityMode.NORMAL, (Enum[])VelocityMode.values());
-    Config<Float> horizontalConfig = new NumberConfig<Float>("Horizontal", "How much horizontal knock-back to take", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(100.0f), NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
-    Config<Float> verticalConfig = new NumberConfig<Float>("Vertical", "How much vertical knock-back to take", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(100.0f), NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
+    Config<VelocityMode> modeConfig = new EnumConfig("Mode", "The mode for velocity", VelocityMode.NORMAL, VelocityMode.values());
+    Config<Float> horizontalConfig = new NumberConfig<Float>("Horizontal", "How much horizontal knock-back to take", 0.0f, 0.0f, 100.0f, NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
+    Config<Float> verticalConfig = new NumberConfig<Float>("Vertical", "How much vertical knock-back to take", 0.0f, 0.0f, 100.0f, NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
     Config<Boolean> pushEntitiesConfig = new BooleanConfig("NoPush-Entities", "Prevents being pushed away from entities", true);
     Config<Boolean> pushBlocksConfig = new BooleanConfig("NoPush-Blocks", "Prevents being pushed out of blocks", true);
     Config<Boolean> pushLiquidsConfig = new BooleanConfig("NoPush-Liquids", "Prevents being pushed by flowing liquids", true);
@@ -87,7 +87,7 @@ extends ToggleModule {
         }
         Packet<?> packet = event.getPacket();
         if (packet instanceof EntityVelocityUpdateS2CPacket) {
-            EntityVelocityUpdateS2CPacket packet2 = (EntityVelocityUpdateS2CPacket)((Object)packet);
+            EntityVelocityUpdateS2CPacket packet2 = (EntityVelocityUpdateS2CPacket) packet;
             if (this.knockbackConfig.getValue().booleanValue()) {
                 if (packet2.getId() != VelocityModule.mc.player.getId()) {
                     return;
@@ -98,9 +98,9 @@ extends ToggleModule {
                             event.cancel();
                             return;
                         }
-                        ((AccessorEntityVelocityUpdateS2CPacket)((Object)packet2)).setVelocityX((int)((float)packet2.getVelocityX() * (this.horizontalConfig.getValue().floatValue() / 100.0f)));
-                        ((AccessorEntityVelocityUpdateS2CPacket)((Object)packet2)).setVelocityY((int)((float)packet2.getVelocityY() * (this.verticalConfig.getValue().floatValue() / 100.0f)));
-                        ((AccessorEntityVelocityUpdateS2CPacket)((Object)packet2)).setVelocityZ((int)((float)packet2.getVelocityZ() * (this.horizontalConfig.getValue().floatValue() / 100.0f)));
+                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityX((int)((float)packet2.getVelocityX() * (this.horizontalConfig.getValue().floatValue() / 100.0f)));
+                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityY((int)((float)packet2.getVelocityY() * (this.verticalConfig.getValue().floatValue() / 100.0f)));
+                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityZ((int)((float)packet2.getVelocityZ() * (this.horizontalConfig.getValue().floatValue() / 100.0f)));
                         return;
                     }
                     case GRIM: {
@@ -113,7 +113,7 @@ extends ToggleModule {
             }
         }
         if ((packet = event.getPacket()) instanceof ExplosionS2CPacket) {
-            ExplosionS2CPacket packet3 = (ExplosionS2CPacket)((Object)packet);
+            ExplosionS2CPacket packet3 = (ExplosionS2CPacket) packet;
             if (this.explosionConfig.getValue().booleanValue()) {
                 switch (this.modeConfig.getValue()) {
                     case NORMAL: {
@@ -121,32 +121,32 @@ extends ToggleModule {
                             event.cancel();
                             break;
                         }
-                        ((AccessorExplosionS2CPacket)((Object)packet3)).setPlayerVelocityX(packet3.getPlayerVelocityX() * (this.horizontalConfig.getValue().floatValue() / 100.0f));
-                        ((AccessorExplosionS2CPacket)((Object)packet3)).setPlayerVelocityY(packet3.getPlayerVelocityY() * (this.verticalConfig.getValue().floatValue() / 100.0f));
-                        ((AccessorExplosionS2CPacket)((Object)packet3)).setPlayerVelocityZ(packet3.getPlayerVelocityZ() * (this.horizontalConfig.getValue().floatValue() / 100.0f));
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityX(packet3.getPlayerVelocityX() * (this.horizontalConfig.getValue().floatValue() / 100.0f));
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityY(packet3.getPlayerVelocityY() * (this.verticalConfig.getValue().floatValue() / 100.0f));
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityZ(packet3.getPlayerVelocityZ() * (this.horizontalConfig.getValue().floatValue() / 100.0f));
                         break;
                     }
                     case GRIM: {
-                        ((AccessorExplosionS2CPacket)((Object)packet3)).setPlayerVelocityX(0.0f);
-                        ((AccessorExplosionS2CPacket)((Object)packet3)).setPlayerVelocityY(0.0f);
-                        ((AccessorExplosionS2CPacket)((Object)packet3)).setPlayerVelocityZ(0.0f);
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityX(0.0f);
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityY(0.0f);
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityZ(0.0f);
                         event.cancel();
                         this.cancelVelocity = true;
                         break;
                     }
                 }
                 if (!event.isCanceled()) return;
-                mc.executeSync(() -> ((AccessorClientWorld)((Object)VelocityModule.mc.world)).hookPlaySound(packet3.getX(), packet3.getY(), packet3.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (RANDOM.nextFloat() - RANDOM.nextFloat()) * 0.2f) * 0.7f, false, RANDOM.nextLong()));
+                mc.executeSync(() -> ((AccessorClientWorld) VelocityModule.mc.world).hookPlaySound(packet3.getX(), packet3.getY(), packet3.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (RANDOM.nextFloat() - RANDOM.nextFloat()) * 0.2f) * 0.7f, false, RANDOM.nextLong()));
                 return;
             }
         }
         if (!((packet = event.getPacket()) instanceof EntityStatusS2CPacket)) return;
-        EntityStatusS2CPacket packet4 = (EntityStatusS2CPacket)((Object)packet);
+        EntityStatusS2CPacket packet4 = (EntityStatusS2CPacket) packet;
         if (packet4.getStatus() != 31) return;
-        if (this.pushFishhookConfig.getValue() == false) return;
+        if (!this.pushFishhookConfig.getValue()) return;
         Entity entity = packet4.getEntity(VelocityModule.mc.world);
         if (!(entity instanceof FishingBobberEntity)) return;
-        FishingBobberEntity hook = (FishingBobberEntity)((Object)entity);
+        FishingBobberEntity hook = (FishingBobberEntity) entity;
         if (hook.getHookedEntity() != VelocityModule.mc.player) return;
         event.cancel();
     }
@@ -183,9 +183,9 @@ extends ToggleModule {
         }
     }
 
-    private static enum VelocityMode {
+    private enum VelocityMode {
         NORMAL,
-        GRIM;
+        GRIM
 
     }
 }

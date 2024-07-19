@@ -31,7 +31,7 @@ public class MixinLightmapTextureManager {
 )
    )
    private void hookUpdate(Args args) {
-      LightmapGammaEvent lightmapGammaEvent = new LightmapGammaEvent((Integer)args.get(2));
+      LightmapGammaEvent lightmapGammaEvent = new LightmapGammaEvent(args.get(2));
       Ash.EVENT_HANDLER.dispatch(lightmapGammaEvent);
       if (lightmapGammaEvent.isCanceled()) {
          args.set(2, lightmapGammaEvent.getGamma());

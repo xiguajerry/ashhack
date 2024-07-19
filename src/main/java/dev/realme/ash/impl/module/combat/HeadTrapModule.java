@@ -25,10 +25,10 @@ import net.minecraft.util.math.Direction;
 
 public class HeadTrapModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", Float.valueOf(0.0f), Float.valueOf(60.0f), Float.valueOf(500.0f));
+    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 60.0f, 500.0f);
     Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<Float> targetRange = new NumberConfig<Float>("TargetRange", "", Float.valueOf(0.0f), Float.valueOf(5.2f), Float.valueOf(6.0f));
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)InventoryUtil.SwapMode.SILENT, (Enum[])InventoryUtil.SwapMode.values());
+    Config<Float> targetRange = new NumberConfig<Float>("TargetRange", "", 0.0f, 5.2f, 6.0f);
+    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
     Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
     Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
     Config<Boolean> anchorHelper = new BooleanConfig("AnchorHelper", "", false);

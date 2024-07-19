@@ -69,17 +69,16 @@ public class ConfigContainer implements Identifiable, Serializable, Globals {
       Field[] var2 = this.getClass().getDeclaredFields();
       int var3 = var2.length;
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Field field = var2[var4];
-         if (Config.class.isAssignableFrom(field.getType())) {
-            Config config = factory.build(field);
-            if (config == null) {
-               Ash.error("Value for field {} is null!", field);
-            } else {
-               this.register(config);
-            }
-         }
-      }
+       for (Field field : var2) {
+           if (Config.class.isAssignableFrom(field.getType())) {
+               Config config = factory.build(field);
+               if (config == null) {
+                   Ash.error("Value for field {} is null!", field);
+               } else {
+                   this.register(config);
+               }
+           }
+       }
 
    }
 
@@ -88,21 +87,20 @@ public class ConfigContainer implements Identifiable, Serializable, Globals {
       out.addProperty("name", this.getName());
       out.addProperty("id", this.getId());
       JsonArray array = new JsonArray();
-      Iterator var3 = this.getConfigs().iterator();
 
-      while(var3.hasNext()) {
-         Config config = (Config)var3.next();
-         if (!(config.getValue() instanceof Macro)) {
-            array.add(config.toJson());
-         }
-      }
+       for (Object o : this.getConfigs()) {
+           Config<?> config = (Config) o;
+           if (!(config.getValue() instanceof Macro)) {
+               array.add(config.toJson());
+           }
+       }
 
       out.add("configs", array);
       return out;
    }
 
    @Override
-   public Config fromJson(JsonObject jsonObj) {
+   public Config<?> fromJson(JsonObject jsonObj) {
       if (jsonObj.has("configs")) {
          JsonElement element = jsonObj.get("configs");
          if (!element.isJsonArray()) {
@@ -113,45 +111,39 @@ public class ConfigContainer implements Identifiable, Serializable, Globals {
               if (je.isJsonObject()) {
                   JsonObject configObj = je.getAsJsonObject();
                   JsonElement id = configObj.get("id");
-                  Config config = this.getConfig(id.getAsString());
+                  Config<?> config = this.getConfig(id.getAsString());
                   if (config != null) {
                       try {
-                          Object val;
                           if (config instanceof ToggleConfig cfg) {
-                              val = cfg.fromJson(configObj);
+                              Boolean val = cfg.fromJson(configObj);
                               if (mc.world != null) {
-                                  if ((Boolean) val) {
+                                  if (val) {
                                       cfg.enable();
                                   } else {
                                       cfg.disable();
                                   }
                               } else {
-                                  cfg.setValue((Boolean) val);
+                                  cfg.setValue(val);
                               }
-                          } else if (config instanceof BooleanConfig) {
-                              BooleanConfig cfg = (BooleanConfig) config;
-                              val = cfg.fromJson(configObj);
-                              cfg.setValue((Boolean) val);
-                          } else if (config instanceof ColorConfig cfg) {
-                              val = cfg.fromJson(configObj);
+                          } else if (config instanceof BooleanConfig cfg) {
+                              Boolean val = cfg.fromJson(configObj);
                               cfg.setValue(val);
-                          } else if (config instanceof EnumConfig) {
-                              EnumConfig cfg = (EnumConfig) config;
-                              val = cfg.fromJson(configObj);
+                          } else if (config instanceof ColorConfig cfg) {
+                              Color val = cfg.fromJson(configObj);
+                              cfg.setValue(val);
+                          } else if (config instanceof EnumConfig cfg) {
+                              Object val = cfg.fromJson(configObj);
                               if (val != null) {
                                   cfg.setValue(val);
                               }
-                          } else if (config instanceof ItemListConfig) {
-                              ItemListConfig cfg = (ItemListConfig) config;
-                              val = cfg.fromJson(configObj);
-                              cfg.setValue((List<Item>) val);
-                          } else if (config instanceof NumberConfig) {
-                              NumberConfig cfg = (NumberConfig) config;
-                              val = cfg.fromJson(configObj);
-                              cfg.setValue((Number) val);
-                          } else if (config instanceof StringConfig) {
-                              StringConfig cfg = (StringConfig) config;
-                              val = cfg.fromJson(configObj);
+                          } else if (config instanceof ItemListConfig cfg) {
+                              List<Item> val = cfg.fromJson(configObj);
+                              cfg.setValue(val);
+                          } else if (config instanceof NumberConfig cfg) {
+                              Number val = cfg.fromJson(configObj);
+                              cfg.setValue(val);
+                          } else if (config instanceof StringConfig cfg) {
+                              String val = cfg.fromJson(configObj);
                               cfg.setValue(val);
                           }
                       } catch (Exception var16) {
@@ -175,11 +167,11 @@ public class ConfigContainer implements Identifiable, Serializable, Globals {
       return String.format("%s-container", this.name.toLowerCase());
    }
 
-   public Config getConfig(String id) {
+   public Config<?> getConfig(String id) {
       return (Config)this.configurations.get(id);
    }
 
-   public Collection getConfigs() {
+   public Collection<Config<?>> getConfigs() {
       return this.configurations.values();
    }
 }

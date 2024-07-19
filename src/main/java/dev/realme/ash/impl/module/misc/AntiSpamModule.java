@@ -31,7 +31,7 @@ extends ToggleModule {
         Packet<?> packet = event.getPacket();
         if (packet instanceof ChatMessageS2CPacket) {
             String lastMessage;
-            ChatMessageS2CPacket packet2 = (ChatMessageS2CPacket)((Object)packet);
+            ChatMessageS2CPacket packet2 = (ChatMessageS2CPacket) packet;
             if (this.unicodeConfig.getValue().booleanValue()) {
                 String msg = packet2.body().content();
                 Pattern pattern = Pattern.compile("[\\x00-\\x7F]", 2);

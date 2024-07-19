@@ -49,7 +49,7 @@ extends ToggleModule {
         if (event.getPacket() instanceof ExplosionS2CPacket && this.explosion.getValue().booleanValue()) {
             event.cancel();
         }
-        if ((packet3 = event.getPacket()) instanceof PlaySoundFromEntityS2CPacket && LAG_SOUNDS.contains((packet = (PlaySoundFromEntityS2CPacket)((Object)packet3)).getSound().value()) || (packet3 = event.getPacket()) instanceof PlaySoundS2CPacket && LAG_SOUNDS.contains((packet2 = (PlaySoundS2CPacket)((Object)packet3)).getSound().value())) {
+        if ((packet3 = event.getPacket()) instanceof PlaySoundFromEntityS2CPacket && LAG_SOUNDS.contains((packet = (PlaySoundFromEntityS2CPacket) packet3).getSound().value()) || (packet3 = event.getPacket()) instanceof PlaySoundS2CPacket && LAG_SOUNDS.contains((packet2 = (PlaySoundS2CPacket) packet3).getSound().value())) {
             event.cancel();
         }
     }

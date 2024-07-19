@@ -29,21 +29,20 @@ extends ToggleModule {
     public void onPacketOutbound(PacketEvent.Send event) {
         Packet<?> packet = event.getPacket();
         if (packet instanceof UpdateBeaconC2SPacket) {
-            UpdateBeaconC2SPacket packet2 = (UpdateBeaconC2SPacket)((Object)packet);
-            ((AccessorUpdateBeaconC2SPacket)((Object)packet2)).setPrimaryEffect(Optional.ofNullable(this.primaryEffect));
-            ((AccessorUpdateBeaconC2SPacket)((Object)packet2)).setSecondaryEffect(Optional.ofNullable(this.secondaryEffect));
+            UpdateBeaconC2SPacket packet2 = (UpdateBeaconC2SPacket) packet;
+            ((AccessorUpdateBeaconC2SPacket) packet2).setPrimaryEffect(Optional.ofNullable(this.primaryEffect));
+            ((AccessorUpdateBeaconC2SPacket) packet2).setSecondaryEffect(Optional.ofNullable(this.secondaryEffect));
         }
     }
 
     @EventListener
     public void onScreenOpen(ScreenOpenEvent event) {
         Screen screen = event.getScreen();
-        if (screen instanceof BeaconScreen) {
-            BeaconScreen screen2 = (BeaconScreen)screen;
+        if (screen instanceof BeaconScreen screen2) {
             if (!this.customBeacon) {
                 event.cancel();
                 this.customBeacon = true;
-                mc.setScreen(new BeaconSelectorScreen((BeaconScreenHandler)((Object)screen2.getScreenHandler()), BeaconSelectorModule.mc.player.getInventory(), screen2.getTitle()));
+                mc.setScreen(new BeaconSelectorScreen((BeaconScreenHandler) screen2.getScreenHandler(), BeaconSelectorModule.mc.player.getInventory(), screen2.getTitle()));
                 this.customBeacon = false;
             }
         }

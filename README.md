@@ -3,7 +3,7 @@ Decompiled from ashit hack leaked version
 
 杨超傻逼程度越高，本项目代码可读性越高。(重写反编译生成部分)
 
-ps: 运行需要baritone-api，自行把resources里的jar丢到run/mods里
+ps: baritone is removed
 
 如果你发现源码有任何bug，欢迎发送issue。如果是反编译问题我们会尽快修复，如果是ashhack自己傻逼写不明白那么酌情修复。
 

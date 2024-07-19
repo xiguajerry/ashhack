@@ -63,7 +63,7 @@ extends ToggleModule {
     public void onPacketInbound(PacketEvent.Receive event) {
         EntityStatusS2CPacket packet;
         Packet<?> packet2;
-        if (PopChamsModule.mc.world != null && (packet2 = event.getPacket()) instanceof EntityStatusS2CPacket && (packet = (EntityStatusS2CPacket)((Object)packet2)).getStatus() == 35) {
+        if (PopChamsModule.mc.world != null && (packet2 = event.getPacket()) instanceof EntityStatusS2CPacket && (packet = (EntityStatusS2CPacket) packet2).getStatus() == 35) {
             PlayerEntity e = (PlayerEntity)packet.getEntity(PopChamsModule.mc.world);
             if (e == null) {
                 return;
@@ -108,7 +108,7 @@ extends ToggleModule {
         RenderSystem.setShader(GameRenderer::getPositionProgram);
         buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
         RenderSystem.setShaderColor(this.colorConfig.getValue().getRed(), this.colorConfig.getValue().getGreen(), this.colorConfig.getValue().getBlue(), (float)alpha / 255.0f);
-        modelBase.render(matrices, (VertexConsumer)buffer, 10, 0, (float)this.colorConfig.getValue().getRed() / 255.0f, (float)this.colorConfig.getValue().getGreen() / 255.0f, (float)this.colorConfig.getValue().getBlue() / 255.0f, (float)alpha / 255.0f);
+        modelBase.render(matrices, buffer, 10, 0, (float)this.colorConfig.getValue().getRed() / 255.0f, (float)this.colorConfig.getValue().getGreen() / 255.0f, (float)this.colorConfig.getValue().getBlue() / 255.0f, (float)alpha / 255.0f);
         tessellator.draw();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         matrices.pop();

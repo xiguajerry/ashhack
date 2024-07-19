@@ -15,7 +15,7 @@ public final class MicrosoftAccount implements MinecraftAccount {
    private String username;
 
    public MicrosoftAccount(String accessToken) {
-      this((String)null, (String)null);
+      this(null, null);
       if (accessToken != null && !accessToken.isEmpty()) {
          this.accessToken = accessToken;
       } else {

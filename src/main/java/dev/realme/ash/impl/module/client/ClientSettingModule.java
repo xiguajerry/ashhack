@@ -19,14 +19,14 @@ import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 
 public class ClientSettingModule
 extends ConcurrentModule {
-    Config<SuffixMode> mode = new EnumConfig("ChatSuffix", "", (Enum)SuffixMode.None, (Enum[])SuffixMode.values());
+    Config<SuffixMode> mode = new EnumConfig("ChatSuffix", "", SuffixMode.None, SuffixMode.values());
     public Config<Boolean> autoAnswer = new BooleanConfig("AutoQueue", "", false);
     public Config<Boolean> animation = new BooleanConfig("ChatAnimation", "Animates the chat", false);
     public Config<Integer> animationTime = new NumberConfig<Integer>("AnimationTime", "Time for the animation", 0, 200, 1000);
     public Config<Integer> animationOffset = new NumberConfig<Integer>("AnimationOffset", "", -500, 100, 500);
     public Config<Boolean> shadow = new BooleanConfig("TextShadow", "", true);
     public Config<Boolean> aspectRatio = new BooleanConfig("AspectRatio", "", false);
-    public Config<Float> ratio = new NumberConfig<Float>("Ratio", "", Float.valueOf(0.1f), Float.valueOf(1.78f), Float.valueOf(5.0f));
+    public Config<Float> ratio = new NumberConfig<Float>("Ratio", "", 0.1f, 1.78f, 5.0f);
     Config<Color> colorConfig = new ColorConfig("Color", "The primary client color", new Color(150, 0, 255), false, false);
     boolean ycsm = false;
     HashMap<String, String> dawd = new HashMap<String, String>(){
@@ -94,7 +94,7 @@ extends ConcurrentModule {
         if (suffix == null) {
             return;
         }
-        event.message = (String) (message = (String)message + suffix);
+        event.message = (String) (message = message + suffix);
     }
 
     private String getSuffix() {
@@ -136,7 +136,7 @@ extends ConcurrentModule {
         return this.getColor(a).getRGB();
     }
 
-    public static enum SuffixMode {
+    public enum SuffixMode {
         None,
         Ash,
         NullPoint,
@@ -147,7 +147,7 @@ extends ConcurrentModule {
         Troll,
         MoonGod,
         OnePlusOne,
-        Penis;
+        Penis
 
     }
 }

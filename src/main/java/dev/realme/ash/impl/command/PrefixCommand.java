@@ -13,7 +13,7 @@ public class PrefixCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(argument("prefix", StringArgumentType.string()).executes((c) -> {
+      builder.then(argument("prefix", StringArgumentType.string()).executes((c) -> {
          String prefix = StringArgumentType.getString(c, "prefix");
          if (prefix.length() > 1) {
             ChatUtil.error("Prefix can only be one character!");
@@ -24,7 +24,7 @@ public class PrefixCommand extends Command {
             ChatUtil.clientSendMessage("Command prefix changed to §s" + prefix);
             return 1;
          }
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Please provide a new prefix!");
          return 1;
       });

@@ -28,6 +28,6 @@ public abstract class MixinPlayerInteractEntityC2SPacket implements IPlayerInter
       PacketByteBuf packetBuf = new PacketByteBuf(Unpooled.buffer());
       this.write(packetBuf);
       packetBuf.readVarInt();
-      return (InteractType)packetBuf.readEnumConstant(InteractType.class);
+      return packetBuf.readEnumConstant(InteractType.class);
    }
 }

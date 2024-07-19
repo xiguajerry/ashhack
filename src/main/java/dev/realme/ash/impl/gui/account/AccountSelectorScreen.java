@@ -30,7 +30,7 @@ public final class AccountSelectorScreen extends Screen {
       this.clearChildren();
       this.accountListWidget.setDimensionsAndPosition(this.width, this.height - 64 - 32, 0, 32);
       this.accountListWidget.populateEntries();
-      this.accountListWidget.setSearchFilter((String)null);
+      this.accountListWidget.setSearchFilter(null);
       this.addDrawableChild(this.searchWidget = new TextFieldWidget(this.client.textRenderer, 135, 20, Text.of("Search...")));
       this.searchWidget.setPosition(this.width / 2 - this.searchWidget.getWidth() / 2, 4);
       this.searchWidget.setPlaceholder(Text.of("Search..."));
@@ -94,7 +94,7 @@ public final class AccountSelectorScreen extends Screen {
       if (this.searchWidget.isSelected()) {
          String content = this.searchWidget.getText();
          if (content == null || content.isEmpty()) {
-            this.accountListWidget.setSearchFilter((String)null);
+            this.accountListWidget.setSearchFilter(null);
             return;
          }
 

@@ -16,7 +16,7 @@ import net.minecraft.util.Hand;
 
 public class AutoEatModule
 extends ToggleModule {
-    Config<Float> hungerConfig = new NumberConfig<Float>("Hunger", "The minimum hunger level before eating", Float.valueOf(1.0f), Float.valueOf(19.0f), Float.valueOf(20.0f));
+    Config<Float> hungerConfig = new NumberConfig<Float>("Hunger", "The minimum hunger level before eating", 1.0f, 19.0f, 20.0f);
     private int prevSlot;
 
     public AutoEatModule() {
@@ -30,7 +30,7 @@ extends ToggleModule {
 
     @Override
     public void onDisable() {
-        KeyBinding.setKeyPressed(((AccessorKeyBinding)((Object)AutoEatModule.mc.options.useKey)).getBoundKey(), false);
+        KeyBinding.setKeyPressed(((AccessorKeyBinding) AutoEatModule.mc.options.useKey).getBoundKey(), false);
     }
 
     @EventListener
@@ -40,7 +40,7 @@ extends ToggleModule {
                 InventoryUtil.doSwap(this.prevSlot);
                 this.prevSlot = -1;
             }
-            KeyBinding.setKeyPressed(((AccessorKeyBinding)((Object)AutoEatModule.mc.options.useKey)).getBoundKey(), false);
+            KeyBinding.setKeyPressed(((AccessorKeyBinding) AutoEatModule.mc.options.useKey).getBoundKey(), false);
             return;
         }
         HungerManager hungerManager = AutoEatModule.mc.player.getHungerManager();
@@ -55,7 +55,7 @@ extends ToggleModule {
                 this.prevSlot = AutoEatModule.mc.player.getInventory().selectedSlot;
                 InventoryUtil.doSwap(slot);
             }
-            KeyBinding.setKeyPressed(((AccessorKeyBinding)((Object)AutoEatModule.mc.options.useKey)).getBoundKey(), true);
+            KeyBinding.setKeyPressed(((AccessorKeyBinding) AutoEatModule.mc.options.useKey).getBoundKey(), true);
         }
     }
 

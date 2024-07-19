@@ -29,11 +29,11 @@ public abstract class Component implements Drawable, Globals {
    public abstract void render(DrawContext var1, float var2, float var3, float var4);
 
    protected void rect(DrawContext context, int color) {
-      this.fill(context, (double)this.x, (double)this.y, (double)this.width, (double)this.height, color);
+      this.fill(context, this.x, this.y, this.width, this.height, color);
    }
 
    protected void rectGradient(DrawContext context, int color1, int color2) {
-      this.fillGradient(context, (double)this.x, (double)this.y, (double)(this.x + this.width), (double)(this.y + this.height), color1, color2);
+      this.fillGradient(context, this.x, this.y, this.x + this.width, this.y + this.height, color1, color2);
    }
 
    protected void scale(DrawContext context, float scale) {
@@ -121,7 +121,7 @@ public abstract class Component implements Drawable, Globals {
       Tessellator tessellator = Tessellator.getInstance();
       BufferBuilder buffer = tessellator.getBuffer();
       buffer.begin(DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-      this.fillGradient(context.getMatrices().peek().getPositionMatrix(), buffer, startX, startY, endX, endY, (double)z, colorStart, colorEnd);
+      this.fillGradient(context.getMatrices().peek().getPositionMatrix(), buffer, startX, startY, endX, endY, z, colorStart, colorEnd);
       tessellator.draw();
       RenderSystem.disableBlend();
    }
@@ -191,10 +191,10 @@ public abstract class Component implements Drawable, Globals {
    }
 
    public void drawBorder(DrawContext context, int x, int y, int width, int height, int color) {
-      this.fill(context, (double)x, (double)y, (double)(x + width), (double)(y + 1), color);
-      this.fill(context, (double)x, (double)(y + height - 1), (double)(x + width), (double)(y + height), color);
-      this.fill(context, (double)x, (double)(y + 1), (double)(x + 1), (double)(y + height - 1), color);
-      this.fill(context, (double)(x + width - 1), (double)(y + 1), (double)(x + width), (double)(y + height - 1), color);
+      this.fill(context, x, y, x + width, y + 1, color);
+      this.fill(context, x, y + height - 1, x + width, y + height, color);
+      this.fill(context, x, y + 1, x + 1, y + height - 1, color);
+      this.fill(context, x + width - 1, y + 1, x + width, y + height - 1, color);
    }
 
    public void drawTexture(DrawContext context, int x, int y, int u, int v, int width, int height) {
@@ -270,7 +270,7 @@ public abstract class Component implements Drawable, Globals {
    }
 
    public boolean isWithin(float xval, float yval) {
-      return this.isMouseOver((double)xval, (double)yval, (double)this.x, (double)this.y, (double)this.width, (double)this.height);
+      return this.isMouseOver(xval, yval, this.x, this.y, this.width, this.height);
    }
 
    public boolean isMouseOver(double mx, double my, double x1, double y1, double x2, double y2) {

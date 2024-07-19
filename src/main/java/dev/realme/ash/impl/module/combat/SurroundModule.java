@@ -31,9 +31,9 @@ public class SurroundModule
 extends RotationModule {
     Config<Boolean> rotate = new BooleanConfig("Rotate", "", false);
     Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)SwapMode.SILENT, (Enum[])SwapMode.values());
+    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
     Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<Float> delay = new NumberConfig<Float>("Delay", "Delay to throw xp in ticks.", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(10.0f), NumberDisplay.DEFAULT);
+    Config<Float> delay = new NumberConfig<Float>("Delay", "Delay to throw xp in ticks.", 0.0f, 0.0f, 10.0f, NumberDisplay.DEFAULT);
     Config<Boolean> helper = new BooleanConfig("Helper", "", true);
     Config<Boolean> extend = new BooleanConfig("Extend", "", true);
     Config<Boolean> onlyGround = new BooleanConfig("OnlyGround", "", true);
@@ -42,7 +42,7 @@ extends RotationModule {
     Config<Boolean> isMoving = new BooleanConfig("IsMoving", "", false);
     Config<Boolean> jumpDisable = new BooleanConfig("JumpDisable", "", true);
     Config<Boolean> inMoving = new BooleanConfig("InMoving", "", false);
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", Float.valueOf(0.0f), Float.valueOf(10.0f), Float.valueOf(100.0f));
+    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 10.0f, 100.0f);
     private final Timer timer = new CacheTimer();
     public final Timer attackTimer = new CacheTimer();
     double startX = 0.0;
@@ -69,7 +69,7 @@ extends RotationModule {
 
     @EventListener
     public void onUpdateWalking(UpdateWalkingEvent event) {
-        if (!this.timer.passed(Float.valueOf(this.delay.getValue().floatValue() * 100.0f))) {
+        if (!this.timer.passed(this.delay.getValue().floatValue() * 100.0f)) {
             return;
         }
         if (this.pauseEat.getValue().booleanValue() && SurroundModule.mc.player.isUsingItem()) {
@@ -213,12 +213,12 @@ extends RotationModule {
         return !EntityUtil.hasEntity(pos);
     }
 
-    public static enum SwapMode {
+    public enum SwapMode {
         OFF,
         NORMAL,
         SILENT,
         Inventory,
-        Pick;
+        Pick
 
     }
 }

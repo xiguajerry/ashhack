@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class NoFallModule
 extends ToggleModule {
-    Config<NoFallMode> modeConfig = new EnumConfig("Mode", "The mode to prevent fall damage", (Enum)NoFallMode.ANTI, (Enum[])NoFallMode.values());
+    Config<NoFallMode> modeConfig = new EnumConfig("Mode", "The mode to prevent fall damage", NoFallMode.ANTI, NoFallMode.values());
 
     public NoFallModule() {
         super("NoFall", "Prevents all fall damage", ModuleCategory.MOVEMENT);
@@ -54,12 +54,12 @@ extends ToggleModule {
         }
         Packet<?> packet = event.getPacket();
         if (packet instanceof PlayerMoveC2SPacket) {
-            PlayerMoveC2SPacket packet2 = (PlayerMoveC2SPacket)((Object)packet);
+            PlayerMoveC2SPacket packet2 = (PlayerMoveC2SPacket) packet;
             if (this.modeConfig.getValue() == NoFallMode.PACKET) {
-                ((AccessorPlayerMoveC2SPacket)((Object)packet2)).hookSetOnGround(true);
+                ((AccessorPlayerMoveC2SPacket) packet2).hookSetOnGround(true);
             } else if (this.modeConfig.getValue() == NoFallMode.ANTI) {
                 double y = packet2.getY(NoFallModule.mc.player.getY());
-                ((AccessorPlayerMoveC2SPacket)((Object)packet2)).hookSetY(y + (double)0.1f);
+                ((AccessorPlayerMoveC2SPacket) packet2).hookSetY(y + (double)0.1f);
             }
         }
     }
@@ -68,11 +68,11 @@ extends ToggleModule {
         return NoFallModule.mc.player.fallDistance > (float)NoFallModule.mc.player.getSafeFallDistance() && !NoFallModule.mc.player.isOnGround() && !NoFallModule.mc.player.isFallFlying() && !Modules.FLIGHT.isEnabled() && !Modules.PACKET_FLY.isEnabled();
     }
 
-    public static enum NoFallMode {
+    public enum NoFallMode {
         ANTI,
         LATENCY,
         PACKET,
-        GRIM;
+        GRIM
 
     }
 }

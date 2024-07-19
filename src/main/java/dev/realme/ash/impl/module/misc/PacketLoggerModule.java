@@ -77,14 +77,13 @@ public class PacketLoggerModule extends ToggleModule {
 
     @EventListener
     public void onPacketOutbound(PacketEvent.Send event) {
-        if (this.updateTimer.passed((Number)this.delay.getValue())) {
+        if (this.updateTimer.passed(this.delay.getValue())) {
             this.count = 0;
             this.updateTimer.reset();
         }
 
         Packet blockHitResult = event.getPacket();
-        if (blockHitResult instanceof Full) {
-            Full packet = (Full)blockHitResult;
+        if (blockHitResult instanceof Full packet) {
             if (this.moveFullConfig.getValue()) {
                 StringBuilder builder = new StringBuilder();
                 builder.append("PlayerMove Full - ");
@@ -102,8 +101,7 @@ public class PacketLoggerModule extends ToggleModule {
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof PositionAndOnGround) {
-            PositionAndOnGround packet = (PositionAndOnGround)blockHitResult;
+        if (blockHitResult instanceof PositionAndOnGround packet) {
             if (this.movePosConfig.getValue()) {
                 StringBuilder builder = new StringBuilder();
                 builder.append("PlayerMove PosGround - ");
@@ -117,8 +115,7 @@ public class PacketLoggerModule extends ToggleModule {
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof LookAndOnGround) {
-            LookAndOnGround packet = (LookAndOnGround)blockHitResult;
+        if (blockHitResult instanceof LookAndOnGround packet) {
             if (this.moveLookConfig.getValue()) {
                 StringBuilder builder = new StringBuilder();
                 builder.append("PlayerMove LookGround - ");
@@ -132,8 +129,7 @@ public class PacketLoggerModule extends ToggleModule {
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof OnGroundOnly) {
-            OnGroundOnly packet = (OnGroundOnly)blockHitResult;
+        if (blockHitResult instanceof OnGroundOnly packet) {
             if (this.moveGroundConfig.getValue()) {
                 String s = "PlayerMove Ground - onground: " + packet.isOnGround();
                 this.logPacket(s);
@@ -141,56 +137,49 @@ public class PacketLoggerModule extends ToggleModule {
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof VehicleMoveC2SPacket) {
-            VehicleMoveC2SPacket packet = (VehicleMoveC2SPacket)blockHitResult;
+        if (blockHitResult instanceof VehicleMoveC2SPacket packet) {
             if (this.vehicleMoveConfig.getValue()) {
                 this.logPacket("VehicleMove - x: %s, y: %s, z: %s, yaw: %s, pitch: %s", packet.getX(), packet.getY(), packet.getZ(), packet.getYaw(), packet.getPitch());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof PlayerActionC2SPacket) {
-            PlayerActionC2SPacket packet = (PlayerActionC2SPacket)blockHitResult;
+        if (blockHitResult instanceof PlayerActionC2SPacket packet) {
             if (this.playerActionConfig.getValue() && packet.getDirection() != null) {
                 this.logPacket("PlayerAction - action: %s, direction: %s, pos: %s", packet.getAction().name(), packet.getDirection().name(), packet.getPos().toShortString());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof UpdateSelectedSlotC2SPacket) {
-            UpdateSelectedSlotC2SPacket packet = (UpdateSelectedSlotC2SPacket)blockHitResult;
+        if (blockHitResult instanceof UpdateSelectedSlotC2SPacket packet) {
             if (this.updateSlotConfig.getValue()) {
                 this.logPacket("UpdateSlot - slot: %d", packet.getSelectedSlot());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof HandSwingC2SPacket) {
-            HandSwingC2SPacket packet = (HandSwingC2SPacket)blockHitResult;
+        if (blockHitResult instanceof HandSwingC2SPacket packet) {
             if (this.handSwingConfig.getValue()) {
                 this.logPacket("HandSwing - hand: %s", packet.getHand().name());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof CommonPongC2SPacket) {
-            CommonPongC2SPacket packet = (CommonPongC2SPacket)blockHitResult;
+        if (blockHitResult instanceof CommonPongC2SPacket packet) {
             if (this.pongConfig.getValue()) {
                 this.logPacket("Pong - %d", packet.getParameter());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof IPlayerInteractEntityC2SPacket) {
-            IPlayerInteractEntityC2SPacket packet = (IPlayerInteractEntityC2SPacket)blockHitResult;
+        if (blockHitResult instanceof IPlayerInteractEntityC2SPacket packet) {
             if (this.interactEntityConfig.getValue()) {
                 this.logPacket("InteractEntity - %s", packet.getEntity().getName().getString());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof PlayerInteractBlockC2SPacket) {
-            PlayerInteractBlockC2SPacket packet = (PlayerInteractBlockC2SPacket)blockHitResult;
+        if (blockHitResult instanceof PlayerInteractBlockC2SPacket packet) {
             if (this.interactBlockConfig.getValue()) {
                 BlockHitResult blockHitResult1 = packet.getBlockHitResult();
                 this.logPacket("InteractBlock - pos: %s, dir: %s, hand: %s", blockHitResult1.getBlockPos().toShortString(), blockHitResult1.getSide().name(), packet.getHand().name());
@@ -198,56 +187,49 @@ public class PacketLoggerModule extends ToggleModule {
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof PlayerInteractItemC2SPacket) {
-            PlayerInteractItemC2SPacket packet = (PlayerInteractItemC2SPacket)blockHitResult;
+        if (blockHitResult instanceof PlayerInteractItemC2SPacket packet) {
             if (this.interactItemConfig.getValue()) {
                 this.logPacket("InteractItem - hand: %s", packet.getHand().name());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof CloseHandledScreenC2SPacket) {
-            CloseHandledScreenC2SPacket packet = (CloseHandledScreenC2SPacket)blockHitResult;
+        if (blockHitResult instanceof CloseHandledScreenC2SPacket packet) {
             if (this.closeScreenConfig.getValue()) {
                 this.logPacket("CloseScreen - id: %s", packet.getSyncId());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof ClientCommandC2SPacket) {
-            ClientCommandC2SPacket packet = (ClientCommandC2SPacket)blockHitResult;
+        if (blockHitResult instanceof ClientCommandC2SPacket packet) {
             if (this.commandConfig.getValue()) {
                 this.logPacket("ClientCommand - mode: %s", packet.getMode().name());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof ClientStatusC2SPacket) {
-            ClientStatusC2SPacket packet = (ClientStatusC2SPacket)blockHitResult;
+        if (blockHitResult instanceof ClientStatusC2SPacket packet) {
             if (this.statusConfig.getValue()) {
                 this.logPacket("ClientStatus - mode: %s", packet.getMode().name());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof ClickSlotC2SPacket) {
-            ClickSlotC2SPacket packet = (ClickSlotC2SPacket)blockHitResult;
+        if (blockHitResult instanceof ClickSlotC2SPacket packet) {
             if (this.clickSlotConfig.getValue()) {
                 this.logPacket("ClickSlot - type: %s, slot: %s, button: %s, id: %s", packet.getActionType().name(), packet.getSlot(), packet.getButton(), packet.getSyncId());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof PickFromInventoryC2SPacket) {
-            PickFromInventoryC2SPacket packet = (PickFromInventoryC2SPacket)blockHitResult;
+        if (blockHitResult instanceof PickFromInventoryC2SPacket packet) {
             if (this.pickInventoryConfig.getValue()) {
                 this.logPacket("PickInventory - slot: %s", packet.getSlot());
             }
         }
 
         blockHitResult = event.getPacket();
-        if (blockHitResult instanceof TeleportConfirmC2SPacket) {
-            TeleportConfirmC2SPacket packet = (TeleportConfirmC2SPacket)blockHitResult;
+        if (blockHitResult instanceof TeleportConfirmC2SPacket packet) {
             if (this.teleportConfirmConfig.getValue()) {
                 this.logPacket("TeleportConfirm - id: %s", packet.getTeleportId());
             }

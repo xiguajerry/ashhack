@@ -23,8 +23,8 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 public class StepModule
 extends ToggleModule {
-    Config<StepMode> modeConfig = new EnumConfig("Mode", "Step mode", (Enum)StepMode.NORMAL, (Enum[])StepMode.values());
-    Config<Float> heightConfig = new NumberConfig<Float>("Height", "The maximum height for stepping up blocks", Float.valueOf(1.0f), Float.valueOf(2.5f), Float.valueOf(10.0f));
+    Config<StepMode> modeConfig = new EnumConfig("Mode", "Step mode", StepMode.NORMAL, StepMode.values());
+    Config<Float> heightConfig = new NumberConfig<Float>("Height", "The maximum height for stepping up blocks", 1.0f, 2.5f, 10.0f);
     Config<Boolean> useTimerConfig = new BooleanConfig("UseTimer", "Slows down packets by applying timer when stepping", true);
     Config<Boolean> strictConfig = new BooleanConfig("Strict", "Confirms the step height for NCP servers", false, () -> this.heightConfig.getValue().floatValue() <= 2.5f);
     Config<Boolean> entityStepConfig = new BooleanConfig("EntityStep", "Allows entities to step up blocks", false);
@@ -137,10 +137,10 @@ extends ToggleModule {
         return e instanceof HorseEntity || e instanceof LlamaEntity || e instanceof MuleEntity;
     }
 
-    public static enum StepMode {
+    public enum StepMode {
         VANILLA,
         NORMAL,
-        A_A_C;
+        A_A_C
 
     }
 }

@@ -14,7 +14,7 @@ import net.minecraft.entity.passive.LlamaEntity;
 
 public class EntityControlModule
 extends ToggleModule {
-    Config<Float> jumpStrengthConfig = new NumberConfig<Float>("JumpStrength", "The fixed jump strength of the mounted entity", Float.valueOf(0.1f), Float.valueOf(0.7f), Float.valueOf(2.0f));
+    Config<Float> jumpStrengthConfig = new NumberConfig<Float>("JumpStrength", "The fixed jump strength of the mounted entity", 0.1f, 0.7f, 2.0f);
     Config<Boolean> noPigMoveConfig = new BooleanConfig("NoPigAI", "Prevents the pig movement when controlling pigs", false);
 
     public EntityControlModule() {
@@ -29,7 +29,7 @@ extends ToggleModule {
         }
         vehicle.setYaw(EntityControlModule.mc.player.getYaw());
         if (vehicle instanceof LlamaEntity) {
-            LlamaEntity llama = (LlamaEntity)((Object)vehicle);
+            LlamaEntity llama = (LlamaEntity) vehicle;
             llama.headYaw = EntityControlModule.mc.player.getYaw();
         }
     }

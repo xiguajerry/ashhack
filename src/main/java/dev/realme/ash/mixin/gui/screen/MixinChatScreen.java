@@ -89,7 +89,7 @@ public class MixinChatScreen extends MixinScreen {
    )
    private void hookFill(DrawContext instance, int x1, int y1, int x2, int y2, int color) {
       float openAnimation = Modules.HUD.isEnabled() ? 12.0F * Modules.HUD.getChatAnimation() : 12.0F;
-      RenderManager.rect(instance.getMatrices(), 2.0, (double)((float)this.height - 2.0F), (double)(this.width - 4), (double)(-openAnimation), this.client.options.getTextBackgroundColor(Integer.MIN_VALUE));
+      RenderManager.rect(instance.getMatrices(), 2.0, (float)this.height - 2.0F, this.width - 4, -openAnimation, this.client.options.getTextBackgroundColor(Integer.MIN_VALUE));
    }
 
    protected Element addDrawableChild(Element drawableElement) {

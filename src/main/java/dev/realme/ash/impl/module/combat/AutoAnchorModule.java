@@ -40,13 +40,13 @@ import net.minecraft.util.math.Vec3d;
 
 public class AutoAnchorModule
 extends RotationModule {
-    Config<Float> updateDelay = new NumberConfig<Float>("UpdateDelay", "", Float.valueOf(0.0f), Float.valueOf(32.0f), Float.valueOf(500.0f));
-    Config<Float> calcDelay = new NumberConfig<Float>("CalcDelay", "", Float.valueOf(0.0f), Float.valueOf(0.3f), Float.valueOf(0.5f));
-    Config<Float> targetRange = new NumberConfig<Float>("EnemyRange", "", Float.valueOf(0.0f), Float.valueOf(10.0f), Float.valueOf(13.0f));
-    Config<Float> range = new NumberConfig<Float>("Range", "", Float.valueOf(0.0f), Float.valueOf(5.0f), Float.valueOf(8.0f));
-    Config<Double> spamDelay = new NumberConfig<Double>("Delay", "", Double.valueOf(0.0), Double.valueOf(2.0), Double.valueOf(5.0), NumberDisplay.DEGREES);
-    Config<Double> headDelay = new NumberConfig<Double>("HeadDelay", "", Double.valueOf(0.0), Double.valueOf(2.0), Double.valueOf(5.0), NumberDisplay.DEGREES);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)SwapMode.SILENT, (Enum[])SwapMode.values());
+    Config<Float> updateDelay = new NumberConfig<Float>("UpdateDelay", "", 0.0f, 32.0f, 500.0f);
+    Config<Float> calcDelay = new NumberConfig<Float>("CalcDelay", "", 0.0f, 0.3f, 0.5f);
+    Config<Float> targetRange = new NumberConfig<Float>("EnemyRange", "", 0.0f, 10.0f, 13.0f);
+    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 8.0f);
+    Config<Double> spamDelay = new NumberConfig<Double>("Delay", "", 0.0, 2.0, 5.0, NumberDisplay.DEGREES);
+    Config<Double> headDelay = new NumberConfig<Double>("HeadDelay", "", 0.0, 2.0, 5.0, NumberDisplay.DEGREES);
+    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
     Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
     Config<Double> minPrefer = new NumberConfig<Double>("MinDmg", "", 0.0, 6.0, 36.0);
     Config<Double> maxSelfDamage = new NumberConfig<Double>("MaxSelfDamage", "", 0.0, 6.0, 36.0);
@@ -55,16 +55,16 @@ extends RotationModule {
     Config<Double> breakMin = new NumberConfig<Double>("BreakMinDmg", "", 0.0, 7.5, 36.0);
     Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
     Config<Boolean> newRotate = new BooleanConfig("YawStep", "", false);
-    Config<Float> yawStep = new NumberConfig<Float>("Step", "", Float.valueOf(0.0f), Float.valueOf(0.1f), Float.valueOf(1.0f));
+    Config<Float> yawStep = new NumberConfig<Float>("Step", "", 0.0f, 0.1f, 1.0f);
     Config<Boolean> checkLook = new BooleanConfig("CheckLook", "", true);
-    Config<Float> fov = new NumberConfig<Float>("Fov", "", Float.valueOf(0.0f), Float.valueOf(10.0f), Float.valueOf(30.0f));
+    Config<Float> fov = new NumberConfig<Float>("Fov", "", 0.0f, 10.0f, 30.0f);
     Config<Boolean> box = new BooleanConfig("Box", "", true);
     Config<Boolean> outline = new BooleanConfig("Outline", "", true);
     Config<Color> color = new ColorConfig("Color", "", new Color(90, 90, 255), false, false);
     Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
     Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 80, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", Float.valueOf(0.0f), Float.valueOf(10.0f), Float.valueOf(100.0f));
+    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
+    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 10.0f, 100.0f);
     private final Timer updateTimer = new CacheTimer();
     private final Timer delayTimer = new CacheTimer();
     private final Timer calcTimer = new CacheTimer();
@@ -145,7 +145,7 @@ extends RotationModule {
             return;
         }
         if (this.newRotate.getValue().booleanValue() && this.currentPos != null && this.directionVec != null && !Managers.ROTATION.rotating && (packet = event.getPacket()) instanceof PlayerMoveC2SPacket) {
-            PlayerMoveC2SPacket packet2 = (PlayerMoveC2SPacket)((Object)packet);
+            PlayerMoveC2SPacket packet2 = (PlayerMoveC2SPacket) packet;
             if (!packet2.changesLook()) {
                 return;
             }
@@ -153,8 +153,8 @@ extends RotationModule {
             float pitch = packet2.getPitch(114514.0f);
             if (yaw == AutoAnchorModule.mc.player.getYaw() && pitch == AutoAnchorModule.mc.player.getPitch()) {
                 float[] angle = this.injectStep(EntityUtil.getLegitRotations(this.directionVec), this.yawStep.getValue().floatValue());
-                ((IPlayerMoveC2SPacket)((Object)event.getPacket())).setYaw(angle[0]);
-                ((IPlayerMoveC2SPacket)((Object)event.getPacket())).setPitch(angle[1]);
+                ((IPlayerMoveC2SPacket) event.getPacket()).setYaw(angle[0]);
+                ((IPlayerMoveC2SPacket) event.getPacket()).setPitch(angle[1]);
             }
         }
     }
@@ -396,7 +396,7 @@ extends RotationModule {
         if (Math.abs(MathHelper.wrapDegrees(angle[0] - this.lastYaw)) < this.fov.getValue().floatValue() && Math.abs(MathHelper.wrapDegrees(angle[1] - this.lastPitch)) < this.fov.getValue().floatValue()) {
             return true;
         }
-        return this.checkLook.getValue() == false;
+        return !this.checkLook.getValue();
     }
 
     private float[] injectStep(float[] angle, float steps) {
@@ -420,12 +420,12 @@ extends RotationModule {
         return new float[]{angle[0], angle[1]};
     }
 
-    public static enum SwapMode {
+    public enum SwapMode {
         OFF,
         NORMAL,
         SILENT,
         Inventory,
-        Pick;
+        Pick
 
     }
 }

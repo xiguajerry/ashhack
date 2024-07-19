@@ -45,28 +45,28 @@ public final class InteractionManager implements Globals {
    public void placeBlock(BlockPos pos, boolean rotate) {
       Direction side = this.getPlaceDirection(pos);
       if (side != null) {
-         this.placeBlock(pos, Hand.MAIN_HAND, true, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+         this.placeBlock(pos, Hand.MAIN_HAND, true, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
       }
    }
 
    public void placeBlock(BlockPos pos, boolean rotate, Hand hand) {
       Direction side = this.getPlaceDirection(pos);
       if (side != null) {
-         this.placeBlock(pos, hand, true, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+         this.placeBlock(pos, hand, true, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
       }
    }
 
    public void placeBlock(BlockPos pos, boolean rotate, boolean swing) {
       Direction side = this.getPlaceDirection(pos);
       if (side != null) {
-         this.placeBlock(pos, Hand.MAIN_HAND, swing, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+         this.placeBlock(pos, Hand.MAIN_HAND, swing, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
       }
    }
 
    public void placeBlock(BlockPos pos, Hand hand, boolean swing, boolean rotate) {
       Direction side = this.getPlaceDirection(pos);
       if (side != null) {
-         this.placeBlock(pos, hand, swing, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+         this.placeBlock(pos, hand, swing, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
       }
    }
 
@@ -80,23 +80,23 @@ public final class InteractionManager implements Globals {
 
    public void clickBlock(BlockPos pos, boolean rotate) {
       Direction side = Managers.INTERACT.getClickDirection(pos);
-      this.clickBlock(pos, side, Hand.MAIN_HAND, true, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+      this.clickBlock(pos, side, Hand.MAIN_HAND, true, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
    }
 
    public void clickBlock(BlockPos pos, Direction side, boolean rotate) {
-      this.clickBlock(pos, side, Hand.MAIN_HAND, true, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+      this.clickBlock(pos, side, Hand.MAIN_HAND, true, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
    }
 
    public void clickBlock(BlockPos pos, Direction side, boolean rotate, boolean swing) {
-      this.clickBlock(pos, side, Hand.MAIN_HAND, swing, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+      this.clickBlock(pos, side, Hand.MAIN_HAND, swing, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
    }
 
    public void clickBlock(BlockPos pos, Direction side, Hand hand, boolean rotate, boolean swing) {
-      this.clickBlock(pos, side, hand, swing, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+      this.clickBlock(pos, side, hand, swing, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
    }
 
    public void clickBlock(BlockPos pos, Direction side, Hand hand, boolean rotate) {
-      this.clickBlock(pos, side, hand, true, rotate, (Boolean)Modules.COMBAT_SETTING.packetPlace.getValue());
+      this.clickBlock(pos, side, hand, true, rotate, Modules.COMBAT_SETTING.packetPlace.getValue());
    }
 
    public void clickBlock(BlockPos pos, Direction side, Hand hand, boolean swing, boolean rotate, boolean packet) {
@@ -142,7 +142,7 @@ public final class InteractionManager implements Globals {
       for(var7 = 0; var7 < var6; ++var7) {
          i = var5[var7];
          if (BlockUtil.canClick(pos.offset(i)) && !BlockUtil.canReplace(pos.offset(i)) && !this.heightCheck(pos.offset(i)) && (!this.strict() || this.isStrictDirection(pos.offset(i), i.getOpposite())) && (mc.player.isSneaking() || !BlockUtil.getState(pos.offset(i)).hasBlockEntity() && !this.isChargedRespawnAnchor(pos.offset(i)))) {
-            double vecDis = (double)((float)EntityUtil.getEyesPos().squaredDistanceTo(pos.toCenterPos().add((double)i.getVector().getX() * 0.5, (double)i.getVector().getY() * 0.5, (double)i.getVector().getZ() * 0.5)));
+            double vecDis = (float)EntityUtil.getEyesPos().squaredDistanceTo(pos.toCenterPos().add((double)i.getVector().getX() * 0.5, (double)i.getVector().getY() * 0.5, (double)i.getVector().getZ() * 0.5));
             if (!((double)MathHelper.sqrt((float)vecDis) > this.range()) && (side == null || vecDis < dis)) {
                side = i;
                dis = vecDis;
@@ -177,10 +177,10 @@ public final class InteractionManager implements Globals {
       for(var7 = 0; var7 < var6; ++var7) {
          i = var5[var7];
          if (EntityUtil.canSee(pos, i) && !((double)MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.offset(i).toCenterPos())) > dis)) {
-            vecDis = (double)((float)EntityUtil.getEyesPos().squaredDistanceTo(pos.toCenterPos().add((double)i.getVector().getX() * 0.5, (double)i.getVector().getY() * 0.5, (double)i.getVector().getZ() * 0.5)));
+            vecDis = (float)EntityUtil.getEyesPos().squaredDistanceTo(pos.toCenterPos().add((double)i.getVector().getX() * 0.5, (double)i.getVector().getY() * 0.5, (double)i.getVector().getZ() * 0.5));
             if (!((double)MathHelper.sqrt((float)vecDis) > this.range())) {
                side = i;
-               dis = (double)MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.offset(i).toCenterPos()));
+               dis = MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.offset(i).toCenterPos()));
             }
          }
       }
@@ -196,10 +196,10 @@ public final class InteractionManager implements Globals {
          for(var7 = 0; var7 < var6; ++var7) {
             i = var5[var7];
             if (!this.strict() || BlockUtil.canClickThrough(pos.offset(i)) && this.isStrictDirection(pos, i)) {
-               vecDis = (double)((float)EntityUtil.getEyesPos().squaredDistanceTo(pos.toCenterPos().add((double)i.getVector().getX() * 0.5, (double)i.getVector().getY() * 0.5, (double)i.getVector().getZ() * 0.5)));
+               vecDis = (float)EntityUtil.getEyesPos().squaredDistanceTo(pos.toCenterPos().add((double)i.getVector().getX() * 0.5, (double)i.getVector().getY() * 0.5, (double)i.getVector().getZ() * 0.5));
                if (!((double)MathHelper.sqrt((float)vecDis) > this.range()) && !((double)MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.offset(i).toCenterPos())) > dis)) {
                   side = i;
-                  dis = (double)MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.offset(i).toCenterPos()));
+                  dis = MathHelper.sqrt((float)mc.player.squaredDistanceTo(pos.offset(i).toCenterPos()));
                }
             }
          }
@@ -211,7 +211,7 @@ public final class InteractionManager implements Globals {
    private boolean heightCheck(BlockPos pos) {
       int var10000 = pos.getY();
       short var10001;
-      switch ((CombatSettingModule.MaxHeight)Modules.COMBAT_SETTING.maxHeight.getValue()) {
+      switch (Modules.COMBAT_SETTING.maxHeight.getValue()) {
          case Old -> var10001 = 255;
          case New -> var10001 = 319;
          case Disabled -> var10001 = 1000;
@@ -222,7 +222,7 @@ public final class InteractionManager implements Globals {
    }
 
    public double range() {
-      return (double)(Float)Modules.COMBAT_SETTING.placeRange.getValue();
+      return (double) Modules.COMBAT_SETTING.placeRange.getValue();
    }
 
    public boolean vanilla() {
@@ -238,7 +238,7 @@ public final class InteractionManager implements Globals {
    }
 
    public boolean isChargedRespawnAnchor(BlockPos pos) {
-      return BlockUtil.getState(pos).getBlock() instanceof RespawnAnchorBlock && (Integer)BlockUtil.getState(pos).get(Properties.CHARGES) > 0;
+      return BlockUtil.getState(pos).getBlock() instanceof RespawnAnchorBlock && BlockUtil.getState(pos).get(Properties.CHARGES) > 0;
    }
 
    public boolean isStrictDirection(BlockPos pos, Direction dir) {

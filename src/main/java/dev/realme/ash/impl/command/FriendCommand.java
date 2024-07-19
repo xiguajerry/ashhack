@@ -13,7 +13,7 @@ public class FriendCommand extends Command {
    }
 
    public void buildCommand(LiteralArgumentBuilder builder) {
-      ((LiteralArgumentBuilder)builder.then(((RequiredArgumentBuilder)argument("add/del", StringArgumentType.string()).suggests(suggest(new String[]{"add", "del", "remove"})).then(argument("friend_name", StringArgumentType.string()).executes((c) -> {
+      builder.then(argument("add/del", StringArgumentType.string()).suggests(suggest("add", "del", "remove")).then(argument("friend_name", StringArgumentType.string()).executes((c) -> {
          String playerName = StringArgumentType.getString(c, "friend_name");
          String action = StringArgumentType.getString(c, "add/del");
          if (action.equalsIgnoreCase("add")) {
@@ -35,10 +35,10 @@ public class FriendCommand extends Command {
          }
 
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Must provide player to friend!");
          return 1;
-      }))).executes((c) -> {
+      })).executes((c) -> {
          ChatUtil.error("Invalid usage! Usage: " + this.getUsage());
          return 1;
       });

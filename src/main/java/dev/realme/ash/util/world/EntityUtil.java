@@ -69,14 +69,14 @@ public class EntityUtil {
          if (!(dist > targetRange * targetRange)) {
             LivingEntity e;
             float armor;
-            switch ((CombatSettingModule.Priority)Modules.COMBAT_SETTING.priority.getValue()) {
+            switch (Modules.COMBAT_SETTING.priority.getValue()) {
                case FOV:
                   Vec3d entityPos = entity.getEyePos();
                   float[] rots = RotationUtil.getRotationsTo(getEyesPos(), entityPos);
                   float diff = MathHelper.wrapDegrees(Globals.mc.player.getYaw()) - rots[0];
                   float magnitude = Math.abs(diff);
                   if ((double)magnitude < min) {
-                     min = (double)magnitude;
+                     min = magnitude;
                      attackTarget = entity;
                   }
                   break;
@@ -90,7 +90,7 @@ public class EntityUtil {
                   e = (LivingEntity)entity;
                   armor = e.getHealth() + e.getAbsorptionAmount();
                   if ((double)armor < min) {
-                     min = (double)armor;
+                     min = armor;
                      attackTarget = entity;
                   }
                   break;
@@ -98,7 +98,7 @@ public class EntityUtil {
                   e = (LivingEntity)entity;
                   armor = getArmorDurability(e);
                   if ((double)armor < min) {
-                     min = (double)armor;
+                     min = armor;
                      attackTarget = entity;
                   }
             }
@@ -160,7 +160,7 @@ public class EntityUtil {
    }
 
    public static int getDamagePercent(ItemStack stack) {
-      return (int)((double)(stack.getMaxDamage() - stack.getDamage()) / Math.max(0.1, (double)stack.getMaxDamage()) * 100.0);
+      return (int)((double)(stack.getMaxDamage() - stack.getDamage()) / Math.max(0.1, stack.getMaxDamage()) * 100.0);
    }
 
    public static float getHealth(Entity entity) {
@@ -203,8 +203,8 @@ public class EntityUtil {
    }
 
    public static void attackCrystal(BlockPos pos) {
-      if (Modules.COMBAT_SETTING.attackTimer.passed((Number)Modules.COMBAT_SETTING.attackDelay.getValue())) {
-         List entities = Globals.mc.world.getOtherEntities((Entity)null, new Box(pos)).stream().filter((e) -> {
+      if (Modules.COMBAT_SETTING.attackTimer.passed(Modules.COMBAT_SETTING.attackDelay.getValue())) {
+         List entities = Globals.mc.world.getOtherEntities(null, new Box(pos)).stream().filter((e) -> {
             return e instanceof EndCrystalEntity;
          }).toList();
          Iterator var2 = entities.iterator();
@@ -221,7 +221,7 @@ public class EntityUtil {
 
    public static void attackCrystal(BlockPos pos, double delay) {
       if (Modules.COMBAT_SETTING.attackTimer.passed(delay)) {
-         List entities = Globals.mc.world.getOtherEntities((Entity)null, new Box(pos)).stream().filter((e) -> {
+         List entities = Globals.mc.world.getOtherEntities(null, new Box(pos)).stream().filter((e) -> {
             return e instanceof EndCrystalEntity;
          }).toList();
          Iterator var4 = entities.iterator();
@@ -240,13 +240,13 @@ public class EntityUtil {
       Iterator var1 = Globals.mc.world.getNonSpectatingEntities(EndCrystalEntity.class, box).iterator();
       if (var1.hasNext()) {
          EndCrystalEntity entity = (EndCrystalEntity)var1.next();
-         attackCrystal((Entity)entity);
+         attackCrystal(entity);
       }
 
    }
 
    public static void attackCrystal(Entity crystal) {
-      if (Modules.COMBAT_SETTING.attackTimer.passed((Number)Modules.COMBAT_SETTING.attackDelay.getValue())) {
+      if (Modules.COMBAT_SETTING.attackTimer.passed(Modules.COMBAT_SETTING.attackDelay.getValue())) {
          if (crystal != null) {
             Globals.mc.player.networkHandler.sendPacket(PlayerInteractEntityC2SPacket.attack(crystal, Globals.mc.player.isSneaking()));
             PlayerUtil.doSwing();
@@ -257,7 +257,7 @@ public class EntityUtil {
    }
 
    public static void attackCrystal(double range) {
-      if (Modules.COMBAT_SETTING.attackTimer.passed((Number)Modules.COMBAT_SETTING.attackDelay.getValue())) {
+      if (Modules.COMBAT_SETTING.attackTimer.passed(Modules.COMBAT_SETTING.attackDelay.getValue())) {
          Iterator var2 = Globals.mc.world.getEntities().iterator();
 
          while(var2.hasNext()) {

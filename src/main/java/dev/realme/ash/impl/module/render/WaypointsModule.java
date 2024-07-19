@@ -25,7 +25,7 @@ public class WaypointsModule
 extends ToggleModule {
     Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
     Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 0, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
+    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
     private final Map<UUID, PlayerEntity> playerCache = Maps.newConcurrentMap();
     private final Map<UUID, PlayerEntity> logoutCache = Maps.newConcurrentMap();
 
@@ -69,7 +69,7 @@ extends ToggleModule {
             this.playerCache.clear();
         }
         if ((object = event.getPacket()) instanceof PlayerRemoveS2CPacket) {
-            packet = (PlayerRemoveS2CPacket)object;
+            packet = object;
             for (UUID uuid2 : ((PlayerRemoveS2CPacket)packet).profileIds()) {
                 for (UUID uuid : this.playerCache.keySet()) {
                     if (!uuid.equals(uuid2)) continue;
@@ -92,8 +92,8 @@ extends ToggleModule {
             PlayerEntity data = this.logoutCache.get(uuid);
             if (data == null) continue;
             RenderManager.post(() -> RenderManager.renderSign(data.getName().getString(), data.getPos().add(0.0, data.getBoundingBox().getLengthY() + 0.4, 0.0)));
-            RenderManager.renderBox(event.getMatrices(), ((IEntity)((Object)data)).getDimensions().getBoxAt(data.getPos()), Modules.CLIENT_SETTING.getRGB(this.boxAlpha.getValue()));
-            RenderManager.renderBoundingBox(event.getMatrices(), ((IEntity)((Object)data)).getDimensions().getBoxAt(data.getPos()), this.olWidth.getValue().floatValue(), Modules.CLIENT_SETTING.getRGB(this.olAlpha.getValue()));
+            RenderManager.renderBox(event.getMatrices(), ((IEntity) data).getDimensions().getBoxAt(data.getPos()), Modules.CLIENT_SETTING.getRGB(this.boxAlpha.getValue()));
+            RenderManager.renderBoundingBox(event.getMatrices(), ((IEntity) data).getDimensions().getBoxAt(data.getPos()), this.olWidth.getValue().floatValue(), Modules.CLIENT_SETTING.getRGB(this.olAlpha.getValue()));
         }
     }
 }

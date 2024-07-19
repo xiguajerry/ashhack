@@ -29,9 +29,8 @@ public class TotemManager implements Globals {
    public void onPacketInbound(PacketEvent.Receive event) {
       if (mc.world != null) {
          Packet var3 = event.getPacket();
-         if (var3 instanceof EntityStatusS2CPacket) {
-            EntityStatusS2CPacket packet = (EntityStatusS2CPacket)var3;
-            if (packet.getStatus() == 35) {
+         if (var3 instanceof EntityStatusS2CPacket packet) {
+             if (packet.getStatus() == 35) {
                Entity entity = packet.getEntity(mc.world);
                if (entity != null && entity.isAlive() && entity instanceof PlayerEntity) {
                   Ash.EVENT_HANDLER.dispatch(new TotemPopEvent((PlayerEntity)entity));

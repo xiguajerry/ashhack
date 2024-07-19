@@ -34,12 +34,11 @@ public class AccountEntry extends AlwaysSelectedEntryListWidget.Entry implements
       context.drawTextWithShadow(var10001, var10002, var10003, var10004 - 9 / 2, hovered ? 5635925 : -1);
       if (!(this.account instanceof CrackedAccount)) {
          MinecraftAccount var12 = this.account;
-         if (!(var12 instanceof MicrosoftAccount)) {
+         if (!(var12 instanceof MicrosoftAccount msa)) {
             return;
          }
 
-         MicrosoftAccount msa = (MicrosoftAccount)var12;
-         if (msa.getUsernameOrNull() == null) {
+          if (msa.getUsernameOrNull() == null) {
             return;
          }
       }

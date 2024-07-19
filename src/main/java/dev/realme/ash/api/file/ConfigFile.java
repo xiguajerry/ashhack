@@ -20,7 +20,7 @@ public abstract class ConfigFile {
    private final Path filepath;
 
    public ConfigFile(Path dir, String path) {
-      if (!Files.exists(dir, new LinkOption[0])) {
+      if (!Files.exists(dir)) {
          try {
             Files.createDirectory(dir);
          } catch (IOException var4) {

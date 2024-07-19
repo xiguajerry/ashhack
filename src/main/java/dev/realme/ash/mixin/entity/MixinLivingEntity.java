@@ -58,10 +58,10 @@ public abstract class MixinLivingEntity extends MixinEntity implements Globals {
          if (event.isCanceled()) {
             ci.cancel();
             Vec3d vec3d = this.getVelocity();
-            this.setVelocity(new Vec3d(vec3d.x, (double)this.getJumpVelocity(), vec3d.z));
+            this.setVelocity(new Vec3d(vec3d.x, this.getJumpVelocity(), vec3d.z));
             if (this.isSprinting()) {
                float f = event.getYaw() * 0.017453292F;
-               this.setVelocity(this.getVelocity().add((double)(-MathHelper.sin(f) * 0.2F), 0.0, (double)(MathHelper.cos(f) * 0.2F)));
+               this.setVelocity(this.getVelocity().add(-MathHelper.sin(f) * 0.2F, 0.0, MathHelper.cos(f) * 0.2F));
             }
 
             this.velocityDirty = true;

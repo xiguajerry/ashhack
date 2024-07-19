@@ -60,7 +60,7 @@ public abstract class MixinEntity implements Globals {
            cancellable = true
    )
    public void hookGetCameraPosVec(float tickDelta, CallbackInfoReturnable<Vec3d> info) {
-      EntityRotationVectorEvent event = new EntityRotationVectorEvent(tickDelta, (Entity)((Object) this), (Vec3d)info.getReturnValue());
+      EntityRotationVectorEvent event = new EntityRotationVectorEvent(tickDelta, (Entity)((Object) this), info.getReturnValue());
       Ash.EVENT_HANDLER.dispatch(event);
       info.setReturnValue(event.getPosition());
    }
@@ -70,8 +70,7 @@ public abstract class MixinEntity implements Globals {
            at = {@At("HEAD")}
    )
    public void hookMove(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
-      if (((Entity) ((Object) this)) == mc.player) {
-         ;
+      if ((Object) this == mc.player) {
       }
    }
 
@@ -81,7 +80,7 @@ public abstract class MixinEntity implements Globals {
            cancellable = true
    )
    private void hookSlowMovement(BlockState state, Vec3d multiplier, CallbackInfo ci) {
-      if (((Entity) ((Object) this)) == mc.player) {
+      if ((Object) this == mc.player) {
          SlowMovementEvent slowMovementEvent = new SlowMovementEvent(state);
          Ash.EVENT_HANDLER.dispatch(slowMovementEvent);
          if (slowMovementEvent.isCanceled()) {
@@ -114,7 +113,7 @@ public abstract class MixinEntity implements Globals {
            cancellable = true
    )
    private void hookUpdateVelocity(float speed, Vec3d movementInput, CallbackInfo ci) {
-      if (((Entity) ((Object) this)) == mc.player) {
+      if ((Object) this == mc.player) {
          UpdateVelocityEvent updateVelocityEvent = new UpdateVelocityEvent(movementInput, speed, mc.player.getYaw(), movementInputToVelocity(movementInput, speed, mc.player.getYaw()));
          Ash.EVENT_HANDLER.dispatch(updateVelocityEvent);
          if (updateVelocityEvent.isCanceled()) {
@@ -160,7 +159,7 @@ public abstract class MixinEntity implements Globals {
            cancellable = true
    )
    private void hookChangeLookDirection(double cursorDeltaX, double cursorDeltaY, CallbackInfo ci) {
-      if (((Entity) ((Object) this)) == mc.player) {
+      if ((Object) this == mc.player) {
          LookDirectionEvent lookDirectionEvent = new LookDirectionEvent((Entity)((Object) this), cursorDeltaX, cursorDeltaY);
          Ash.EVENT_HANDLER.dispatch(lookDirectionEvent);
          if (lookDirectionEvent.isCanceled()) {
@@ -185,7 +184,7 @@ public abstract class MixinEntity implements Globals {
            cancellable = true
    )
    public void hookCameraPositionVec(float tickDelta, CallbackInfoReturnable<Vec3d> cir) {
-      EntityCameraPositionEvent cameraPositionEvent = new EntityCameraPositionEvent((Vec3d)cir.getReturnValue(),
+      EntityCameraPositionEvent cameraPositionEvent = new EntityCameraPositionEvent(cir.getReturnValue(),
               ((Entity) ((Object) this)), tickDelta);
       Ash.EVENT_HANDLER.dispatch(cameraPositionEvent);
       cir.setReturnValue(cameraPositionEvent.getPosition());
@@ -196,7 +195,7 @@ public abstract class MixinEntity implements Globals {
            at = {@At("HEAD")}
    )
    private void hookSetBoundingBox(Box boundingBox, CallbackInfo ci) {
-      if (((Entity) ((Object) this)) == mc.player) {
+      if ((Object) this == mc.player) {
          SetBBEvent setBBEvent = new SetBBEvent(boundingBox);
          Ash.EVENT_HANDLER.dispatch(setBBEvent);
       }

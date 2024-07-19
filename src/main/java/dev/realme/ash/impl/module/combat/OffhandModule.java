@@ -26,17 +26,17 @@ import net.minecraft.screen.slot.SlotActionType;
 
 public class OffhandModule
 extends ToggleModule {
-    Config<OffHandItem> mode = new EnumConfig("Mode", "", (Enum)OffHandItem.Totem, (Enum[])OffHandItem.values());
+    Config<OffHandItem> mode = new EnumConfig("Mode", "", OffHandItem.Totem, OffHandItem.values());
     Config<Boolean> removeApple = new BooleanConfig("RemoveApple", "", false);
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", Float.valueOf(0.0f), Float.valueOf(100.0f), Float.valueOf(2000.0f), NumberDisplay.DEFAULT);
+    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 100.0f, 2000.0f, NumberDisplay.DEFAULT);
     Config<Integer> appleSlot = new NumberConfig<Integer>("AppleSlot", "", 1, 5, 9);
     Config<Boolean> pickaxeSwap = new BooleanConfig("PickaxeSwap", "", false);
     Config<Boolean> swapBack = new BooleanConfig("SwapBack", "", true);
     Config<Boolean> cancelPacket = new BooleanConfig("CancelPacket", "", false);
     Config<Boolean> mainHandTotem = new BooleanConfig("MainHandTotem", "", false);
-    Config<Float> health = new NumberConfig<Float>("Health", "", Float.valueOf(0.0f), Float.valueOf(15.0f), Float.valueOf(36.0f));
+    Config<Float> health = new NumberConfig<Float>("Health", "", 0.0f, 15.0f, 36.0f);
     Config<Integer> slot = new NumberConfig<Integer>("TotemSlot", "", 1, 1, 9);
-    Config<DisplayMode> displayMode = new EnumConfig("DisplayMode", "", (Enum)DisplayMode.Totem, (Enum[])DisplayMode.values());
+    Config<DisplayMode> displayMode = new EnumConfig("DisplayMode", "", DisplayMode.Totem, DisplayMode.values());
     int lastSlot = -1;
     private final Timer delayTimer = new CacheTimer();
 
@@ -146,16 +146,16 @@ extends ToggleModule {
         return -1;
     }
 
-    public static enum OffHandItem {
+    public enum OffHandItem {
         Gapple,
         Crystal,
-        Totem;
+        Totem
 
     }
 
-    public static enum DisplayMode {
+    public enum DisplayMode {
         Totem,
-        Offhand;
+        Offhand
 
     }
 }

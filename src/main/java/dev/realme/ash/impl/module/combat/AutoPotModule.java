@@ -27,11 +27,11 @@ import net.minecraft.util.Hand;
 
 public class AutoPotModule
 extends RotationModule {
-    Config<Mode> mode = new EnumConfig("Mode", "", (Enum)Mode.Turtle, (Enum[])Mode.values());
+    Config<Mode> mode = new EnumConfig("Mode", "", Mode.Turtle, Mode.values());
     Config<Boolean> onlyGround = new BooleanConfig("OnlyGround", "", true);
     Config<Boolean> autoTurtle = new BooleanConfig("AutoTurtle", "", true);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", (Enum)SwapMode.SILENT, (Enum[])SwapMode.values());
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", Float.valueOf(0.0f), Float.valueOf(1.0f), Float.valueOf(1000.0f), NumberDisplay.DEFAULT);
+    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
+    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 1.0f, 1000.0f, NumberDisplay.DEFAULT);
     Config<Boolean> usingPause = new BooleanConfig("UsingPause", "", true);
     private final Timer delayTimer = new CacheTimer();
     public int slot;
@@ -142,7 +142,7 @@ extends RotationModule {
     }
 
     public int findItem() {
-        for (int i = this.swapMode.getValue().equals((Object)SwapMode.Pick) ? 9 : 0; i < (this.swapMode.getValue().equals((Object)SwapMode.SILENT) || this.swapMode.getValue().equals((Object)SwapMode.NORMAL) ? 9 : 45); ++i) {
+        for (int i = this.swapMode.getValue().equals(SwapMode.Pick) ? 9 : 0; i < (this.swapMode.getValue().equals(SwapMode.SILENT) || this.swapMode.getValue().equals(SwapMode.NORMAL) ? 9 : 45); ++i) {
             ItemStack stack = InventoryUtil.getStackInSlot(i);
             if (!(stack.getItem() instanceof SplashPotionItem) || !this.isStackPotion(stack)) continue;
             return i < 9 ? i + 36 : i;
@@ -150,18 +150,18 @@ extends RotationModule {
         return -1;
     }
 
-    public static enum Mode {
+    public enum Mode {
         Turtle,
-        Healing;
+        Healing
 
     }
 
-    public static enum SwapMode {
+    public enum SwapMode {
         OFF,
         NORMAL,
         SILENT,
         Inventory,
-        Pick;
+        Pick
 
     }
 }

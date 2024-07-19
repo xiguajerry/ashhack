@@ -58,26 +58,26 @@ import net.minecraft.world.RaycastContext;
 public class AuraModule
 extends RotationModule {
     Config<Boolean> swingConfig = new BooleanConfig("Swing", "Swings the hand after attacking", true);
-    Config<TargetMode> modeConfig = new EnumConfig("Mode", "The mode for targeting entities to attack", (Enum)TargetMode.SWITCH, (Enum[])TargetMode.values());
-    Config<Priority> priorityConfig = new EnumConfig("Priority", "The value to prioritize when searching for targets", (Enum)Priority.HEALTH, (Enum[])Priority.values());
-    Config<Float> searchRangeConfig = new NumberConfig<Float>("EnemyRange", "Range to search for targets", Float.valueOf(1.0f), Float.valueOf(5.0f), Float.valueOf(10.0f));
-    Config<Float> rangeConfig = new NumberConfig<Float>("Range", "Range to attack entities", Float.valueOf(1.0f), Float.valueOf(4.5f), Float.valueOf(6.0f));
-    Config<Float> wallRangeConfig = new NumberConfig<Float>("WallRange", "Range to attack entities through walls", Float.valueOf(1.0f), Float.valueOf(4.5f), Float.valueOf(6.0f));
+    Config<TargetMode> modeConfig = new EnumConfig("Mode", "The mode for targeting entities to attack", TargetMode.SWITCH, TargetMode.values());
+    Config<Priority> priorityConfig = new EnumConfig("Priority", "The value to prioritize when searching for targets", Priority.HEALTH, Priority.values());
+    Config<Float> searchRangeConfig = new NumberConfig<Float>("EnemyRange", "Range to search for targets", 1.0f, 5.0f, 10.0f);
+    Config<Float> rangeConfig = new NumberConfig<Float>("Range", "Range to attack entities", 1.0f, 4.5f, 6.0f);
+    Config<Float> wallRangeConfig = new NumberConfig<Float>("WallRange", "Range to attack entities through walls", 1.0f, 4.5f, 6.0f);
     Config<Boolean> vanillaRangeConfig = new BooleanConfig("VanillaRange", "Only attack within vanilla range", false);
-    Config<Float> fovConfig = new NumberConfig<Float>("FOV", "Field of view to attack entities", Float.valueOf(1.0f), Float.valueOf(180.0f), Float.valueOf(180.0f));
+    Config<Float> fovConfig = new NumberConfig<Float>("FOV", "Field of view to attack entities", 1.0f, 180.0f, 180.0f);
     Config<Boolean> attackDelayConfig = new BooleanConfig("AttackDelay", "Delays attacks according to minecraft hit delays for maximum damage per attack", true);
-    Config<Float> attackSpeedConfig = new NumberConfig<Float>("AttackSpeed", "Delay for attacks (Only functions if AttackDelay is off)", Float.valueOf(1.0f), Float.valueOf(20.0f), Float.valueOf(20.0f), () -> this.attackDelayConfig.getValue() == false);
-    Config<Float> randomSpeedConfig = new NumberConfig<Float>("RandomSpeed", "Randomized delay for attacks (Only functions if AttackDelay is off)", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(10.0f), () -> this.attackDelayConfig.getValue() == false);
-    Config<Float> swapDelayConfig = new NumberConfig<Float>("SwapPenalty", "Delay for attacking after swapping items which prevents NCP flags", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(10.0f));
-    Config<TickSync> tpsSyncConfig = new EnumConfig("TPS-Sync", "Syncs the attacks with the server TPS", (Enum)TickSync.NONE, (Enum[])TickSync.values());
+    Config<Float> attackSpeedConfig = new NumberConfig<Float>("AttackSpeed", "Delay for attacks (Only functions if AttackDelay is off)", 1.0f, 20.0f, 20.0f, () -> !this.attackDelayConfig.getValue());
+    Config<Float> randomSpeedConfig = new NumberConfig<Float>("RandomSpeed", "Randomized delay for attacks (Only functions if AttackDelay is off)", 0.0f, 0.0f, 10.0f, () -> !this.attackDelayConfig.getValue());
+    Config<Float> swapDelayConfig = new NumberConfig<Float>("SwapPenalty", "Delay for attacking after swapping items which prevents NCP flags", 0.0f, 0.0f, 10.0f);
+    Config<TickSync> tpsSyncConfig = new EnumConfig("TPS-Sync", "Syncs the attacks with the server TPS", TickSync.NONE, TickSync.values());
     Config<Boolean> awaitCritsConfig = new BooleanConfig("AwaitCriticals", "Aura will wait for a critical hit when falling", false);
     Config<Boolean> autoSwapConfig = new BooleanConfig("AutoSwap", "Automatically swaps to a weapon before attacking", true);
     Config<Boolean> swordCheckConfig = new BooleanConfig("Sword-Check", "Checks if a weapon is in the hand before attacking", true);
-    Config<Vector> hitVectorConfig = new EnumConfig("HitVector", "The vector to aim for when attacking entities", (Enum)Vector.FEET, (Enum[])Vector.values());
+    Config<Vector> hitVectorConfig = new EnumConfig("HitVector", "The vector to aim for when attacking entities", Vector.FEET, Vector.values());
     Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotate before attacking", false);
     Config<Boolean> silentRotateConfig = new BooleanConfig("RotateSilent", "Rotates silently to server", false, () -> this.rotateConfig.getValue());
     Config<Boolean> strictRotateConfig = new BooleanConfig("YawStep", "Rotates yaw over multiple ticks to prevent certain rotation flags in NCP", false, () -> this.rotateConfig.getValue());
-    Config<Integer> rotateLimitConfig = new NumberConfig<Integer>("YawStep-Limit", "Maximum yaw rotation in degrees for one tick", Integer.valueOf(1), Integer.valueOf(180), Integer.valueOf(180), NumberDisplay.DEGREES, () -> this.rotateConfig.getValue() != false && this.strictRotateConfig.getValue() != false);
+    Config<Integer> rotateLimitConfig = new NumberConfig<Integer>("YawStep-Limit", "Maximum yaw rotation in degrees for one tick", 1, 180, 180, NumberDisplay.DEGREES, () -> this.rotateConfig.getValue() && this.strictRotateConfig.getValue());
     Config<Integer> ticksExistedConfig = new NumberConfig<Integer>("TicksExisted", "The minimum age of the entity to be considered for attack", 0, 50, 200);
     Config<Boolean> armorCheckConfig = new BooleanConfig("ArmorCheck", "Checks if target has armor before attacking", false);
     Config<Boolean> stopSprintConfig = new BooleanConfig("StopSprint", "Stops sprinting before attacking to maintain vanilla behavior", false);
@@ -144,7 +144,7 @@ extends RotationModule {
                 this.entityTarget = this.getAttackTarget(eyepos);
             }
         }
-        if (this.entityTarget == null || !this.switchTimer.passed(Float.valueOf(this.swapDelayConfig.getValue().floatValue() * 25.0f))) {
+        if (this.entityTarget == null || !this.switchTimer.passed(this.swapDelayConfig.getValue().floatValue() * 25.0f)) {
             this.silentRotations = null;
             return;
         }
@@ -201,7 +201,7 @@ extends RotationModule {
             if (this.randomDelay < 0L) {
                 this.randomDelay = (long)RANDOM.nextFloat(this.randomSpeedConfig.getValue().floatValue() * 10.0f + 1.0f);
             }
-            if (this.attackTimer.passed(Float.valueOf(1000.0f - (delay = this.attackSpeedConfig.getValue().floatValue() * 50.0f + (float)this.randomDelay))) && this.attackTarget(this.entityTarget)) {
+            if (this.attackTimer.passed(1000.0f - (delay = this.attackSpeedConfig.getValue().floatValue() * 50.0f + (float) this.randomDelay)) && this.attackTarget(this.entityTarget)) {
                 this.randomDelay = -1L;
                 this.attackTimer.reset();
             }
@@ -257,7 +257,7 @@ extends RotationModule {
             ItemStack stack = AuraModule.mc.player.getInventory().getStack(i);
             Item item = stack.getItem();
             if (item instanceof SwordItem) {
-                SwordItem swordItem = (SwordItem)((Object)item);
+                SwordItem swordItem = (SwordItem) item;
                 float sharpness2 = (float)EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) * 0.5f + 0.5f;
                 dmg = swordItem.getAttackDamage() + sharpness2;
                 if (!(dmg > sharp)) continue;
@@ -267,7 +267,7 @@ extends RotationModule {
             }
             Item sharpness2 = stack.getItem();
             if (sharpness2 instanceof AxeItem) {
-                AxeItem axeItem = (AxeItem)((Object)sharpness2);
+                AxeItem axeItem = (AxeItem) sharpness2;
                 float sharpness3 = (float)EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) * 0.5f + 0.5f;
                 dmg = axeItem.getAttackDamage() + sharpness3;
                 if (!(dmg > sharp)) continue;
@@ -396,11 +396,11 @@ extends RotationModule {
     }
 
     public boolean isHoldingSword() {
-        return this.swordCheckConfig.getValue() == false || AuraModule.mc.player.getMainHandStack().getItem() instanceof SwordItem || AuraModule.mc.player.getMainHandStack().getItem() instanceof AxeItem || AuraModule.mc.player.getMainHandStack().getItem() instanceof TridentItem;
+        return !this.swordCheckConfig.getValue() || AuraModule.mc.player.getMainHandStack().getItem() instanceof SwordItem || AuraModule.mc.player.getMainHandStack().getItem() instanceof AxeItem || AuraModule.mc.player.getMainHandStack().getItem() instanceof TridentItem;
     }
 
     public boolean shouldWaitCrit() {
-        return !AuraModule.mc.player.isOnGround() && AuraModule.mc.player.fallDistance > 0.0f && AuraModule.mc.player.fallDistance < 1.0f && !AuraModule.mc.player.hasStatusEffect(StatusEffects.BLINDNESS) && !AuraModule.mc.player.isClimbing() && !AuraModule.mc.player.isTouchingWater() || this.awaitCritsConfig.getValue() == false || !AuraModule.mc.options.jumpKey.isPressed();
+        return !AuraModule.mc.player.isOnGround() && AuraModule.mc.player.fallDistance > 0.0f && AuraModule.mc.player.fallDistance < 1.0f && !AuraModule.mc.player.hasStatusEffect(StatusEffects.BLINDNESS) && !AuraModule.mc.player.isClimbing() && !AuraModule.mc.player.isTouchingWater() || !this.awaitCritsConfig.getValue() || !AuraModule.mc.options.jumpKey.isPressed();
     }
 
     private Vec3d getAttackRotateVec(Entity entity) {
@@ -413,37 +413,37 @@ extends RotationModule {
             case AUTO -> {
                 Vec3d torsoPos = feetPos.add(0.0, entity.getHeight() / 2.0f, 0.0);
                 Vec3d eyesPos = entity.getEyePos();
-                yield Stream.of(feetPos, torsoPos, eyesPos).min(Comparator.comparing(b -> AuraModule.mc.player.getEyePos().squaredDistanceTo((Vec3d)b))).orElse(eyesPos);
+                yield Stream.of(feetPos, torsoPos, eyesPos).min(Comparator.comparing(b -> AuraModule.mc.player.getEyePos().squaredDistanceTo(b))).orElse(eyesPos);
             }
         };
     }
 
     private boolean isEnemy(Entity e) {
-        return (!e.isInvisible() || this.invisiblesConfig.getValue() != false) && e instanceof PlayerEntity && this.playersConfig.getValue() != false || EntityUtil.isMonster(e) && this.monstersConfig.getValue() != false || EntityUtil.isNeutral(e) && this.neutralsConfig.getValue() != false || EntityUtil.isPassive(e) && this.animalsConfig.getValue() != false;
+        return (!e.isInvisible() || this.invisiblesConfig.getValue()) && e instanceof PlayerEntity && this.playersConfig.getValue() || EntityUtil.isMonster(e) && this.monstersConfig.getValue() || EntityUtil.isNeutral(e) && this.neutralsConfig.getValue() || EntityUtil.isPassive(e) && this.animalsConfig.getValue();
     }
 
     public Entity getEntityTarget() {
         return this.entityTarget;
     }
 
-    public static enum TargetMode {
+    public enum TargetMode {
         SWITCH,
-        SINGLE;
+        SINGLE
 
     }
 
-    public static enum Priority {
+    public enum Priority {
         HEALTH,
         DISTANCE,
-        ARMOR;
+        ARMOR
 
     }
 
-    public static enum Vector {
+    public enum Vector {
         EYES,
         TORSO,
         FEET,
-        AUTO;
+        AUTO
 
     }
 }

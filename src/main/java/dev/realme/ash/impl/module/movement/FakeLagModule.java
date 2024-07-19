@@ -42,11 +42,11 @@ public class FakeLagModule
 extends ToggleModule {
     Config<Boolean> checkVelocityUpdate = new BooleanConfig("CheckVelocityUpdate", "", false);
     Config<Boolean> checkExplosion = new BooleanConfig("CheckExplosion", "", false);
-    Config<Float> range = new NumberConfig<Float>("Range", "", Float.valueOf(0.0f), Float.valueOf(6.0f), Float.valueOf(20.0f));
+    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 6.0f, 20.0f);
     Config<Boolean> checkDamage = new BooleanConfig("CheckDamage", "", false);
     Config<Double> maxSelfDamage = new NumberConfig<Double>("MaxSelfDamage", "", 0.0, 6.0, 36.0);
     Config<Boolean> pulse = new BooleanConfig("Pulse", "Releases packets at intervals", false);
-    Config<Float> factor = new NumberConfig<Float>("Factor", "The factor for packet intervals", Float.valueOf(0.0f), Float.valueOf(1.0f), Float.valueOf(10.0f), () -> this.pulse.getValue());
+    Config<Float> factor = new NumberConfig<Float>("Factor", "The factor for packet intervals", 0.0f, 1.0f, 10.0f, () -> this.pulse.getValue());
     Config<Boolean> render = new BooleanConfig("Render", "Renders the serverside player position", true);
     Config<Boolean> HandSwingC2SPacket = new BooleanConfig("HandSwingC2SPacket", "", true);
     Config<Boolean> PlayerActionC2SPacket = new BooleanConfig("PlayerActionC2SPacket", "", true);
@@ -57,7 +57,7 @@ extends ToggleModule {
     Config<Boolean> PlayerInteractItemC2SPacket = new BooleanConfig("PlayerInteractItemC2SPacket", "", true);
     Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
     Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 80, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", Float.valueOf(0.1f), Float.valueOf(1.5f), Float.valueOf(5.0f));
+    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
     Config<Boolean> debug = new BooleanConfig("debug", "", false);
     PlayerEntity lastEntity = null;
     BlockPos explosionPos = null;
@@ -106,7 +106,7 @@ extends ToggleModule {
         }
         Packet<?> packet2 = event.getPacket();
         if (packet2 instanceof ExplosionS2CPacket) {
-            packet = (ExplosionS2CPacket)((Object)packet2);
+            packet = packet2;
             if (this.checkExplosion.getValue().booleanValue()) {
                 this.explosionPos = new BlockPosX(((ExplosionS2CPacket)packet).getX(), ((ExplosionS2CPacket)packet).getY(), ((ExplosionS2CPacket)packet).getZ());
                 if (MathHelper.sqrt((float)EntityUtil.getEyesPos().squaredDistanceTo(this.explosionPos.toCenterPos())) > this.range.getValue().floatValue()) {
@@ -144,7 +144,7 @@ extends ToggleModule {
             }
         }
         if ((packet2 = event.getPacket()) instanceof EntityVelocityUpdateS2CPacket) {
-            packet = (EntityVelocityUpdateS2CPacket)((Object)packet2);
+            packet = packet2;
             if (this.checkVelocityUpdate.getValue().booleanValue()) {
                 if (((EntityVelocityUpdateS2CPacket)packet).getId() != FakeLagModule.mc.player.getId()) {
                     return;
@@ -228,7 +228,7 @@ extends ToggleModule {
         if (FakeLagModule.mc.player == null || FakeLagModule.mc.player.isRiding() || this.blinking) {
             return;
         }
-        if (event.getPacket() instanceof PlayerActionC2SPacket && this.PlayerActionC2SPacket.getValue() != false || event.getPacket() instanceof PlayerMoveC2SPacket && this.PlayerMoveC2SPacket.getValue() != false || event.getPacket() instanceof ClientCommandC2SPacket && this.ClientCommandC2SPacket.getValue() != false || event.getPacket() instanceof HandSwingC2SPacket && this.HandSwingC2SPacket.getValue() != false || event.getPacket() instanceof PlayerInteractEntityC2SPacket && this.PlayerInteractEntityC2SPacket.getValue() != false || event.getPacket() instanceof PlayerInteractBlockC2SPacket && this.PlayerInteractBlockC2SPacket.getValue() != false || event.getPacket() instanceof PlayerInteractItemC2SPacket && this.PlayerInteractItemC2SPacket.getValue().booleanValue()) {
+        if (event.getPacket() instanceof PlayerActionC2SPacket && this.PlayerActionC2SPacket.getValue() || event.getPacket() instanceof PlayerMoveC2SPacket && this.PlayerMoveC2SPacket.getValue() || event.getPacket() instanceof ClientCommandC2SPacket && this.ClientCommandC2SPacket.getValue() || event.getPacket() instanceof HandSwingC2SPacket && this.HandSwingC2SPacket.getValue() || event.getPacket() instanceof PlayerInteractEntityC2SPacket && this.PlayerInteractEntityC2SPacket.getValue() || event.getPacket() instanceof PlayerInteractBlockC2SPacket && this.PlayerInteractBlockC2SPacket.getValue() || event.getPacket() instanceof PlayerInteractItemC2SPacket && this.PlayerInteractItemC2SPacket.getValue().booleanValue()) {
             event.cancel();
             this.packets.add(event.getPacket());
         }

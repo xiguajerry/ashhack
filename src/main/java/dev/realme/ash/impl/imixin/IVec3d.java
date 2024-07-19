@@ -7,7 +7,7 @@ public interface IVec3d {
    void set(double var1, double var3, double var5);
 
    default void set(Vec3i vec) {
-      this.set((double)vec.getX(), (double)vec.getY(), (double)vec.getZ());
+      this.set(vec.getX(), vec.getY(), vec.getZ());
    }
 
    default void set(Vector3d vec) {

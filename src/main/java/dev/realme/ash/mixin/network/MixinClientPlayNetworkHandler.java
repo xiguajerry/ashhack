@@ -85,6 +85,6 @@ public abstract class MixinClientPlayNetworkHandler implements IClientPlayNetwor
    }
 
    public void sendQuietPacket(Packet packet) {
-      ((AccessorClientConnection)this.getConnection()).hookSendInternal(packet, (PacketCallbacks)null, true);
+      ((AccessorClientConnection)this.getConnection()).hookSendInternal(packet, null, true);
    }
 }

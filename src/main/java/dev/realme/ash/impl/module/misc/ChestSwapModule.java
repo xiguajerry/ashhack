@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 public class ChestSwapModule
 extends ToggleModule {
-    Config<Priority> priorityConfig = new EnumConfig("Priority", "The chestplate material to prioritize", (Enum)Priority.NETHERITE, (Enum[])Priority.values());
+    Config<Priority> priorityConfig = new EnumConfig("Priority", "The chestplate material to prioritize", Priority.NETHERITE, Priority.values());
 
     public ChestSwapModule() {
         super("ChestSwap", "Automatically swaps chestplate", ModuleCategory.MISCELLANEOUS);
@@ -25,7 +25,7 @@ extends ToggleModule {
         ArmorItem armorItem;
         ItemStack armorStack = ChestSwapModule.mc.player.getInventory().getArmorStack(2);
         Item item = armorStack.getItem();
-        if (item instanceof ArmorItem && (armorItem = (ArmorItem)((Object)item)).getSlotType() == EquipmentSlot.CHEST) {
+        if (item instanceof ArmorItem && (armorItem = (ArmorItem) item).getSlotType() == EquipmentSlot.CHEST) {
             int elytraSlot = this.getElytraSlot();
             if (elytraSlot != -1) {
                 InventoryUtil.move().from(elytraSlot).toArmor(2);
@@ -45,7 +45,7 @@ extends ToggleModule {
             ArmorItem armorItem;
             ItemStack stack = ChestSwapModule.mc.player.getInventory().getStack(i);
             Item item = stack.getItem();
-            if (!(item instanceof ArmorItem) || (armorItem = (ArmorItem)((Object)item)).getSlotType() != EquipmentSlot.CHEST) continue;
+            if (!(item instanceof ArmorItem) || (armorItem = (ArmorItem) item).getSlotType() != EquipmentSlot.CHEST) continue;
             if (armorItem.getMaterial() == ArmorMaterials.NETHERITE && this.priorityConfig.getValue() == Priority.NETHERITE) {
                 slot = i;
                 break;
@@ -70,9 +70,9 @@ extends ToggleModule {
         return slot;
     }
 
-    private static enum Priority {
+    private enum Priority {
         NETHERITE,
-        DIAMOND;
+        DIAMOND
 
     }
 }

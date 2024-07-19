@@ -7,7 +7,7 @@ import dev.realme.ash.init.Modules;
 import java.awt.Color;
 import java.util.function.Supplier;
 
-public class ColorConfig extends Config {
+public class ColorConfig extends Config<Color> {
    private final boolean allowAlpha;
    private boolean global;
 
@@ -21,17 +21,17 @@ public class ColorConfig extends Config {
       this(name, desc, value, true, true);
    }
 
-   public ColorConfig(String name, String desc, Color value, boolean allowAlpha, boolean global, Supplier visible) {
+   public ColorConfig(String name, String desc, Color value, boolean allowAlpha, boolean global, Supplier<Boolean> visible) {
       super(name, desc, value, visible);
       this.allowAlpha = allowAlpha;
       this.setGlobal(global);
    }
 
-   public ColorConfig(String name, String desc, Color value, boolean allowAlpha, Supplier visible) {
+   public ColorConfig(String name, String desc, Color value, boolean allowAlpha, Supplier<Boolean> visible) {
       this(name, desc, value, allowAlpha, true, visible);
    }
 
-   public ColorConfig(String name, String desc, Color value, Supplier visible) {
+   public ColorConfig(String name, String desc, Color value, Supplier<Boolean> visible) {
       this(name, desc, value, true, visible);
    }
 
@@ -44,11 +44,11 @@ public class ColorConfig extends Config {
    }
 
    public Color getValue() {
-      return Modules.CLIENT_SETTING != null && this.global ? Modules.CLIENT_SETTING.getColor(this.getAlpha()) : new Color(((Color)this.value).getRed(), ((Color)this.value).getGreen(), ((Color)this.value).getBlue(), this.allowAlpha ? ((Color)this.value).getAlpha() : 255);
+      return Modules.CLIENT_SETTING != null && this.global ? Modules.CLIENT_SETTING.getColor(this.getAlpha()) : new Color(this.value.getRed(), this.value.getGreen(), this.value.getBlue(), this.allowAlpha ? this.value.getAlpha() : 255);
    }
 
    public Color getValue(int alpha) {
-      return Modules.CLIENT_SETTING != null && this.global ? Modules.CLIENT_SETTING.getColor(alpha) : new Color(((Color)this.value).getRed(), ((Color)this.value).getGreen(), ((Color)this.value).getBlue(), alpha);
+      return Modules.CLIENT_SETTING != null && this.global ? Modules.CLIENT_SETTING.getColor(alpha) : new Color(this.value.getRed(), this.value.getGreen(), this.value.getBlue(), alpha);
    }
 
    public void setValue(int val) {
@@ -65,15 +65,15 @@ public class ColorConfig extends Config {
    }
 
    public int getRed() {
-      return ((Color)this.value).getRed();
+      return this.value.getRed();
    }
 
    public int getGreen() {
-      return ((Color)this.value).getGreen();
+      return this.value.getGreen();
    }
 
    public int getBlue() {
-      return ((Color)this.value).getBlue();
+      return this.value.getBlue();
    }
 
    public boolean allowAlpha() {
@@ -81,12 +81,12 @@ public class ColorConfig extends Config {
    }
 
    public int getAlpha() {
-      return this.allowAlpha ? ((Color)this.value).getAlpha() : 255;
+      return this.allowAlpha ? this.value.getAlpha() : 255;
    }
 
    public float[] getHsb() {
-      float[] hsbVals = Color.RGBtoHSB(((Color)this.value).getRed(), ((Color)this.value).getGreen(), ((Color)this.value).getBlue(), (float[])null);
-      return new float[]{hsbVals[0], hsbVals[1], hsbVals[2], this.allowAlpha ? (float)((Color)this.value).getAlpha() / 255.0F : 1.0F};
+      float[] hsbVals = Color.RGBtoHSB(this.value.getRed(), this.value.getGreen(), this.value.getBlue(), null);
+      return new float[]{hsbVals[0], hsbVals[1], hsbVals[2], this.allowAlpha ? (float) this.value.getAlpha() / 255.0F : 1.0F};
    }
 
    public boolean isGlobal() {
@@ -122,8 +122,7 @@ public class ColorConfig extends Config {
             this.setGlobal(element1.getAsBoolean());
          }
 
-         Color color = this.parseColor(hex);
-         return color;
+          return this.parseColor(hex);
       } else {
          return null;
       }

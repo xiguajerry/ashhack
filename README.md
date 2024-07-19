@@ -1,6 +1,8 @@
 # Ashit Hack Open-Source Project
 Decompiled from ashit hack leaked version 
 
+leaked jar和remapped jar见项目目录/leaked文件夹。
+
 杨超傻逼程度越高，本项目代码可读性越高。(重写反编译生成部分)
 
 ps: baritone is removed

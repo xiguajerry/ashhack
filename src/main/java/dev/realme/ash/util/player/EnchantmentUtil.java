@@ -15,9 +15,7 @@ public class EnchantmentUtil {
 
       for(int i = 0; i < list.size(); ++i) {
          NbtCompound tag = list.getCompound(i);
-         Registries.ENCHANTMENT.getOrEmpty(Identifier.tryParse(tag.getString("id"))).ifPresent((enchantment) -> {
-            enchants.put(enchantment, tag.getInt("lvl"));
-         });
+         Registries.ENCHANTMENT.getOrEmpty(Identifier.tryParse(tag.getString("id"))).ifPresent((enchantment) -> enchants.put(enchantment, tag.getInt("lvl")));
       }
 
       return enchants;

@@ -15,7 +15,7 @@ import net.minecraft.client.gui.screen.DeathScreen;
 
 public class SpammerModule
 extends ToggleModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 500.0f, 5000.0f);
+    final Config<Float> delay = new NumberConfig<>("Delay", "", 0.0f, 500.0f, 5000.0f);
     private final Timer delayTimer = new CacheTimer();
     private boolean respawn;
 

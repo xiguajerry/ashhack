@@ -19,18 +19,18 @@ import net.minecraft.util.math.MathHelper;
 
 public class HoleESPModule
 extends ToggleModule {
-    Config<Float> rangeConfig = new NumberConfig<Float>("Range", "Range to display holes", 3.0f, 5.0f, 25.0f);
-    Config<Float> heightConfig = new NumberConfig<Float>("Size", "Render height of holes", -1.0f, 1.0f, 1.0f);
-    Config<Boolean> obsidianCheckConfig = new BooleanConfig("Obsidian", "Displays obsidian holes", true);
-    Config<Boolean> obsidianBedrockConfig = new BooleanConfig("Obsidian-Bedrock", "Displays mixed obsidian and bedrock holes", true);
-    Config<Boolean> doubleConfig = new BooleanConfig("Double", "Displays double holes where the player can stand in the middle of two blocks to block explosion damage", false);
-    Config<Boolean> quadConfig = new BooleanConfig("Quad", "Displays quad holes where the player can stand in the middle of four blocks to block explosion damage", false);
-    Config<Boolean> voidConfig = new BooleanConfig("Void", "Displays void holes in the world", false);
-    Config<Boolean> fadeConfig = new BooleanConfig("Fade", "Fades the opacity of holes based on distance", false);
-    Config<Color> obsidianConfig = new ColorConfig("ObsidianColor", "The color for rendering obsidian holes", new Color(255, 0, 0, 100), () -> this.obsidianCheckConfig.getValue());
-    Config<Color> mixedConfig = new ColorConfig("Obsidian-BedrockColor", "The color for rendering mixed holes", new Color(255, 255, 0, 100), () -> this.obsidianBedrockConfig.getValue());
-    Config<Color> bedrockConfig = new ColorConfig("BedrockColor", "The color for rendering bedrock holes", new Color(0, 255, 0, 100));
-    Config<Color> voidColorConfig = new ColorConfig("VoidColor", "The color for rendering bedrock holes", new Color(255, 0, 0, 160), () -> this.voidConfig.getValue());
+    final Config<Float> rangeConfig = new NumberConfig<>("Range", "Range to display holes", 3.0f, 5.0f, 25.0f);
+    final Config<Float> heightConfig = new NumberConfig<>("Size", "Render height of holes", -1.0f, 1.0f, 1.0f);
+    final Config<Boolean> obsidianCheckConfig = new BooleanConfig("Obsidian", "Displays obsidian holes", true);
+    final Config<Boolean> obsidianBedrockConfig = new BooleanConfig("Obsidian-Bedrock", "Displays mixed obsidian and bedrock holes", true);
+    final Config<Boolean> doubleConfig = new BooleanConfig("Double", "Displays double holes where the player can stand in the middle of two blocks to block explosion damage", false);
+    final Config<Boolean> quadConfig = new BooleanConfig("Quad", "Displays quad holes where the player can stand in the middle of four blocks to block explosion damage", false);
+    final Config<Boolean> voidConfig = new BooleanConfig("Void", "Displays void holes in the world", false);
+    final Config<Boolean> fadeConfig = new BooleanConfig("Fade", "Fades the opacity of holes based on distance", false);
+    final Config<Color> obsidianConfig = new ColorConfig("ObsidianColor", "The color for rendering obsidian holes", new Color(255, 0, 0, 100), () -> this.obsidianCheckConfig.getValue());
+    final Config<Color> mixedConfig = new ColorConfig("Obsidian-BedrockColor", "The color for rendering mixed holes", new Color(255, 255, 0, 100), () -> this.obsidianBedrockConfig.getValue());
+    final Config<Color> bedrockConfig = new ColorConfig("BedrockColor", "The color for rendering bedrock holes", new Color(0, 255, 0, 100));
+    final Config<Color> voidColorConfig = new ColorConfig("VoidColor", "The color for rendering bedrock holes", new Color(255, 0, 0, 160), () -> this.voidConfig.getValue());
 
     public HoleESPModule() {
         super("HoleESP", "Displays nearby blast resistant holes", ModuleCategory.RENDER);
@@ -43,7 +43,7 @@ extends ToggleModule {
         }
         for (Hole hole : Managers.HOLE.getHoles()) {
             double dist;
-            if ((hole.isDoubleX() || hole.isDoubleZ()) && !this.doubleConfig.getValue().booleanValue() || hole.isQuad() && !this.quadConfig.getValue().booleanValue() || hole.getSafety() == HoleType.VOID && !this.voidConfig.getValue().booleanValue() || hole.getSafety() == HoleType.OBSIDIAN && !this.obsidianCheckConfig.getValue().booleanValue() || hole.getSafety() == HoleType.OBSIDIAN_BEDROCK && !this.obsidianBedrockConfig.getValue().booleanValue() || (dist = hole.squaredDistanceTo(Globals.mc.player)) > ((NumberConfig)this.rangeConfig).getValueSq()) continue;
+            if ((hole.isDoubleX() || hole.isDoubleZ()) && !this.doubleConfig.getValue() || hole.isQuad() && !this.quadConfig.getValue() || hole.getSafety() == HoleType.VOID && !this.voidConfig.getValue() || hole.getSafety() == HoleType.OBSIDIAN && !this.obsidianCheckConfig.getValue() || hole.getSafety() == HoleType.OBSIDIAN_BEDROCK && !this.obsidianBedrockConfig.getValue() || (dist = hole.squaredDistanceTo(Globals.mc.player)) > ((NumberConfig)this.rangeConfig).getValueSq()) continue;
             double x = hole.getX();
             double y = hole.getY();
             double z = hole.getZ();
@@ -51,20 +51,20 @@ extends ToggleModule {
             if (hole.getSafety() == HoleType.VOID) {
                 render = new Box(x, y, z, x + 1.0, y + 1.0, z + 1.0);
             } else if (hole.isDoubleX()) {
-                render = new Box(x, y, z, x + 2.0, y + (double)this.heightConfig.getValue().floatValue(), z + 1.0);
+                render = new Box(x, y, z, x + 2.0, y + (double) this.heightConfig.getValue(), z + 1.0);
             } else if (hole.isDoubleZ()) {
-                render = new Box(x, y, z, x + 1.0, y + (double)this.heightConfig.getValue().floatValue(), z + 2.0);
+                render = new Box(x, y, z, x + 1.0, y + (double) this.heightConfig.getValue(), z + 2.0);
             } else if (hole.isQuad()) {
-                render = new Box(x, y, z, x + 2.0, y + (double)this.heightConfig.getValue().floatValue(), z + 2.0);
+                render = new Box(x, y, z, x + 2.0, y + (double) this.heightConfig.getValue(), z + 2.0);
             } else if (hole.isStandard()) {
-                render = new Box(x, y, z, x + 1.0, y + (double)this.heightConfig.getValue().floatValue(), z + 1.0);
+                render = new Box(x, y, z, x + 1.0, y + (double) this.heightConfig.getValue(), z + 1.0);
             }
             if (render == null) {
                 return;
             }
             double alpha = 1.0;
-            if (this.fadeConfig.getValue().booleanValue()) {
-                double fadeRange = (double)this.rangeConfig.getValue().floatValue() - 1.0;
+            if (this.fadeConfig.getValue()) {
+                double fadeRange = (double) this.rangeConfig.getValue() - 1.0;
                 double fadeRangeSq = fadeRange * fadeRange;
                 alpha = (fadeRangeSq + 9.0 - Globals.mc.player.squaredDistanceTo(hole.getX(), hole.getY(), hole.getZ())) / fadeRangeSq;
                 alpha = MathHelper.clamp(alpha, 0.0, 1.0);
@@ -97,6 +97,6 @@ extends ToggleModule {
     }
 
     public double getRange() {
-        return this.rangeConfig.getValue().floatValue();
+        return this.rangeConfig.getValue();
     }
 }

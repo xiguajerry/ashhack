@@ -25,8 +25,8 @@ import net.minecraft.util.shape.VoxelShape;
 
 public class BlockHighlightModule
 extends ToggleModule {
-    Config<BoxRender> boxModeConfig = new EnumConfig("BoxMode", "Box rendering mode", BoxRender.OUTLINE, BoxRender.values());
-    Config<Boolean> entitiesConfig = new BooleanConfig("Debug-Entities", "Highlights entity bounding boxes for debug purposes", false);
+    final Config<BoxRender> boxModeConfig = new EnumConfig<>("BoxMode", "Box rendering mode", BoxRender.OUTLINE, BoxRender.values());
+    final Config<Boolean> entitiesConfig = new BooleanConfig("Debug-Entities", "Highlights entity bounding boxes for debug purposes", false);
     private double getDistance;
 
     public BlockHighlightModule() {
@@ -48,7 +48,7 @@ extends ToggleModule {
         HitResult result = BlockHighlightModule.mc.crosshairTarget;
         if (result != null) {
             Vec3d pos = Managers.POSITION.getEyePos();
-            if (this.entitiesConfig.getValue().booleanValue() && result.getType() == HitResult.Type.ENTITY) {
+            if (this.entitiesConfig.getValue() && result.getType() == HitResult.Type.ENTITY) {
                 Entity entity = ((EntityHitResult)result).getEntity();
                 render = entity.getBoundingBox();
                 this.getDistance = pos.distanceTo(entity.getPos());

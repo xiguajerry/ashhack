@@ -33,14 +33,14 @@ import net.minecraft.util.math.Vec3d;
 
 public class SpeedModule
 extends ToggleModule {
-    Config<Speed> speedModeConfig = new EnumConfig<>("Mode", "Speed mode", Speed.STRAFE, Speed.values());
-    Config<Boolean> vanillaStrafeConfig = new BooleanConfig("Strafe-Vanilla", "Applies strafe speeds to vanilla speed", false, () -> this.speedModeConfig.getValue() == Speed.VANILLA);
-    Config<Float> speedConfig = new NumberConfig<>("Speed", "The speed for alternative modes", 0.1f, 4.0f, 10.0f);
-    Config<Boolean> timerConfig = new BooleanConfig("UseTimer", "Uses timer to increase acceleration", false);
-    Config<Boolean> strafeBoostConfig = new BooleanConfig("StrafeBoost", "Uses explosion velocity to boost Strafe", false);
-    Config<Float> multiply = new NumberConfig<>("Multiply", "", 0.1f, 1.5f, 10.0f);
-    Config<Integer> boostTicksConfig = new NumberConfig<>("BoostTicks", "The number of ticks to boost strafe", 10, 20, 40, () -> this.strafeBoostConfig.getValue());
-    Config<Boolean> speedWaterConfig = new BooleanConfig("SpeedInWater", "Applies speed even in water and lava", false);
+    final Config<Speed> speedModeConfig = new EnumConfig<>("Mode", "Speed mode", Speed.STRAFE, Speed.values());
+    final Config<Boolean> vanillaStrafeConfig = new BooleanConfig("Strafe-Vanilla", "Applies strafe speeds to vanilla speed", false, () -> this.speedModeConfig.getValue() == Speed.VANILLA);
+    final Config<Float> speedConfig = new NumberConfig<>("Speed", "The speed for alternative modes", 0.1f, 4.0f, 10.0f);
+    final Config<Boolean> timerConfig = new BooleanConfig("UseTimer", "Uses timer to increase acceleration", false);
+    final Config<Boolean> strafeBoostConfig = new BooleanConfig("StrafeBoost", "Uses explosion velocity to boost Strafe", false);
+    final Config<Float> multiply = new NumberConfig<>("Multiply", "", 0.1f, 1.5f, 10.0f);
+    final Config<Integer> boostTicksConfig = new NumberConfig<>("BoostTicks", "The number of ticks to boost strafe", 10, 20, 40, () -> this.strafeBoostConfig.getValue());
+    final Config<Boolean> speedWaterConfig = new BooleanConfig("SpeedInWater", "Applies speed even in water and lava", false);
     private int strafe = 4;
     private boolean accel;
     private int strictTicks;
@@ -65,7 +65,7 @@ extends ToggleModule {
     @Override
     public void onEnable() {
         this.prevTimer = Modules.TIMER.isEnabled();
-        if (this.timerConfig.getValue().booleanValue() && !this.prevTimer && this.isStrafe()) {
+        if (this.timerConfig.getValue() && !this.prevTimer && this.isStrafe()) {
             Modules.TIMER.enable();
         }
     }
@@ -116,7 +116,7 @@ extends ToggleModule {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (SpeedModule.mc.player != null && SpeedModule.mc.world != null) {
             double amplifier;
-            if (!MovementUtil.isInputtingMovement() || Modules.FLIGHT.isEnabled() || Modules.LONG_JUMP.isEnabled() || SpeedModule.mc.player.isRiding() || SpeedModule.mc.player.isFallFlying() || SpeedModule.mc.player.isHoldingOntoLadder() || (SpeedModule.mc.player.isInLava() || SpeedModule.mc.player.isTouchingWater()) && !this.speedWaterConfig.getValue().booleanValue()) {
+            if (!MovementUtil.isInputtingMovement() || Modules.FLIGHT.isEnabled() || Modules.LONG_JUMP.isEnabled() || SpeedModule.mc.player.isRiding() || SpeedModule.mc.player.isFallFlying() || SpeedModule.mc.player.isHoldingOntoLadder() || (SpeedModule.mc.player.isInLava() || SpeedModule.mc.player.isTouchingWater()) && !this.speedWaterConfig.getValue()) {
                 this.resetStrafe();
                 Modules.TIMER.setTimer(1.0f);
                 return;
@@ -148,7 +148,7 @@ extends ToggleModule {
                 if (!Managers.ANTICHEAT.hasPassed(100L)) {
                     return;
                 }
-                if (this.timerConfig.getValue().booleanValue()) {
+                if (this.timerConfig.getValue()) {
                     Modules.TIMER.setTimer(1.0888f);
                 }
                 if (this.strafe == 1) {
@@ -172,8 +172,8 @@ extends ToggleModule {
                     this.speed = this.getDistance - this.getDistance / 159.0;
                 }
                 this.speed = Math.max(this.speed, base);
-                if (this.strafeBoostConfig.getValue().booleanValue()) {
-                    this.speed += this.boostSpeed * (double)this.multiply.getValue().floatValue();
+                if (this.strafeBoostConfig.getValue()) {
+                    this.speed += this.boostSpeed * (double) this.multiply.getValue();
                 }
                 Vec2f motion = this.handleStrafeMotion((float)this.speed);
                 event.setX(motion.x);
@@ -204,14 +204,14 @@ extends ToggleModule {
                 }
                 ++this.strictTicks;
                 this.speed = Math.max(this.speed, base);
-                if (this.timerConfig.getValue().booleanValue()) {
+                if (this.timerConfig.getValue()) {
                     Modules.TIMER.setTimer(1.0888f);
                 }
                 double baseMax = 0.465 * speedEffect / slowEffect;
                 double baseMin = 0.44 * speedEffect / slowEffect;
                 this.speed = Math.min(this.speed, this.strictTicks > 25 ? baseMax : baseMin);
-                if (this.strafeBoostConfig.getValue().booleanValue()) {
-                    this.speed += this.boostSpeed * (double)this.multiply.getValue().floatValue();
+                if (this.strafeBoostConfig.getValue()) {
+                    this.speed += this.boostSpeed * (double) this.multiply.getValue();
                 }
                 if (this.strictTicks > 50) {
                     this.strictTicks = 0;
@@ -224,7 +224,7 @@ extends ToggleModule {
                 if (!Managers.ANTICHEAT.hasPassed(100L)) {
                     return;
                 }
-                if (this.timerConfig.getValue().booleanValue()) {
+                if (this.timerConfig.getValue()) {
                     Modules.TIMER.setTimer(1.0888f);
                 }
                 if (MathUtil.round(SpeedModule.mc.player.getY() - (double)((int)SpeedModule.mc.player.getY()), 3) == MathUtil.round(0.4, 3)) {
@@ -372,7 +372,7 @@ extends ToggleModule {
                 event.setZ(motion.y);
                 ++this.strafe;
             } else if (this.speedModeConfig.getValue() == Speed.VANILLA) {
-                Vec2f motion = this.handleVanillaMotion(this.vanillaStrafeConfig.getValue() ? (float)base : this.speedConfig.getValue().floatValue() / 10.0f);
+                Vec2f motion = this.handleVanillaMotion(this.vanillaStrafeConfig.getValue() ? (float)base : this.speedConfig.getValue() / 10.0f);
                 event.setX(motion.x);
                 event.setZ(motion.y);
             }
@@ -446,7 +446,7 @@ extends ToggleModule {
     @EventListener
     public void onConfigUpdate(ConfigUpdateEvent event) {
         if (event.getConfig() == this.timerConfig && event.getStage() == EventStage.POST && this.isStrafe()) {
-            if (this.timerConfig.getValue().booleanValue()) {
+            if (this.timerConfig.getValue()) {
                 this.prevTimer = Modules.TIMER.isEnabled();
                 if (!this.prevTimer) {
                     Modules.TIMER.enable();

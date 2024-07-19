@@ -25,15 +25,15 @@ import net.minecraft.util.math.Direction;
 
 public class HeadTrapModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 60.0f, 500.0f);
-    Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<Float> targetRange = new NumberConfig<Float>("TargetRange", "", 0.0f, 5.2f, 6.0f);
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
-    Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
-    Config<Boolean> anchorHelper = new BooleanConfig("AnchorHelper", "", false);
-    Config<Boolean> antiStep = new BooleanConfig("AntiStep", "", false);
-    Config<Boolean> extend = new BooleanConfig("Extend", "", false);
+    final Config<Float> delay = new NumberConfig<>("Delay", "", 0.0f, 60.0f, 500.0f);
+    final Config<Integer> multiPlace = new NumberConfig<>("MultiPlace", "", 0, 1, 5);
+    final Config<Float> targetRange = new NumberConfig<>("TargetRange", "", 0.0f, 5.2f, 6.0f);
+    final Config<InventoryUtil.SwapMode> swapMode = new EnumConfig<>("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
+    final Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
+    final Config<Boolean> anchorHelper = new BooleanConfig("AnchorHelper", "", false);
+    final Config<Boolean> antiStep = new BooleanConfig("AntiStep", "", false);
+    final Config<Boolean> extend = new BooleanConfig("Extend", "", false);
     private final Timer delayTimer = new CacheTimer();
     int progress = 0;
     PlayerEntity target;
@@ -54,21 +54,21 @@ extends RotationModule {
             return;
         }
         this.progress = 0;
-        this.target = EntityUtil.getTarget(this.targetRange.getValue().floatValue());
+        this.target = EntityUtil.getTarget(this.targetRange.getValue());
         if (this.target == null) {
             return;
         }
         if (!this.delayTimer.passed(this.delay.getValue())) {
             return;
         }
-        if (this.pauseEat.getValue().booleanValue() && HeadTrapModule.mc.player.isUsingItem()) {
+        if (this.pauseEat.getValue() && HeadTrapModule.mc.player.isUsingItem()) {
             return;
         }
         this.doTrap(PlayerUtil.playerPos(this.target));
     }
 
     private void doTrap(BlockPos pos) {
-        if (this.extend.getValue().booleanValue()) {
+        if (this.extend.getValue()) {
             for (int x : new int[]{1, 0, -1}) {
                 for (int z : new int[]{1, 0, -1}) {
                     BlockPos offsetPos = pos.add(z, 0, x);
@@ -113,7 +113,7 @@ extends RotationModule {
             }
             this.placeBlock(pos.up(2), this.anchorHelper.getValue());
         }
-        if (this.antiStep.getValue().booleanValue()) {
+        if (this.antiStep.getValue()) {
             if (Managers.INTERACT.getPlaceDirection(pos.up(3)) == null && BlockUtil.clientCanPlace(pos.up(3)) && this.getHelper(pos.up(3)) != null) {
                 this.placeBlock(this.getHelper(pos.up(3)), false);
             }

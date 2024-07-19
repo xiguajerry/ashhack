@@ -6,7 +6,7 @@ import net.minecraft.client.render.Camera;
 
 @Cancelable
 public class PerspectiveEvent extends Event {
-   public Camera camera;
+   public final Camera camera;
 
    public PerspectiveEvent(Camera camera) {
       this.camera = camera;

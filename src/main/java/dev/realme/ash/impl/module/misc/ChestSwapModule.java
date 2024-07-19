@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 public class ChestSwapModule
 extends ToggleModule {
-    Config<Priority> priorityConfig = new EnumConfig("Priority", "The chestplate material to prioritize", Priority.NETHERITE, Priority.values());
+    final Config<Priority> priorityConfig = new EnumConfig<>("Priority", "The chestplate material to prioritize", Priority.NETHERITE, Priority.values());
 
     public ChestSwapModule() {
         super("ChestSwap", "Automatically swaps chestplate", ModuleCategory.MISCELLANEOUS);

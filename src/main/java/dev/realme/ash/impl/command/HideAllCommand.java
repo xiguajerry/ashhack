@@ -15,16 +15,14 @@ public class HideAllCommand extends Command {
 
    public void buildCommand(LiteralArgumentBuilder builder) {
       builder.executes((c) -> {
-         Iterator var1 = Managers.MODULE.getModules().iterator();
 
-         while(var1.hasNext()) {
-            Module module = (Module)var1.next();
-            if (module instanceof ToggleModule toggleModule) {
-               if (!toggleModule.isHidden()) {
-                  toggleModule.setHidden(true);
-               }
-            }
-         }
+          for (Module module : Managers.MODULE.getModules()) {
+              if (module instanceof ToggleModule toggleModule) {
+                  if (!toggleModule.isHidden()) {
+                      toggleModule.setHidden(true);
+                  }
+              }
+          }
 
          ChatUtil.clientSendMessage("All modules are hidden");
          return 1;

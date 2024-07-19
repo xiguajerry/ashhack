@@ -17,7 +17,7 @@ import net.minecraft.world.biome.BiomeParticleConfig;
 
 public class NoWeatherModule
 extends ToggleModule {
-    Config<Weather> weatherConfig = new EnumConfig("Weather", "The world weather", Weather.CLEAR, Weather.values());
+    final Config<Weather> weatherConfig = new EnumConfig<>("Weather", "The world weather", Weather.CLEAR, Weather.values());
     private Weather weather;
 
     public NoWeatherModule() {

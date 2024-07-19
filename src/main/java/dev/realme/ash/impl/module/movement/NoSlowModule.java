@@ -47,20 +47,20 @@ import net.minecraft.util.math.MathHelper;
 
 public class NoSlowModule
 extends ToggleModule {
-    Config<Boolean> strictConfig = new BooleanConfig("Strict", "Strict NCP bypass for ground slowdowns", false);
-    Config<Boolean> airStrictConfig = new BooleanConfig("AirStrict", "Strict NCP bypass for air slowdowns", false);
-    Config<Boolean> grimConfig = new BooleanConfig("Grim", "Strict Grim bypass for slowdown", false);
-    Config<Boolean> strafeFixConfig = new BooleanConfig("StrafeFix", "Old NCP bypass for strafe", false);
-    Config<Boolean> inventoryMoveConfig = new BooleanConfig("InventoryMove", "Allows the player to move while in inventories or screens", true);
-    Config<Boolean> arrowMoveConfig = new BooleanConfig("ArrowMove", "Allows the player to look while in inventories or screens by using the arrow keys", false);
-    Config<Boolean> itemsConfig = new BooleanConfig("Items", "Removes the slowdown effect caused by using items", true);
-    Config<Boolean> shieldsConfig = new BooleanConfig("Shields", "Removes the slowdown effect caused by shields", true);
-    Config<Boolean> websConfig = new BooleanConfig("Webs", "Removes the slowdown caused when moving through webs", false);
-    Config<Boolean> berryBushConfig = new BooleanConfig("BerryBush", "Removes the slowdown caused when moving through webs", false);
-    Config<Float> webSpeedConfig = new NumberConfig<Float>("WebSpeed", "Speed to fall through webs", 0.0f, 3.5f, 20.0f, () -> this.websConfig.getValue());
-    Config<Boolean> soulsandConfig = new BooleanConfig("SoulSand", "Removes the slowdown effect caused by walking over SoulSand blocks", false);
-    Config<Boolean> honeyblockConfig = new BooleanConfig("HoneyBlock", "Removes the slowdown effect caused by walking over Honey blocks", false);
-    Config<Boolean> slimeblockConfig = new BooleanConfig("SlimeBlock", "Removes the slowdown effect caused by walking over Slime blocks", false);
+    final Config<Boolean> strictConfig = new BooleanConfig("Strict", "Strict NCP bypass for ground slowdowns", false);
+    final Config<Boolean> airStrictConfig = new BooleanConfig("AirStrict", "Strict NCP bypass for air slowdowns", false);
+    final Config<Boolean> grimConfig = new BooleanConfig("Grim", "Strict Grim bypass for slowdown", false);
+    final Config<Boolean> strafeFixConfig = new BooleanConfig("StrafeFix", "Old NCP bypass for strafe", false);
+    final Config<Boolean> inventoryMoveConfig = new BooleanConfig("InventoryMove", "Allows the player to move while in inventories or screens", true);
+    final Config<Boolean> arrowMoveConfig = new BooleanConfig("ArrowMove", "Allows the player to look while in inventories or screens by using the arrow keys", false);
+    final Config<Boolean> itemsConfig = new BooleanConfig("Items", "Removes the slowdown effect caused by using items", true);
+    final Config<Boolean> shieldsConfig = new BooleanConfig("Shields", "Removes the slowdown effect caused by shields", true);
+    final Config<Boolean> websConfig = new BooleanConfig("Webs", "Removes the slowdown caused when moving through webs", false);
+    final Config<Boolean> berryBushConfig = new BooleanConfig("BerryBush", "Removes the slowdown caused when moving through webs", false);
+    final Config<Float> webSpeedConfig = new NumberConfig<>("WebSpeed", "Speed to fall through webs", 0.0f, 3.5f, 20.0f, () -> this.websConfig.getValue());
+    final Config<Boolean> soulsandConfig = new BooleanConfig("SoulSand", "Removes the slowdown effect caused by walking over SoulSand blocks", false);
+    final Config<Boolean> honeyblockConfig = new BooleanConfig("HoneyBlock", "Removes the slowdown effect caused by walking over Honey blocks", false);
+    final Config<Boolean> slimeblockConfig = new BooleanConfig("SlimeBlock", "Removes the slowdown effect caused by walking over Slime blocks", false);
     private boolean sneaking;
 
     public NoSlowModule() {
@@ -69,7 +69,7 @@ extends ToggleModule {
 
     @Override
     public void onDisable() {
-        if (this.airStrictConfig.getValue().booleanValue() && this.sneaking) {
+        if (this.airStrictConfig.getValue() && this.sneaking) {
             Managers.NETWORK.sendPacket(new ClientCommandC2SPacket(NoSlowModule.mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
         }
         this.sneaking = false;
@@ -83,7 +83,7 @@ extends ToggleModule {
 
     @EventListener
     public void onSetCurrentHand(SetCurrentHandEvent event) {
-        if (this.airStrictConfig.getValue().booleanValue() && !this.sneaking && this.checkSlowed()) {
+        if (this.airStrictConfig.getValue() && !this.sneaking && this.checkSlowed()) {
             this.sneaking = true;
             Managers.NETWORK.sendPacket(new ClientCommandC2SPacket(NoSlowModule.mc.player, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
         }
@@ -91,7 +91,7 @@ extends ToggleModule {
 
     @EventListener
     public void onPlayerUpdate(UpdateWalkingEvent event) {
-        if (event.getStage() == EventStage.PRE && this.grimConfig.getValue().booleanValue() && NoSlowModule.mc.player.isUsingItem() && !NoSlowModule.mc.player.isSneaking() && this.itemsConfig.getValue().booleanValue()) {
+        if (event.getStage() == EventStage.PRE && this.grimConfig.getValue() && NoSlowModule.mc.player.isUsingItem() && !NoSlowModule.mc.player.isSneaking() && this.itemsConfig.getValue()) {
             ItemStack offHandStack = NoSlowModule.mc.player.getOffHandStack();
             if (NoSlowModule.mc.player.getActiveHand() != Hand.OFF_HAND && !offHandStack.isFood() && offHandStack.getItem() != Items.BOW && offHandStack.getItem() != Items.CROSSBOW && offHandStack.getItem() != Items.SHIELD) {
                 Managers.NETWORK.sendSequencedPacket(id -> new PlayerInteractItemC2SPacket(Hand.OFF_HAND, id));
@@ -102,20 +102,20 @@ extends ToggleModule {
     @EventListener
     public void onTick(TickEvent event) {
         if (event.getStage() == EventStage.PRE) {
-            if (this.airStrictConfig.getValue().booleanValue() && this.sneaking && !NoSlowModule.mc.player.isUsingItem()) {
+            if (this.airStrictConfig.getValue() && this.sneaking && !NoSlowModule.mc.player.isUsingItem()) {
                 this.sneaking = false;
                 Managers.NETWORK.sendPacket(new ClientCommandC2SPacket(NoSlowModule.mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
             }
-            if (!this.strafeFixConfig.getValue().booleanValue() || this.checkSlowed()) {
+            if (!this.strafeFixConfig.getValue() || this.checkSlowed()) {
                 // empty if block
             }
-            if (this.inventoryMoveConfig.getValue().booleanValue() && this.checkScreen()) {
+            if (this.inventoryMoveConfig.getValue() && this.checkScreen()) {
                 KeyBinding[] keys;
                 long handle = mc.getWindow().getHandle();
                 for (KeyBinding binding : keys = new KeyBinding[]{NoSlowModule.mc.options.jumpKey, NoSlowModule.mc.options.forwardKey, NoSlowModule.mc.options.backKey, NoSlowModule.mc.options.rightKey, NoSlowModule.mc.options.leftKey}) {
                     binding.setPressed(InputUtil.isKeyPressed(handle, ((AccessorKeyBinding) binding).getBoundKey().getCode()));
                 }
-                if (this.arrowMoveConfig.getValue().booleanValue()) {
+                if (this.arrowMoveConfig.getValue()) {
                     float yaw = NoSlowModule.mc.player.getYaw();
                     float pitch = NoSlowModule.mc.player.getPitch();
                     if (InputUtil.isKeyPressed(handle, 265)) {
@@ -131,7 +131,7 @@ extends ToggleModule {
                     NoSlowModule.mc.player.setPitch(MathHelper.clamp(pitch, -90.0f, 90.0f));
                 }
             }
-            if (this.grimConfig.getValue().booleanValue() && (this.websConfig.getValue().booleanValue() || this.berryBushConfig.getValue().booleanValue())) {
+            if (this.grimConfig.getValue() && (this.websConfig.getValue() || this.berryBushConfig.getValue())) {
                 for (BlockPos pos : this.getIntersectingWebs()) {
                     Managers.NETWORK.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, pos, Direction.DOWN));
                     Managers.NETWORK.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, pos, Direction.DOWN));
@@ -143,13 +143,13 @@ extends ToggleModule {
     @EventListener
     public void onSlowMovement(SlowMovementEvent event) {
         Block block = event.getState().getBlock();
-        if (block instanceof CobwebBlock && this.websConfig.getValue().booleanValue() || block instanceof SweetBerryBushBlock && this.berryBushConfig.getValue().booleanValue()) {
-            if (this.grimConfig.getValue().booleanValue()) {
+        if (block instanceof CobwebBlock && this.websConfig.getValue() || block instanceof SweetBerryBushBlock && this.berryBushConfig.getValue()) {
+            if (this.grimConfig.getValue()) {
                 event.cancel();
             } else if (NoSlowModule.mc.player.isOnGround()) {
                 Managers.TICK.setClientTick(1.0f);
             } else {
-                Managers.TICK.setClientTick(this.webSpeedConfig.getValue().floatValue() / 2.0f);
+                Managers.TICK.setClientTick(this.webSpeedConfig.getValue() / 2.0f);
             }
         }
     }
@@ -164,21 +164,21 @@ extends ToggleModule {
 
     @EventListener
     public void onVelocityMultiplier(VelocityMultiplierEvent event) {
-        if (event.getBlock() == Blocks.SOUL_SAND && this.soulsandConfig.getValue().booleanValue() || event.getBlock() == Blocks.HONEY_BLOCK && this.honeyblockConfig.getValue().booleanValue()) {
+        if (event.getBlock() == Blocks.SOUL_SAND && this.soulsandConfig.getValue() || event.getBlock() == Blocks.HONEY_BLOCK && this.honeyblockConfig.getValue()) {
             event.cancel();
         }
     }
 
     @EventListener
     public void onSteppedOnSlimeBlock(SteppedOnSlimeBlockEvent event) {
-        if (this.slimeblockConfig.getValue().booleanValue()) {
+        if (this.slimeblockConfig.getValue()) {
             event.cancel();
         }
     }
 
     @EventListener
     public void onBlockSlipperiness(BlockSlipperinessEvent event) {
-        if (event.getBlock() == Blocks.SLIME_BLOCK && this.slimeblockConfig.getValue().booleanValue()) {
+        if (event.getBlock() == Blocks.SLIME_BLOCK && this.slimeblockConfig.getValue()) {
             event.cancel();
             event.setSlipperiness(0.6f);
         }
@@ -191,9 +191,9 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof PlayerMoveC2SPacket && (packet = (PlayerMoveC2SPacket) packet2).changesPosition() && this.strictConfig.getValue().booleanValue() && this.checkSlowed()) {
+        if (packet2 instanceof PlayerMoveC2SPacket && (packet = (PlayerMoveC2SPacket) packet2).changesPosition() && this.strictConfig.getValue() && this.checkSlowed()) {
             InventoryUtil.doSwap(NoSlowModule.mc.player.getInventory().selectedSlot);
-        } else if (event.getPacket() instanceof ClickSlotC2SPacket && this.strictConfig.getValue().booleanValue()) {
+        } else if (event.getPacket() instanceof ClickSlotC2SPacket && this.strictConfig.getValue()) {
             if (NoSlowModule.mc.player.isUsingItem()) {
                 NoSlowModule.mc.player.stopUsingItem();
             }
@@ -216,13 +216,13 @@ extends ToggleModule {
 
     public List<BlockPos> getIntersectingWebs() {
         int radius = 5;
-        ArrayList<BlockPos> blocks = new ArrayList<BlockPos>();
+        ArrayList<BlockPos> blocks = new ArrayList<>();
         for (int x = radius; x > -radius; --x) {
             for (int y = radius; y > -radius; --y) {
                 for (int z = radius; z > -radius; --z) {
                     BlockPos blockPos = BlockPos.ofFloored(NoSlowModule.mc.player.getX() + (double)x, NoSlowModule.mc.player.getY() + (double)y, NoSlowModule.mc.player.getZ() + (double)z);
                     BlockState state = NoSlowModule.mc.world.getBlockState(blockPos);
-                    if ((!(state.getBlock() instanceof CobwebBlock) || !this.websConfig.getValue().booleanValue()) && (!(state.getBlock() instanceof SweetBerryBushBlock) || !this.berryBushConfig.getValue().booleanValue())) continue;
+                    if ((!(state.getBlock() instanceof CobwebBlock) || !this.websConfig.getValue()) && (!(state.getBlock() instanceof SweetBerryBushBlock) || !this.berryBushConfig.getValue())) continue;
                     blocks.add(blockPos);
                 }
             }

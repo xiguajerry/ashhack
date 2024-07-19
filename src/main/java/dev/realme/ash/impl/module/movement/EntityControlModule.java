@@ -14,7 +14,7 @@ import net.minecraft.entity.passive.LlamaEntity;
 
 public class EntityControlModule
 extends ToggleModule {
-    Config<Float> jumpStrengthConfig = new NumberConfig<Float>("JumpStrength", "The fixed jump strength of the mounted entity", 0.1f, 0.7f, 2.0f);
+    final Config<Float> jumpStrengthConfig = new NumberConfig<>("JumpStrength", "The fixed jump strength of the mounted entity", 0.1f, 0.7f, 2.0f);
     Config<Boolean> noPigMoveConfig = new BooleanConfig("NoPigAI", "Prevents the pig movement when controlling pigs", false);
 
     public EntityControlModule() {
@@ -42,6 +42,6 @@ extends ToggleModule {
     @EventListener
     public void onMountJumpStrength(MountJumpStrengthEvent event) {
         event.cancel();
-        event.setJumpStrength(this.jumpStrengthConfig.getValue().floatValue());
+        event.setJumpStrength(this.jumpStrengthConfig.getValue());
     }
 }

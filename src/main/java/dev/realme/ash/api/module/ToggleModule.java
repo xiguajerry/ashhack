@@ -14,17 +14,15 @@ import net.minecraft.util.Formatting;
 
 public class ToggleModule extends Module implements Hideable {
    private final Animation animation;
-   Config enabledConfig;
-   Config keybindingConfig;
-   Config hiddenConfig;
+   final Config enabledConfig;
+   final Config keybindingConfig;
+   final Config hiddenConfig;
 
    public ToggleModule(String name, String desc, ModuleCategory category) {
       super(name, desc, category);
       this.animation = new Animation(false, 300.0F, Easing.CUBIC_IN_OUT);
       this.enabledConfig = new ToggleConfig("Enabled", "The module enabled state. This state is true when the module is running.", false);
-      this.keybindingConfig = new MacroConfig("Keybind", "The module keybinding. Pressing this key will toggle the module enabled state. Press [BACKSPACE] to delete the keybind.", new Macro(this.getId(), -1, () -> {
-         this.toggle();
-      }));
+      this.keybindingConfig = new MacroConfig("Keybind", "The module keybinding. Pressing this key will toggle the module enabled state. Press [BACKSPACE] to delete the keybind.", new Macro(this.getId(), -1, this::toggle));
       this.hiddenConfig = new BooleanConfig("Hidden", "The hidden state of the module in the Arraylist", false);
       this.register(this.keybindingConfig, this.enabledConfig, this.hiddenConfig);
    }

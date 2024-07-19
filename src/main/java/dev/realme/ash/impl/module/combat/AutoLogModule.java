@@ -18,12 +18,12 @@ import net.minecraft.text.Text;
 
 public class AutoLogModule
 extends ToggleModule {
-    Config<Float> healthConfig = new NumberConfig<Float>("Health", "Disconnects when player reaches this health", 0.1f, 5.0f, 19.0f);
-    Config<Boolean> healthTotemConfig = new BooleanConfig("HealthTotems", "Totem check for health config", true);
-    Config<Boolean> onRenderConfig = new BooleanConfig("OnRender", "Disconnects when a player enters render distance", false);
-    Config<Boolean> noTotemConfig = new BooleanConfig("NoTotems", "Disconnects when player has no totems in the inventory", false);
-    Config<Integer> totemsConfig = new NumberConfig<Integer>("Totems", "The number of totems before disconnecting", 0, 1, 5);
-    Config<Boolean> illegalDisconnectConfig = new BooleanConfig("IllegalDisconnect", "Disconnects from the server using invalid packets", false);
+    final Config<Float> healthConfig = new NumberConfig<>("Health", "Disconnects when player reaches this health", 0.1f, 5.0f, 19.0f);
+    final Config<Boolean> healthTotemConfig = new BooleanConfig("HealthTotems", "Totem check for health config", true);
+    final Config<Boolean> onRenderConfig = new BooleanConfig("OnRender", "Disconnects when a player enters render distance", false);
+    final Config<Boolean> noTotemConfig = new BooleanConfig("NoTotems", "Disconnects when player has no totems in the inventory", false);
+    final Config<Integer> totemsConfig = new NumberConfig<>("Totems", "The number of totems before disconnecting", 0, 1, 5);
+    final Config<Boolean> illegalDisconnectConfig = new BooleanConfig("IllegalDisconnect", "Disconnects from the server using invalid packets", false);
 
     public AutoLogModule() {
         super("AutoLog", "Automatically disconnects from server during combat", ModuleCategory.COMBAT);
@@ -36,15 +36,19 @@ extends ToggleModule {
         if (event.getStage() != EventStage.PRE) {
             return;
         }
-        if (this.onRenderConfig.getValue().booleanValue() && (player = AutoLogModule.mc.world.getPlayers().stream().filter(p -> this.checkEnemy(p)).findFirst().orElse(null)) != null) {
-            this.playerDisconnect("[AutoLog] %s came into render distance.", player.getName().getString());
-            return;
+        if (this.onRenderConfig.getValue()) {
+            assert AutoLogModule.mc.world != null;
+            if ((player = AutoLogModule.mc.world.getPlayers().stream().filter(this::checkEnemy).findFirst().orElse(null)) != null) {
+                this.playerDisconnect("[AutoLog] %s came into render distance.", player.getName().getString());
+                return;
+            }
         }
+        assert AutoLogModule.mc.player != null;
         float health = AutoLogModule.mc.player.getHealth() + AutoLogModule.mc.player.getAbsorptionAmount();
         int totems = InventoryUtil.count(Items.TOTEM_OF_UNDYING);
         boolean bl = b2 = totems <= this.totemsConfig.getValue();
-        if (health <= this.healthConfig.getValue().floatValue()) {
-            if (!this.healthTotemConfig.getValue().booleanValue()) {
+        if (health <= this.healthConfig.getValue()) {
+            if (!this.healthTotemConfig.getValue()) {
                 this.playerDisconnect("[AutoLog] logged out with %d hearts remaining.", (int)health);
                 return;
             }
@@ -53,18 +57,20 @@ extends ToggleModule {
                 return;
             }
         }
-        if (b2 && this.noTotemConfig.getValue().booleanValue()) {
+        if (b2 && this.noTotemConfig.getValue()) {
             this.playerDisconnect("[AutoLog] logged out with %d totems remaining.", totems);
         }
     }
 
     private void playerDisconnect(String disconnectReason, Object ... args) {
-        if (this.illegalDisconnectConfig.getValue().booleanValue()) {
+        if (this.illegalDisconnectConfig.getValue()) {
+            assert AutoLogModule.mc.player != null;
             Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.attack(AutoLogModule.mc.player, false));
             this.disable();
             return;
         }
         if (mc.getNetworkHandler() == null) {
+            assert AutoLogModule.mc.world != null;
             AutoLogModule.mc.world.disconnect();
             this.disable();
             return;

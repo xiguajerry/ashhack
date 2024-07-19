@@ -40,12 +40,8 @@ public class RenderLayersClient implements Globals {
    protected static class Lightmap extends RenderPhase.Lightmap {
       public Lightmap() {
          super(false);
-         ((AccessorRenderPhase)this).hookSetBeginAction(() -> {
-            Globals.mc.gameRenderer.getLightmapTextureManager().enable();
-         });
-         ((AccessorRenderPhase)this).hookSetEndAction(() -> {
-            Globals.mc.gameRenderer.getLightmapTextureManager().disable();
-         });
+         ((AccessorRenderPhase)this).hookSetBeginAction(() -> Globals.mc.gameRenderer.getLightmapTextureManager().enable());
+         ((AccessorRenderPhase)this).hookSetEndAction(() -> Globals.mc.gameRenderer.getLightmapTextureManager().disable());
       }
    }
 }

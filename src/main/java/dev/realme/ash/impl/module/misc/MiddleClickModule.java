@@ -23,9 +23,9 @@ import net.minecraft.util.hit.HitResult;
 
 public class MiddleClickModule
 extends RotationModule {
-    Config<Boolean> friend = new BooleanConfig("Friend", "Friends players when middle click", true);
-    Config<Boolean> pearl = new BooleanConfig("Pearl", "Throws a pearl when middle click", true);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
+    final Config<Boolean> friend = new BooleanConfig("Friend", "Friends players when middle click", true);
+    final Config<Boolean> pearl = new BooleanConfig("Pearl", "Throws a pearl when middle click", true);
+    final Config<SwapMode> swapMode = new EnumConfig<>("SwapMode", "", SwapMode.SILENT, SwapMode.values());
     boolean click = false;
 
     public MiddleClickModule() {
@@ -47,7 +47,7 @@ extends RotationModule {
             if (!this.click) {
                 int slot;
                 Entity entity;
-                if (result != null && this.friend.getValue().booleanValue() && result instanceof EntityHitResult && (entity = ((EntityHitResult)result).getEntity()) instanceof PlayerEntity) {
+                if (result != null && this.friend.getValue() && result instanceof EntityHitResult && (entity = ((EntityHitResult)result).getEntity()) instanceof PlayerEntity) {
                     PlayerEntity target = (PlayerEntity)entity;
                     String targetName = target.getName().getString();
                     if (Managers.SOCIAL.isFriend(targetName)) {
@@ -55,7 +55,7 @@ extends RotationModule {
                     } else {
                         Managers.SOCIAL.addFriend(targetName);
                     }
-                } else if (this.pearl.getValue().booleanValue() && (slot = this.findPearlSlot()) != -1) {
+                } else if (this.pearl.getValue() && (slot = this.findPearlSlot()) != -1) {
                     this.doPearlSwap(slot);
                 }
                 this.click = true;

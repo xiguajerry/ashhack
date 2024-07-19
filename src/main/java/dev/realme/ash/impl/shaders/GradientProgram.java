@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec2f;
 import org.lwjgl.opengl.GL20;
 
 public class GradientProgram extends Program {
-   Uniform resolution = new Uniform("resolution");
+   final Uniform resolution = new Uniform("resolution");
 
    public GradientProgram() {
       super(new Shader("gradient.frag", 35632));

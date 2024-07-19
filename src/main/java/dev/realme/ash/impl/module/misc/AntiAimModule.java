@@ -10,12 +10,12 @@ import dev.realme.ash.impl.event.network.PlayerTickEvent;
 
 public class AntiAimModule
 extends RotationModule {
-    Config<YawMode> yawModeConfig = new EnumConfig("Yaw", "The mode for the rotation yaw spin ", YawMode.SPIN, YawMode.values());
-    Config<PitchMode> pitchModeConfig = new EnumConfig("Pitch", "The mode for the rotation pitch spin", PitchMode.DOWN, PitchMode.values());
-    Config<Float> yawAddConfig = new NumberConfig<Float>("YawAdd", "The yaw to add during each rotation", -180.0f, 20.0f, 180.0f);
-    Config<Float> pitchAddConfig = new NumberConfig<Float>("CustomPitch", "The pitch to add during each rotation", -90.0f, 20.0f, 90.0f);
-    Config<Float> spinSpeedConfig = new NumberConfig<Float>("SpinSpeed", "The yaw speed to rotate", 1.0f, 16.0f, 40.0f);
-    Config<Integer> flipTicksConfig = new NumberConfig<Integer>("FlipTicks", "The number of ticks to wait between jitter", 2, 2, 20);
+    final Config<YawMode> yawModeConfig = new EnumConfig<>("Yaw", "The mode for the rotation yaw spin ", YawMode.SPIN, YawMode.values());
+    final Config<PitchMode> pitchModeConfig = new EnumConfig<>("Pitch", "The mode for the rotation pitch spin", PitchMode.DOWN, PitchMode.values());
+    final Config<Float> yawAddConfig = new NumberConfig<>("YawAdd", "The yaw to add during each rotation", -180.0f, 20.0f, 180.0f);
+    final Config<Float> pitchAddConfig = new NumberConfig<>("CustomPitch", "The pitch to add during each rotation", -90.0f, 20.0f, 90.0f);
+    final Config<Float> spinSpeedConfig = new NumberConfig<>("SpinSpeed", "The yaw speed to rotate", 1.0f, 16.0f, 40.0f);
+    final Config<Integer> flipTicksConfig = new NumberConfig<>("FlipTicks", "The number of ticks to wait between jitter", 2, 2, 20);
     private float yaw;
     private float pitch;
     private float prevYaw;
@@ -40,22 +40,34 @@ extends RotationModule {
             return;
         }
         this.yaw = switch (this.yawModeConfig.getValue()) {
-            case OFF -> AntiAimModule.mc.player.getYaw();
-            case STATIC -> AntiAimModule.mc.player.getYaw() + this.yawAddConfig.getValue().floatValue();
+            case OFF -> {
+                assert AntiAimModule.mc.player != null;
+                yield AntiAimModule.mc.player.getYaw();
+            }
+            case STATIC -> {
+                assert AntiAimModule.mc.player != null;
+                yield AntiAimModule.mc.player.getYaw() + this.yawAddConfig.getValue();
+            }
             case ZERO -> this.prevYaw;
             case SPIN -> {
-                float spin = this.yaw + this.spinSpeedConfig.getValue().floatValue();
+                float spin = this.yaw + this.spinSpeedConfig.getValue();
                 if (spin > 360.0f) {
                     yield spin - 360.0f;
                 }
                 yield spin;
             }
-            case JITTER -> AntiAimModule.mc.player.getYaw() + (AntiAimModule.mc.player.age % this.flipTicksConfig.getValue() == 0 ? this.yawAddConfig.getValue().floatValue() : -this.yawAddConfig.getValue().floatValue());
+            case JITTER -> {
+                assert AntiAimModule.mc.player != null;
+                yield AntiAimModule.mc.player.getYaw() + (AntiAimModule.mc.player.age % this.flipTicksConfig.getValue() == 0 ? this.yawAddConfig.getValue() : -this.yawAddConfig.getValue());
+            }
         };
         this.pitch = switch (this.pitchModeConfig.getValue()) {
             default -> throw new IncompatibleClassChangeError();
-            case OFF -> AntiAimModule.mc.player.getPitch();
-            case STATIC -> this.pitchAddConfig.getValue().floatValue();
+            case OFF -> {
+                assert AntiAimModule.mc.player != null;
+                yield AntiAimModule.mc.player.getPitch();
+            }
+            case STATIC -> this.pitchAddConfig.getValue();
             case ZERO -> this.prevPitch;
             case UP -> -90.0f;
             case DOWN -> 90.0f;

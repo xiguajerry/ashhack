@@ -32,9 +32,7 @@ public class Shader {
       if (stream == null) {
          throw new IOException("Shader with name " + name + " not found");
       } else {
-         return IOUtils.readLines(stream, Charset.defaultCharset()).stream().map((line) -> {
-            return line + "\n";
-         }).toList();
+         return IOUtils.readLines(stream, Charset.defaultCharset()).stream().map((line) -> line + "\n").toList();
       }
    }
 

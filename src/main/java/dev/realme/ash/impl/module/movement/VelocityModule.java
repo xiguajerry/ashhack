@@ -34,15 +34,15 @@ import net.minecraft.util.math.Direction;
 
 public class VelocityModule
 extends ToggleModule {
-    Config<Boolean> knockbackConfig = new BooleanConfig("Knockback", "Removes player knockback velocity", true);
-    Config<Boolean> explosionConfig = new BooleanConfig("Explosion", "Removes player explosion velocity", true);
-    Config<VelocityMode> modeConfig = new EnumConfig("Mode", "The mode for velocity", VelocityMode.NORMAL, VelocityMode.values());
-    Config<Float> horizontalConfig = new NumberConfig<Float>("Horizontal", "How much horizontal knock-back to take", 0.0f, 0.0f, 100.0f, NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
-    Config<Float> verticalConfig = new NumberConfig<Float>("Vertical", "How much vertical knock-back to take", 0.0f, 0.0f, 100.0f, NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
-    Config<Boolean> pushEntitiesConfig = new BooleanConfig("NoPush-Entities", "Prevents being pushed away from entities", true);
-    Config<Boolean> pushBlocksConfig = new BooleanConfig("NoPush-Blocks", "Prevents being pushed out of blocks", true);
-    Config<Boolean> pushLiquidsConfig = new BooleanConfig("NoPush-Liquids", "Prevents being pushed by flowing liquids", true);
-    Config<Boolean> pushFishhookConfig = new BooleanConfig("NoPush-Fishhook", "Prevents being pulled by fishing rod hooks", true);
+    final Config<Boolean> knockbackConfig = new BooleanConfig("Knockback", "Removes player knockback velocity", true);
+    final Config<Boolean> explosionConfig = new BooleanConfig("Explosion", "Removes player explosion velocity", true);
+    final Config<VelocityMode> modeConfig = new EnumConfig<>("Mode", "The mode for velocity", VelocityMode.NORMAL, VelocityMode.values());
+    final Config<Float> horizontalConfig = new NumberConfig<>("Horizontal", "How much horizontal knock-back to take", 0.0f, 0.0f, 100.0f, NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
+    final Config<Float> verticalConfig = new NumberConfig<>("Vertical", "How much vertical knock-back to take", 0.0f, 0.0f, 100.0f, NumberDisplay.PERCENT, () -> this.modeConfig.getValue() == VelocityMode.NORMAL);
+    final Config<Boolean> pushEntitiesConfig = new BooleanConfig("NoPush-Entities", "Prevents being pushed away from entities", true);
+    final Config<Boolean> pushBlocksConfig = new BooleanConfig("NoPush-Blocks", "Prevents being pushed out of blocks", true);
+    final Config<Boolean> pushLiquidsConfig = new BooleanConfig("NoPush-Liquids", "Prevents being pushed by flowing liquids", true);
+    final Config<Boolean> pushFishhookConfig = new BooleanConfig("NoPush-Fishhook", "Prevents being pulled by fishing rod hooks", true);
     private boolean cancelVelocity;
 
     public VelocityModule() {
@@ -88,19 +88,19 @@ extends ToggleModule {
         Packet<?> packet = event.getPacket();
         if (packet instanceof EntityVelocityUpdateS2CPacket) {
             EntityVelocityUpdateS2CPacket packet2 = (EntityVelocityUpdateS2CPacket) packet;
-            if (this.knockbackConfig.getValue().booleanValue()) {
+            if (this.knockbackConfig.getValue()) {
                 if (packet2.getId() != VelocityModule.mc.player.getId()) {
                     return;
                 }
                 switch (this.modeConfig.getValue()) {
                     case NORMAL: {
-                        if (this.horizontalConfig.getValue().floatValue() == 0.0f && this.verticalConfig.getValue().floatValue() == 0.0f) {
+                        if (this.horizontalConfig.getValue() == 0.0f && this.verticalConfig.getValue() == 0.0f) {
                             event.cancel();
                             return;
                         }
-                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityX((int)((float)packet2.getVelocityX() * (this.horizontalConfig.getValue().floatValue() / 100.0f)));
-                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityY((int)((float)packet2.getVelocityY() * (this.verticalConfig.getValue().floatValue() / 100.0f)));
-                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityZ((int)((float)packet2.getVelocityZ() * (this.horizontalConfig.getValue().floatValue() / 100.0f)));
+                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityX((int)((float)packet2.getVelocityX() * (this.horizontalConfig.getValue() / 100.0f)));
+                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityY((int)((float)packet2.getVelocityY() * (this.verticalConfig.getValue() / 100.0f)));
+                        ((AccessorEntityVelocityUpdateS2CPacket) packet2).setVelocityZ((int)((float)packet2.getVelocityZ() * (this.horizontalConfig.getValue() / 100.0f)));
                         return;
                     }
                     case GRIM: {
@@ -114,16 +114,16 @@ extends ToggleModule {
         }
         if ((packet = event.getPacket()) instanceof ExplosionS2CPacket) {
             ExplosionS2CPacket packet3 = (ExplosionS2CPacket) packet;
-            if (this.explosionConfig.getValue().booleanValue()) {
+            if (this.explosionConfig.getValue()) {
                 switch (this.modeConfig.getValue()) {
                     case NORMAL: {
-                        if (this.horizontalConfig.getValue().floatValue() == 0.0f && this.verticalConfig.getValue().floatValue() == 0.0f) {
+                        if (this.horizontalConfig.getValue() == 0.0f && this.verticalConfig.getValue() == 0.0f) {
                             event.cancel();
                             break;
                         }
-                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityX(packet3.getPlayerVelocityX() * (this.horizontalConfig.getValue().floatValue() / 100.0f));
-                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityY(packet3.getPlayerVelocityY() * (this.verticalConfig.getValue().floatValue() / 100.0f));
-                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityZ(packet3.getPlayerVelocityZ() * (this.horizontalConfig.getValue().floatValue() / 100.0f));
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityX(packet3.getPlayerVelocityX() * (this.horizontalConfig.getValue() / 100.0f));
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityY(packet3.getPlayerVelocityY() * (this.verticalConfig.getValue() / 100.0f));
+                        ((AccessorExplosionS2CPacket) packet3).setPlayerVelocityZ(packet3.getPlayerVelocityZ() * (this.horizontalConfig.getValue() / 100.0f));
                         break;
                     }
                     case GRIM: {
@@ -164,21 +164,21 @@ extends ToggleModule {
 
     @EventListener
     public void onPushEntity(PushEntityEvent event) {
-        if (this.pushEntitiesConfig.getValue().booleanValue() && event.getPushed().equals(VelocityModule.mc.player)) {
+        if (this.pushEntitiesConfig.getValue() && event.getPushed().equals(VelocityModule.mc.player)) {
             event.cancel();
         }
     }
 
     @EventListener
     public void onPushOutOfBlocks(PushOutOfBlocksEvent event) {
-        if (this.pushBlocksConfig.getValue().booleanValue()) {
+        if (this.pushBlocksConfig.getValue()) {
             event.cancel();
         }
     }
 
     @EventListener
     public void onPushFluid(PushFluidsEvent event) {
-        if (this.pushLiquidsConfig.getValue().booleanValue()) {
+        if (this.pushLiquidsConfig.getValue()) {
             event.cancel();
         }
     }

@@ -12,9 +12,9 @@ import dev.realme.ash.util.player.MovementUtil;
 
 public class TickShiftModule
 extends ToggleModule {
-    Config<Integer> ticksConfig = new NumberConfig<Integer>("MaxTicks", "Maximum charge ticks", 1, 20, 40);
-    Config<Integer> packetsConfig = new NumberConfig<Integer>("Packets", "Packets to release from storage every tick", 1, 1, 5);
-    Config<Integer> chargeSpeedConfig = new NumberConfig<Integer>("ChargeSpeed", "The speed to charge the stored packets", 1, 1, 5);
+    final Config<Integer> ticksConfig = new NumberConfig<>("MaxTicks", "Maximum charge ticks", 1, 20, 40);
+    final Config<Integer> packetsConfig = new NumberConfig<>("Packets", "Packets to release from storage every tick", 1, 1, 5);
+    final Config<Integer> chargeSpeedConfig = new NumberConfig<>("ChargeSpeed", "The speed to charge the stored packets", 1, 1, 5);
     private int packets;
 
     public TickShiftModule() {
@@ -32,15 +32,15 @@ extends ToggleModule {
             return;
         }
         if (MovementUtil.isMoving() || !TickShiftModule.mc.player.isOnGround()) {
-            this.packets -= this.packetsConfig.getValue().intValue();
+            this.packets -= this.packetsConfig.getValue();
             if (this.packets <= 0) {
                 this.packets = 0;
                 Managers.TICK.setClientTick(1.0f);
                 return;
             }
-            Managers.TICK.setClientTick((float)this.packetsConfig.getValue().intValue() + 1.0f);
+            Managers.TICK.setClientTick((float) this.packetsConfig.getValue() + 1.0f);
         } else {
-            this.packets += this.chargeSpeedConfig.getValue().intValue();
+            this.packets += this.chargeSpeedConfig.getValue();
             if (this.packets > this.ticksConfig.getValue()) {
                 this.packets = this.ticksConfig.getValue();
             }

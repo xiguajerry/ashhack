@@ -27,9 +27,7 @@ public class MixinPlayerListEntry implements Globals {
    )
    private void hookInit(GameProfile profile, boolean secureChatEnforced, CallbackInfo ci) {
       if (!this.capeTextureLoaded) {
-         Managers.CAPES.loadPlayerCape(profile, (identifier) -> {
-            this.capeTexture = identifier;
-         });
+         Managers.CAPES.loadPlayerCape(profile, (identifier) -> this.capeTexture = identifier);
          this.capeTextureLoaded = true;
       }
    }

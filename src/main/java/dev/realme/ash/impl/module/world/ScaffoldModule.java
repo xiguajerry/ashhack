@@ -21,7 +21,7 @@ import net.minecraft.util.math.Direction;
 
 public class ScaffoldModule
 extends RotationModule {
-    Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
+    final Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
     private final Timer timer = new CacheTimer();
     private final Timer lastTimer = new CacheTimer();
     private float[] angle = null;
@@ -39,7 +39,7 @@ extends RotationModule {
 
     @EventListener(priority=100)
     public void onRotation(RotateEvent event) {
-        if (this.rotate.getValue().booleanValue() && !this.timer.passed(500) && this.angle != null) {
+        if (this.rotate.getValue() && !this.timer.passed(500) && this.angle != null) {
             event.setYaw(this.angle[0]);
             event.setPitch(this.angle[1]);
         }
@@ -94,7 +94,7 @@ extends RotationModule {
                     return;
                 }
             }
-            if (this.rotate.getValue().booleanValue()) {
+            if (this.rotate.getValue()) {
                 Direction side = Managers.INTERACT.getPlaceDirection(placePos);
                 this.angle = EntityUtil.getLegitRotations(placePos.offset(side).toCenterPos().add((double)side.getOpposite().getVector().getX() * 0.5, (double)side.getOpposite().getVector().getY() * 0.5, (double)side.getOpposite().getVector().getZ() * 0.5));
                 this.timer.reset();

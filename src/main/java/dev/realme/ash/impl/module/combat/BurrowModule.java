@@ -37,13 +37,13 @@ import net.minecraft.util.math.Vec3d;
 
 public class BurrowModule
 extends RotationModule {
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
-    Config<Boolean> wait = new BooleanConfig("Wait", "", false);
-    Config<Boolean> noSelfPos = new BooleanConfig("NoSelfPos", "", false);
-    Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<RotateMode> rotateMode = new EnumConfig("RotateMode", "", RotateMode.Down, RotateMode.values());
-    Config<LagBackMode> lagBackMode = new EnumConfig("LagBackMode", "", LagBackMode.Troll, LagBackMode.values());
-    Config<Boolean> swing = new BooleanConfig("Swing", "", false);
+    final Config<InventoryUtil.SwapMode> swapMode = new EnumConfig<>("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
+    final Config<Boolean> wait = new BooleanConfig("Wait", "", false);
+    final Config<Boolean> noSelfPos = new BooleanConfig("NoSelfPos", "", false);
+    final Config<Integer> multiPlace = new NumberConfig<>("MultiPlace", "", 0, 1, 5);
+    final Config<RotateMode> rotateMode = new EnumConfig<>("RotateMode", "", RotateMode.Down, RotateMode.values());
+    final Config<LagBackMode> lagBackMode = new EnumConfig<>("LagBackMode", "", LagBackMode.Troll, LagBackMode.values());
+    final Config<Boolean> swing = new BooleanConfig("Swing", "", false);
     int progress = 0;
     int slot;
     Vec3d rotatePos;
@@ -96,7 +96,7 @@ extends RotationModule {
         BlockPosX pos3 = new BlockPosX(BurrowModule.mc.player.getX() + 0.3, BurrowModule.mc.player.getY() + 0.5, BurrowModule.mc.player.getZ() - 0.3);
         BlockPosX pos4 = new BlockPosX(BurrowModule.mc.player.getX() - 0.3, BurrowModule.mc.player.getY() + 0.5, BurrowModule.mc.player.getZ() - 0.3);
         if (!(this.canPlace(pos1) || this.canPlace(pos2) || this.canPlace(pos3) || this.canPlace(pos4))) {
-            if (!this.wait.getValue().booleanValue()) {
+            if (!this.wait.getValue()) {
                 this.disable();
             }
             return;
@@ -226,7 +226,7 @@ extends RotationModule {
         } else if (Math.abs(subtracted.z) >= Math.abs(subtracted.x) && Math.abs(subtracted.z) > 0.2) {
             off = subtracted.z > 0.0 ? new Vec3d(0.0, 0.0, 0.8 - subtracted.z) : new Vec3d(0.0, 0.0, -0.8 - subtracted.z);
         } else if (burBlockPos.equals(playerPos)) {
-            ArrayList<Direction> facList = new ArrayList<Direction>();
+            ArrayList<Direction> facList = new ArrayList<>();
             for (Direction dir : Direction.values()) {
                 if (dir == Direction.UP || dir == Direction.DOWN || BlockUtil.solid(playerPos.offset(dir)) || BlockUtil.solid(playerPos.offset(dir).offset(Direction.UP))) continue;
                 facList.add(dir);
@@ -330,7 +330,7 @@ extends RotationModule {
     }
 
     private void doPlace(BlockPos pos) {
-        if (this.noSelfPos.getValue().booleanValue() && pos.equals(BurrowModule.mc.player.getBlockPos())) {
+        if (this.noSelfPos.getValue() && pos.equals(BurrowModule.mc.player.getBlockPos())) {
             return;
         }
         if (this.progress >= this.multiPlace.getValue()) {

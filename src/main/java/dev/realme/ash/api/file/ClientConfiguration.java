@@ -24,7 +24,7 @@ import java.util.Set;
 
 public class ClientConfiguration
         implements Globals {
-   private final Set<ConfigFile> files = new HashSet<ConfigFile>();
+   private final Set<ConfigFile> files = new HashSet<>();
    private Path clientDir;
 
    /*

@@ -31,7 +31,8 @@ public final class AccountAddAccountScreen extends Screen {
 
    protected void init() {
       this.clearChildren();
-      this.addDrawableChild(this.email = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 75, this.height / 2 - 30, 150, 20, Text.of("")));
+       assert this.client != null;
+       this.addDrawableChild(this.email = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 75, this.height / 2 - 30, 150, 20, Text.of("")));
       this.email.setPlaceholder(Text.of("Email or Username..."));
       this.addDrawableChild(this.password = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 75, this.height / 2 - 5, 150, 20, Text.of("")));
       this.password.setPlaceholder(Text.of("Password (Optional)"));
@@ -53,39 +54,36 @@ public final class AccountAddAccountScreen extends Screen {
       }).dimensions(this.width / 2 - 72, this.height / 2 + 20, 145, 20).build());
       this.addDrawableChild(ButtonWidget.builder(Text.of("Browser..."), (action) -> {
          try {
-            AccountManager.MSA_AUTHENTICATOR.loginWithBrowser((token) -> {
-               Ash.EXECUTOR.execute(() -> {
-                  MicrosoftAccount account = new MicrosoftAccount(token);
-                   Session session = null;
-                   try {
-                       session = account.login();
-                   } catch (IOException e) {
-                       throw new RuntimeException(e);
-                   }
-                   if (session != null) {
-                     Managers.ACCOUNT.setSession(session);
-                     Managers.ACCOUNT.register(account);
-                     this.client.setScreen(this.parent);
-                  } else {
-                     AccountManager.MSA_AUTHENTICATOR.setLoginStage("Could not login to account");
-                  }
+            AccountManager.MSA_AUTHENTICATOR.loginWithBrowser((token) -> Ash.EXECUTOR.execute(() -> {
+               MicrosoftAccount account = new MicrosoftAccount(token);
+                Session session;
+                try {
+                    session = account.login();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                if (session != null) {
+                  Managers.ACCOUNT.setSession(session);
+                  Managers.ACCOUNT.register(account);
+                  this.client.setScreen(this.parent);
+               } else {
+                  AccountManager.MSA_AUTHENTICATOR.setLoginStage("Could not login to account");
+               }
 
-               });
-            });
+            }));
          } catch (URISyntaxException | MSAAuthException | IOException var3) {
             Exception e = var3;
             e.printStackTrace();
          }
 
       }).dimensions(this.width / 2 - 72, this.height / 2 + 20 + 22, 145, 20).build());
-      this.addDrawableChild(ButtonWidget.builder(Text.of("Go Back"), (action) -> {
-         this.client.setScreen(this.parent);
-      }).dimensions(this.width / 2 - 72, this.height / 2 + 20 + 44, 145, 20).build());
+      this.addDrawableChild(ButtonWidget.builder(Text.of("Go Back"), (action) -> this.client.setScreen(this.parent)).dimensions(this.width / 2 - 72, this.height / 2 + 20 + 44, 145, 20).build());
    }
 
    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
       super.render(context, mouseX, mouseY, delta);
-      TextRenderer var10001 = this.client.textRenderer;
+       assert this.client != null;
+       TextRenderer var10001 = this.client.textRenderer;
       int var10003 = this.email.getX() - 10;
       int var10004 = this.email.getY() + this.email.getHeight() / 2;
       Objects.requireNonNull(this.client.textRenderer);
@@ -95,7 +93,8 @@ public final class AccountAddAccountScreen extends Screen {
 
    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
       if (keyCode == 256) {
-         this.client.setScreen(this.parent);
+          assert this.client != null;
+          this.client.setScreen(this.parent);
          return true;
       } else {
          return super.keyPressed(keyCode, scanCode, modifiers);

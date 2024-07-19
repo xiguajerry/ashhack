@@ -23,11 +23,11 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class AutoXPModule
 extends RotationModule {
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
-    Config<Boolean> rotate = new BooleanConfig("Rotate", "Rotates the player while throwing xp.", true);
-    Config<Float> delay = new NumberConfig<Float>("Delay", "Delay to throw xp in ticks.", 0.0f, 1.0f, 10.0f, NumberDisplay.DEFAULT);
-    Config<Boolean> durabilityCheck = new BooleanConfig("DurabilityCheck", "Check if your armor and held item durability is full then disables if it is.", true);
-    Config<Boolean> usingPause = new BooleanConfig("UsingPause", "", true);
+    final Config<InventoryUtil.SwapMode> swapMode = new EnumConfig<>("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
+    final Config<Boolean> rotate = new BooleanConfig("Rotate", "Rotates the player while throwing xp.", true);
+    final Config<Float> delay = new NumberConfig<>("Delay", "Delay to throw xp in ticks.", 0.0f, 1.0f, 10.0f, NumberDisplay.DEFAULT);
+    final Config<Boolean> durabilityCheck = new BooleanConfig("DurabilityCheck", "Check if your armor and held item durability is full then disables if it is.", true);
+    final Config<Boolean> usingPause = new BooleanConfig("UsingPause", "", true);
     private final Timer delayTimer = new CacheTimer();
     int slot;
 
@@ -49,7 +49,7 @@ extends RotationModule {
             this.disable();
             return;
         }
-        if (AutoXPModule.mc.player.isUsingItem() && this.usingPause.getValue().booleanValue()) {
+        if (AutoXPModule.mc.player.isUsingItem() && this.usingPause.getValue()) {
             return;
         }
         if (!this.delayTimer.passed(this.delay.getValue())) {
@@ -74,7 +74,7 @@ extends RotationModule {
             this.disable();
             return;
         }
-        if (this.rotate.getValue().booleanValue()) {
+        if (this.rotate.getValue()) {
             this.setRotation(AutoXPModule.mc.player.getYaw(), 90.0f);
         }
         switch (this.swapMode.getValue()) {
@@ -109,13 +109,12 @@ extends RotationModule {
     }
 
     public boolean checkThrow() {
-        if (!this.durabilityCheck.getValue().booleanValue()) {
+        if (!this.durabilityCheck.getValue()) {
             return true;
         }
         DefaultedList armors = AutoXPModule.mc.player.getInventory().armor;
-        Iterator iterator = armors.iterator();
-        while (iterator.hasNext()) {
-            ItemStack armor = (ItemStack)iterator.next();
+        for (Object o : armors) {
+            ItemStack armor = (ItemStack) o;
             if (armor.isEmpty() || EntityUtil.getDamagePercent(armor) >= 100) continue;
             return true;
         }

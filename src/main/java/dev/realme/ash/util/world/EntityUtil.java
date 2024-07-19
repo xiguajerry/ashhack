@@ -109,15 +109,13 @@ public class EntityUtil {
    public static float getArmorDurability(LivingEntity e) {
       float edmg = 0.0F;
       float emax = 0.0F;
-      Iterator var3 = e.getArmorItems().iterator();
 
-      while(var3.hasNext()) {
-         ItemStack armor = (ItemStack)var3.next();
-         if (armor != null && !armor.isEmpty()) {
-            edmg += (float)armor.getDamage();
-            emax += (float)armor.getMaxDamage();
-         }
-      }
+       for (ItemStack armor : e.getArmorItems()) {
+           if (armor != null && !armor.isEmpty()) {
+               edmg += (float) armor.getDamage();
+               emax += (float) armor.getMaxDamage();
+           }
+       }
 
       return 100.0F - edmg / emax;
    }
@@ -204,34 +202,28 @@ public class EntityUtil {
 
    public static void attackCrystal(BlockPos pos) {
       if (Modules.COMBAT_SETTING.attackTimer.passed(Modules.COMBAT_SETTING.attackDelay.getValue())) {
-         List entities = Globals.mc.world.getOtherEntities(null, new Box(pos)).stream().filter((e) -> {
-            return e instanceof EndCrystalEntity;
-         }).toList();
-         Iterator var2 = entities.iterator();
+         List entities = Globals.mc.world.getOtherEntities(null, new Box(pos)).stream().filter((e) -> e instanceof EndCrystalEntity).toList();
 
-         while(var2.hasNext()) {
-            Entity entity = (Entity)var2.next();
-            Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.attack(entity, Globals.mc.player.isSneaking()));
-            PlayerUtil.doSwing();
-            Modules.COMBAT_SETTING.attackTimer.reset();
-         }
+          for (Object o : entities) {
+              Entity entity = (Entity) o;
+              Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.attack(entity, Globals.mc.player.isSneaking()));
+              PlayerUtil.doSwing();
+              Modules.COMBAT_SETTING.attackTimer.reset();
+          }
 
       }
    }
 
    public static void attackCrystal(BlockPos pos, double delay) {
       if (Modules.COMBAT_SETTING.attackTimer.passed(delay)) {
-         List entities = Globals.mc.world.getOtherEntities(null, new Box(pos)).stream().filter((e) -> {
-            return e instanceof EndCrystalEntity;
-         }).toList();
-         Iterator var4 = entities.iterator();
+         List entities = Globals.mc.world.getOtherEntities(null, new Box(pos)).stream().filter((e) -> e instanceof EndCrystalEntity).toList();
 
-         while(var4.hasNext()) {
-            Entity entity = (Entity)var4.next();
-            Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.attack(entity, Globals.mc.player.isSneaking()));
-            PlayerUtil.doSwing();
-            Modules.COMBAT_SETTING.attackTimer.reset();
-         }
+          for (Object o : entities) {
+              Entity entity = (Entity) o;
+              Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.attack(entity, Globals.mc.player.isSneaking()));
+              PlayerUtil.doSwing();
+              Modules.COMBAT_SETTING.attackTimer.reset();
+          }
 
       }
    }
@@ -258,16 +250,14 @@ public class EntityUtil {
 
    public static void attackCrystal(double range) {
       if (Modules.COMBAT_SETTING.attackTimer.passed(Modules.COMBAT_SETTING.attackDelay.getValue())) {
-         Iterator var2 = Globals.mc.world.getEntities().iterator();
 
-         while(var2.hasNext()) {
-            Entity entity = (Entity)var2.next();
-            if (entity instanceof EndCrystalEntity && !((double)Globals.mc.player.distanceTo(entity) > range)) {
-               Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.attack(entity, Globals.mc.player.isSneaking()));
-               PlayerUtil.doSwing();
-               Modules.COMBAT_SETTING.attackTimer.reset();
-            }
-         }
+          for (Entity entity : Globals.mc.world.getEntities()) {
+              if (entity instanceof EndCrystalEntity && !((double) Globals.mc.player.distanceTo(entity) > range)) {
+                  Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.attack(entity, Globals.mc.player.isSneaking()));
+                  PlayerUtil.doSwing();
+                  Modules.COMBAT_SETTING.attackTimer.reset();
+              }
+          }
 
       }
    }

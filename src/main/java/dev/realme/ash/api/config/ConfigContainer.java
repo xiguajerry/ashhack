@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class ConfigContainer implements Identifiable, Serializable, Globals {
    protected final String name;
-   private final Map configurations = Collections.synchronizedMap(new LinkedHashMap());
+   private final Map configurations = Collections.synchronizedMap(new LinkedHashMap<>());
 
    public ConfigContainer(String name) {
       this.name = name;

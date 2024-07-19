@@ -17,7 +17,7 @@ import net.minecraft.sound.SoundEvents;
 
 public class NoSoundLagModule
 extends ToggleModule {
-    Config<Boolean> explosion = new BooleanConfig("Explosion", "", false);
+    final Config<Boolean> explosion = new BooleanConfig("Explosion", "", false);
     private static final Set<SoundEvent> LAG_SOUNDS =
             Set.of(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA,
                     SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND,
@@ -33,7 +33,7 @@ extends ToggleModule {
         if (NoSoundLagModule.nullCheck()) {
             return;
         }
-        if (this.explosion.getValue().booleanValue() && event.getSound().getId() == SoundEvents.ENTITY_GENERIC_EXPLODE.getId()) {
+        if (this.explosion.getValue() && event.getSound().getId() == SoundEvents.ENTITY_GENERIC_EXPLODE.getId()) {
             event.cancel();
         }
     }
@@ -46,7 +46,7 @@ extends ToggleModule {
         if (NoSoundLagModule.nullCheck()) {
             return;
         }
-        if (event.getPacket() instanceof ExplosionS2CPacket && this.explosion.getValue().booleanValue()) {
+        if (event.getPacket() instanceof ExplosionS2CPacket && this.explosion.getValue()) {
             event.cancel();
         }
         if ((packet3 = event.getPacket()) instanceof PlaySoundFromEntityS2CPacket && LAG_SOUNDS.contains((packet = (PlaySoundFromEntityS2CPacket) packet3).getSound().value()) || (packet3 = event.getPacket()) instanceof PlaySoundS2CPacket && LAG_SOUNDS.contains((packet2 = (PlaySoundS2CPacket) packet3).getSound().value())) {

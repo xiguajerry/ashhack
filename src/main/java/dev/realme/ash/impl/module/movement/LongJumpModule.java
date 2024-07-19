@@ -25,9 +25,9 @@ import net.minecraft.util.math.Vec2f;
 
 public class LongJumpModule
 extends ToggleModule {
-    Config<JumpMode> modeConfig = new EnumConfig("Mode", "The mode for long jump", JumpMode.NORMAL, JumpMode.values());
-    Config<Float> boostConfig = new NumberConfig<Float>("Boost", "The jump boost speed", 0.1f, 4.5f, 10.0f, () -> this.modeConfig.getValue() == JumpMode.NORMAL);
-    Config<Boolean> autoDisableConfig = new BooleanConfig("AutoDisable", "Automatically disables when rubberband is detected", true);
+    final Config<JumpMode> modeConfig = new EnumConfig<>("Mode", "The mode for long jump", JumpMode.NORMAL, JumpMode.values());
+    final Config<Float> boostConfig = new NumberConfig<>("Boost", "The jump boost speed", 0.1f, 4.5f, 10.0f, () -> this.modeConfig.getValue() == JumpMode.NORMAL);
+    final Config<Boolean> autoDisableConfig = new BooleanConfig("AutoDisable", "Automatically disables when rubberband is detected", true);
     private int stage;
     private double getDistance;
     private double speed;
@@ -84,7 +84,7 @@ extends ToggleModule {
             double base = (double)0.2873f * speedEffect / slowEffect;
             if (this.stage == 0) {
                 this.stage = 1;
-                this.speed = (double)this.boostConfig.getValue().floatValue() * base - 0.01;
+                this.speed = (double) this.boostConfig.getValue() * base - 0.01;
             } else if (this.stage == 1) {
                 this.stage = 2;
                 MovementUtil.setMotionY(0.42);
@@ -276,7 +276,7 @@ extends ToggleModule {
         if (LongJumpModule.mc.player == null || LongJumpModule.mc.world == null || LongJumpModule.mc.currentScreen instanceof DownloadingTerrainScreen) {
             return;
         }
-        if (event.getPacket() instanceof PlayerPositionLookS2CPacket && this.autoDisableConfig.getValue().booleanValue()) {
+        if (event.getPacket() instanceof PlayerPositionLookS2CPacket && this.autoDisableConfig.getValue()) {
             this.disable();
         }
     }

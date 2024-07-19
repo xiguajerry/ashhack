@@ -21,13 +21,13 @@ import net.minecraft.util.math.BlockPos;
 
 public class FlattenModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 60.0f, 500.0f);
-    Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
-    Config<Boolean> onlyInBlock = new BooleanConfig("OnlyInBlock", "", true);
-    Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
-    Config<Boolean> swing = new BooleanConfig("Swing", "", false);
+    final Config<Float> delay = new NumberConfig<>("Delay", "", 0.0f, 60.0f, 500.0f);
+    final Config<Integer> multiPlace = new NumberConfig<>("MultiPlace", "", 0, 1, 5);
+    final Config<InventoryUtil.SwapMode> swapMode = new EnumConfig<>("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
+    final Config<Boolean> onlyInBlock = new BooleanConfig("OnlyInBlock", "", true);
+    final Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
+    final Config<Boolean> swing = new BooleanConfig("Swing", "", false);
     private final Timer delayTimer = new CacheTimer();
     int progress = 0;
 
@@ -44,10 +44,10 @@ extends RotationModule {
         if (!this.delayTimer.passed(this.delay.getValue())) {
             return;
         }
-        if (!PlayerUtil.isInsideBlock() && this.onlyInBlock.getValue().booleanValue()) {
+        if (!PlayerUtil.isInsideBlock() && this.onlyInBlock.getValue()) {
             return;
         }
-        if (this.pauseEat.getValue().booleanValue() && FlattenModule.mc.player.isUsingItem()) {
+        if (this.pauseEat.getValue() && FlattenModule.mc.player.isUsingItem()) {
             return;
         }
         int oldSlot = FlattenModule.mc.player.getInventory().selectedSlot;

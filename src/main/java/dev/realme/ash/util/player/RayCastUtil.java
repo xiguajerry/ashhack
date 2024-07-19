@@ -21,9 +21,7 @@ public final class RayCastUtil implements Globals {
          Vec3d vec3d2 = RotationUtil.getRotationVector(angles[1], angles[0]);
          Vec3d vec3d3 = position.add(vec3d2.x * reach, vec3d2.y * reach, vec3d2.z * reach);
          Box box = (new Box(position, position)).stretch(vec3d2.multiply(reach)).expand(1.0, 1.0, 1.0);
-         return ProjectileUtil.raycast(view.getFocusedEntity(), position, vec3d3, box, (entity) -> {
-            return !entity.isSpectator() && entity.canHit();
-         }, reach * reach);
+         return ProjectileUtil.raycast(view.getFocusedEntity(), position, vec3d3, box, (entity) -> !entity.isSpectator() && entity.canHit(), reach * reach);
       }
    }
 
@@ -39,9 +37,7 @@ public final class RayCastUtil implements Globals {
             return null;
          } else {
             Box box = view.getFocusedEntity().getBoundingBox().stretch(vec3d2.multiply(reach)).expand(1.0, 1.0, 1.0);
-            return box == null ? null : ProjectileUtil.raycast(view.getFocusedEntity(), vec3d, vec3d3, box, (entity) -> {
-               return !entity.isSpectator() && entity.canHit();
-            }, reach * reach);
+            return box == null ? null : ProjectileUtil.raycast(view.getFocusedEntity(), vec3d, vec3d3, box, (entity) -> !entity.isSpectator() && entity.canHit(), reach * reach);
          }
       }
    }

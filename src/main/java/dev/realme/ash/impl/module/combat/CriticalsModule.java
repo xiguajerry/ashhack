@@ -15,7 +15,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 public class CriticalsModule
 extends ToggleModule {
-    Config<Mode> mode = new EnumConfig("Mode", "Mode for critical attack modifier", Mode.NCP, Mode.values());
+    final Config<Mode> mode = new EnumConfig<>("Mode", "Mode for critical attack modifier", Mode.NCP, Mode.values());
 
     public CriticalsModule() {
         super("Criticals", "Modifies attacks to always land critical hits", ModuleCategory.COMBAT);

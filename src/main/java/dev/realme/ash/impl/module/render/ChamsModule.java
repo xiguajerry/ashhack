@@ -33,15 +33,15 @@ import org.joml.Quaternionf;
 
 public class ChamsModule
 extends ToggleModule {
-    Config<ChamsMode> modeConfig = new EnumConfig("Mode", "The rendering mode for the chams", ChamsMode.NORMAL, ChamsMode.values());
-    Config<Boolean> handsConfig = new BooleanConfig("Hands", "Render chams on first-person hands", true);
-    Config<Boolean> selfConfig = new BooleanConfig("Self", "Render chams on the player", true);
-    Config<Boolean> playersConfig = new BooleanConfig("Players", "Render chams on other players", true);
-    Config<Boolean> monstersConfig = new BooleanConfig("Monsters", "Render chams on monsters", true);
-    Config<Boolean> animalsConfig = new BooleanConfig("Animals", "Render chams on animals", true);
-    Config<Boolean> otherConfig = new BooleanConfig("Others", "Render chams on crystals", true);
-    Config<Boolean> invisiblesConfig = new BooleanConfig("Invisibles", "Render chams on invisible entities", true);
-    Config<Color> colorConfig = new ColorConfig("Color", "The color of the chams", new Color(255, 0, 0, 60));
+    Config<ChamsMode> modeConfig = new EnumConfig<>("Mode", "The rendering mode for the chams", ChamsMode.NORMAL, ChamsMode.values());
+    final Config<Boolean> handsConfig = new BooleanConfig("Hands", "Render chams on first-person hands", true);
+    final Config<Boolean> selfConfig = new BooleanConfig("Self", "Render chams on the player", true);
+    final Config<Boolean> playersConfig = new BooleanConfig("Players", "Render chams on other players", true);
+    final Config<Boolean> monstersConfig = new BooleanConfig("Monsters", "Render chams on monsters", true);
+    final Config<Boolean> animalsConfig = new BooleanConfig("Animals", "Render chams on animals", true);
+    final Config<Boolean> otherConfig = new BooleanConfig("Others", "Render chams on crystals", true);
+    final Config<Boolean> invisiblesConfig = new BooleanConfig("Invisibles", "Render chams on invisible entities", true);
+    final Config<Color> colorConfig = new ColorConfig("Color", "The color of the chams", new Color(255, 0, 0, 60));
     private static final float SINE_45_DEGREES = (float)Math.sin(0.7853981633974483);
 
     public ChamsModule() {
@@ -185,7 +185,7 @@ extends ToggleModule {
 
     @EventListener
     public void onRenderCrystal(RenderCrystalEvent event) {
-        if (!this.otherConfig.getValue().booleanValue()) {
+        if (!this.otherConfig.getValue()) {
             return;
         }
         RenderSystem.enableBlend();
@@ -229,7 +229,7 @@ extends ToggleModule {
 
     @EventListener
     public void onRenderArm(RenderArmEvent event) {
-        if (this.handsConfig.getValue().booleanValue()) {
+        if (this.handsConfig.getValue()) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             Tessellator tessellator = Tessellator.getInstance();
@@ -282,7 +282,7 @@ extends ToggleModule {
     }
 
     private boolean checkChams(LivingEntity entity) {
-        if (entity instanceof PlayerEntity && this.playersConfig.getValue().booleanValue()) {
+        if (entity instanceof PlayerEntity && this.playersConfig.getValue()) {
             return this.selfConfig.getValue() || entity != ChamsModule.mc.player;
         }
         return (!entity.isInvisible() || this.invisiblesConfig.getValue()) && (EntityUtil.isMonster(entity) && this.monstersConfig.getValue() || (EntityUtil.isNeutral(entity) || EntityUtil.isPassive(entity)) && this.animalsConfig.getValue());

@@ -131,9 +131,7 @@ public class ModuleCommand extends Command {
             config.setValue(val);
             ChatUtil.clientSendMessage("§7%s§f was set to §s%s", config.getName(), val ? "True" : "False");
          } else if (config.getValue() instanceof Enum) {
-            String[] values = Arrays.stream((Enum[])((Enum)config.getValue()).getClass().getEnumConstants()).map(Enum::name).toArray((x$0) -> {
-               return new String[x$0];
-            });
+            String[] values = Arrays.stream((Enum[])((Enum)config.getValue()).getClass().getEnumConstants()).map(Enum::name).toArray(String[]::new);
             int ix = -1;
 
             for(int i = 0; i < values.length; ++i) {

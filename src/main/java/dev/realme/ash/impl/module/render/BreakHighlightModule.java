@@ -25,22 +25,22 @@ import net.minecraft.util.math.MathHelper;
 
 public class BreakHighlightModule
 extends ToggleModule {
-    Config<Boolean> text = new BooleanConfig("Text", "", true);
-    Config<Color> color = new ColorConfig("Color", "", new Color(255, 255, 255), false, false);
-    Config<Boolean> box = new BooleanConfig("Box", "", true);
-    Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
-    Config<Boolean> line = new BooleanConfig("lines", "", true);
-    Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 255, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
-    Config<Color> friend_color = new ColorConfig("Friend_Color", "", new Color(0, 150, 255), false, false);
-    Config<Boolean> friend_box = new BooleanConfig("Friend_Box", "", true);
-    Config<Integer> friend_boxAlpha = new NumberConfig<Integer>("Friend_BoxAlpha", "", 0, 80, 255);
-    Config<Boolean> friend_line = new BooleanConfig("Friend_lines", "", true);
-    Config<Integer> friend_olAlpha = new NumberConfig<Integer>("Friend_OLAlpha", "", 0, 255, 255);
-    Config<Float> friend_olWidth = new NumberConfig<Float>("Friend_OLWidth", "", 0.1f, 1.5f, 5.0f);
-    Config<Float> range = new NumberConfig<Float>("Range", "", 5.0f, 20.0f, 50.0f);
+    final Config<Boolean> text = new BooleanConfig("Text", "", true);
+    final Config<Color> color = new ColorConfig("Color", "", new Color(255, 255, 255), false, false);
+    final Config<Boolean> box = new BooleanConfig("Box", "", true);
+    final Config<Integer> boxAlpha = new NumberConfig<>("BoxAlpha", "", 0, 80, 255);
+    final Config<Boolean> line = new BooleanConfig("lines", "", true);
+    final Config<Integer> olAlpha = new NumberConfig<>("OLAlpha", "", 0, 255, 255);
+    final Config<Float> olWidth = new NumberConfig<>("OLWidth", "", 0.1f, 1.5f, 5.0f);
+    final Config<Color> friend_color = new ColorConfig("Friend_Color", "", new Color(0, 150, 255), false, false);
+    final Config<Boolean> friend_box = new BooleanConfig("Friend_Box", "", true);
+    final Config<Integer> friend_boxAlpha = new NumberConfig<>("Friend_BoxAlpha", "", 0, 80, 255);
+    final Config<Boolean> friend_line = new BooleanConfig("Friend_lines", "", true);
+    final Config<Integer> friend_olAlpha = new NumberConfig<>("Friend_OLAlpha", "", 0, 255, 255);
+    final Config<Float> friend_olWidth = new NumberConfig<>("Friend_OLWidth", "", 0.1f, 1.5f, 5.0f);
+    final Config<Float> range = new NumberConfig<>("Range", "", 5.0f, 20.0f, 50.0f);
     Render render = null;
-    private final List<Render> renders = new ArrayList<Render>();
+    private final List<Render> renders = new ArrayList<>();
 
     public BreakHighlightModule() {
         super("BreakHighlight", "Highlights blocks that are being broken", ModuleCategory.RENDER);
@@ -73,7 +73,7 @@ extends ToggleModule {
         }
         this.renders.forEach(r -> {
             PlayerEntity player;
-            if (MathHelper.sqrt((float)EntityUtil.getEyesPos().squaredDistanceTo(r.pos.toCenterPos())) > this.range.getValue().floatValue()) {
+            if (MathHelper.sqrt((float)EntityUtil.getEyesPos().squaredDistanceTo(r.pos.toCenterPos())) > this.range.getValue()) {
                 return;
             }
             Entity entity = BreakHighlightModule.mc.world.getEntityById(r.id);
@@ -84,25 +84,25 @@ extends ToggleModule {
             String name = player.getGameProfile().getName();
             if (Managers.SOCIAL.isFriend(player.getName())) {
                 ColorConfig friend = (ColorConfig)this.friend_color;
-                if (this.text.getValue().booleanValue()) {
+                if (this.text.getValue()) {
                     RenderManager.post(() -> RenderManager.renderSign(Formatting.AQUA + name, r.pos.toCenterPos()));
                 }
-                if (this.friend_box.getValue().booleanValue()) {
+                if (this.friend_box.getValue()) {
                     RenderManager.renderBox(event.getMatrices(), r.pos, friend.getRgb(this.friend_boxAlpha.getValue()));
                 }
-                if (this.friend_line.getValue().booleanValue()) {
-                    RenderManager.renderBoundingBox(event.getMatrices(), r.pos, this.friend_olWidth.getValue().floatValue(), friend.getRgb(this.friend_olAlpha.getValue()));
+                if (this.friend_line.getValue()) {
+                    RenderManager.renderBoundingBox(event.getMatrices(), r.pos, this.friend_olWidth.getValue(), friend.getRgb(this.friend_olAlpha.getValue()));
                 }
             } else {
                 ColorConfig sb = (ColorConfig)this.color;
-                if (this.text.getValue().booleanValue()) {
+                if (this.text.getValue()) {
                     RenderManager.post(() -> RenderManager.renderSign(name, r.pos.toCenterPos()));
                 }
-                if (this.box.getValue().booleanValue()) {
+                if (this.box.getValue()) {
                     RenderManager.renderBox(event.getMatrices(), r.pos, sb.getRgb(this.boxAlpha.getValue()));
                 }
-                if (this.line.getValue().booleanValue()) {
-                    RenderManager.renderBoundingBox(event.getMatrices(), r.pos, this.olWidth.getValue().floatValue(), sb.getRgb(this.olAlpha.getValue()));
+                if (this.line.getValue()) {
+                    RenderManager.renderBoundingBox(event.getMatrices(), r.pos, this.olWidth.getValue(), sb.getRgb(this.olAlpha.getValue()));
                 }
             }
         });

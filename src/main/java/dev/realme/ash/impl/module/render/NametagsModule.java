@@ -52,18 +52,18 @@ import org.lwjgl.opengl.GL11;
 
 public class NametagsModule
         extends ToggleModule {
-    Config<Boolean> armorConfig = new BooleanConfig("Armor", "Displays the player's armor", true);
-    Config<Boolean> enchantmentsConfig = new BooleanConfig("Enchantments", "Displays a list of the item's enchantments", true);
-    Config<Boolean> durabilityConfig = new BooleanConfig("Durability", "Displays item durability", true);
-    Config<Boolean> itemNameConfig = new BooleanConfig("ItemName", "Displays the player's current held item name", false);
-    Config<Boolean> entityIdConfig = new BooleanConfig("EntityId", "Displays the player's entity id", false);
-    Config<Boolean> gamemodeConfig = new BooleanConfig("Gamemode", "Displays the player's gamemode", false);
-    Config<Boolean> pingConfig = new BooleanConfig("Ping", "Displays the player's server connection ping", true);
-    Config<Boolean> healthConfig = new BooleanConfig("Health", "Displays the player's current health", true);
-    Config<Boolean> totemsConfig = new BooleanConfig("Totems", "Displays the player's popped totem count", false);
-    Config<Boolean> turtle = new BooleanConfig("Turtle", "", true);
-    Config<Float> scalingConfig = new NumberConfig<Float>("Scaling", "The nametag label scale", 0.001f, 0.003f, 0.01f);
-    Config<Boolean> borderedConfig = new BooleanConfig("TextBorder", "Renders a border behind the nametag", true);
+    final Config<Boolean> armorConfig = new BooleanConfig("Armor", "Displays the player's armor", true);
+    final Config<Boolean> enchantmentsConfig = new BooleanConfig("Enchantments", "Displays a list of the item's enchantments", true);
+    final Config<Boolean> durabilityConfig = new BooleanConfig("Durability", "Displays item durability", true);
+    final Config<Boolean> itemNameConfig = new BooleanConfig("ItemName", "Displays the player's current held item name", false);
+    final Config<Boolean> entityIdConfig = new BooleanConfig("EntityId", "Displays the player's entity id", false);
+    final Config<Boolean> gamemodeConfig = new BooleanConfig("Gamemode", "Displays the player's gamemode", false);
+    final Config<Boolean> pingConfig = new BooleanConfig("Ping", "Displays the player's server connection ping", true);
+    final Config<Boolean> healthConfig = new BooleanConfig("Health", "Displays the player's current health", true);
+    final Config<Boolean> totemsConfig = new BooleanConfig("Totems", "Displays the player's popped totem count", false);
+    final Config<Boolean> turtle = new BooleanConfig("Turtle", "", true);
+    final Config<Float> scalingConfig = new NumberConfig<>("Scaling", "The nametag label scale", 0.001f, 0.003f, 0.01f);
+    final Config<Boolean> borderedConfig = new BooleanConfig("TextBorder", "Renders a border behind the nametag", true);
 
     public NametagsModule() {
         super("Nametags", "Renders info on player nametags", ModuleCategory.RENDER);
@@ -93,7 +93,7 @@ public class NametagsModule
             double dx = pos.getX() - interpolate.getX() - rx;
             double dist = Math.sqrt(dx * dx + (dy = pos.getY() - interpolate.getY() - ry) * dy + (dz = pos.getZ() - interpolate.getZ() - rz) * dz);
             if (dist > 4096.0) continue;
-            float scaling = 0.0018f + this.scalingConfig.getValue().floatValue() * (float) dist;
+            float scaling = 0.0018f + this.scalingConfig.getValue() * (float) dist;
             if (dist <= 8.0) {
                 scaling = 0.0245f;
             }
@@ -118,7 +118,7 @@ public class NametagsModule
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-camera.getYaw()));
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
         matrices.scale(-scaling, -scaling, -1.0f);
-        if (this.borderedConfig.getValue().booleanValue()) {
+        if (this.borderedConfig.getValue()) {
             double d = -width - 1.0f;
             double d2 = width * 2.0f + 2.0f;
             Objects.requireNonNull(NametagsModule.mc.textRenderer);
@@ -130,7 +130,7 @@ public class NametagsModule
             RenderSystem.defaultBlendFunc();
             GL11.glDepthFunc(519);
             Fonts.VANILLA.drawWithShadow(matrices, info, -width, 0.0f, color);
-            if (this.armorConfig.getValue().booleanValue()) {
+            if (this.armorConfig.getValue()) {
                 this.renderItems(matrices, entity);
             }
             GL11.glDepthFunc(515);
@@ -139,7 +139,7 @@ public class NametagsModule
     }
 
     private void renderItems(MatrixStack matrixStack, PlayerEntity player) {
-        CopyOnWriteArrayList<ItemStack> displayItems = new CopyOnWriteArrayList<ItemStack>();
+        CopyOnWriteArrayList<ItemStack> displayItems = new CopyOnWriteArrayList<>();
         if (!player.getOffHandStack().isEmpty()) {
             displayItems.add(player.getOffHandStack());
         }
@@ -171,10 +171,10 @@ public class NametagsModule
             matrixStack.pop();
             this.renderItemOverlay(matrixStack, stack, (int) n10, (int) m2);
             matrixStack.scale(0.5f, 0.5f, 0.5f);
-            if (this.durabilityConfig.getValue().booleanValue()) {
+            if (this.durabilityConfig.getValue()) {
                 this.renderDurability(matrixStack, stack, n10 + 2.0f, m2 - 4.5f);
             }
-            if (this.enchantmentsConfig.getValue().booleanValue()) {
+            if (this.enchantmentsConfig.getValue()) {
                 this.renderEnchants(matrixStack, stack, n10 + 2.0f, m2);
             }
             matrixStack.scale(2.0f, 2.0f, 2.0f);
@@ -185,7 +185,7 @@ public class NametagsModule
             return;
         }
         matrixStack.scale(0.5f, 0.5f, 0.5f);
-        if (this.itemNameConfig.getValue().booleanValue()) {
+        if (this.itemNameConfig.getValue()) {
             this.renderItemName(matrixStack, itemStack, 0.0f, this.durabilityConfig.getValue() ? m2 - 9.0f : m2 - 4.5f);
         }
         matrixStack.scale(2.0f, 2.0f, 2.0f);
@@ -227,7 +227,7 @@ public class NametagsModule
             String string = String.valueOf(stack.getCount());
             Fonts.VANILLA.drawWithShadow(matrixStack, string, x + 17 - NametagsModule.mc.textRenderer.getWidth(string), (float) y + 9.0f, -1);
         }
-        if (stack.isItemBarVisible() && this.durabilityConfig.getValue().booleanValue()) {
+        if (stack.isItemBarVisible() && this.durabilityConfig.getValue()) {
             int i = stack.getItemBarStep();
             int j = stack.getItemBarColor();
             int k = x + 2;
@@ -281,7 +281,7 @@ public class NametagsModule
     }
 
     private float enchantOffset(int n) {
-        if (!this.enchantmentsConfig.getValue().booleanValue() || n <= 3) {
+        if (!this.enchantmentsConfig.getValue() || n <= 3) {
             return -18.0f;
         }
         float n2 = -14.0f;
@@ -298,7 +298,7 @@ public class NametagsModule
         int totems;
         PlayerListEntry playerEntry;
         StringBuilder info = new StringBuilder();
-        if (this.turtle.getValue().booleanValue()) {
+        if (this.turtle.getValue()) {
             for (StatusEffectInstance e : player.getStatusEffects()) {
                 int duration;
                 if (!e.getEffectType().equals(StatusEffects.RESISTANCE) || e.getAmplifier() <= 2 || (duration = e.getDuration()) < 0)
@@ -308,12 +308,12 @@ public class NametagsModule
         }
         info.append(player.getName().getString());
         info.append(" ");
-        if (this.entityIdConfig.getValue().booleanValue()) {
+        if (this.entityIdConfig.getValue()) {
             info.append("ID: ");
             info.append(player.getId());
             info.append(" ");
         }
-        if (this.gamemodeConfig.getValue().booleanValue()) {
+        if (this.gamemodeConfig.getValue()) {
             if (player.isCreative()) {
                 info.append("[C] ");
             } else if (player.isSpectator()) {
@@ -322,11 +322,11 @@ public class NametagsModule
                 info.append("[S] ");
             }
         }
-        if (this.pingConfig.getValue().booleanValue() && mc.getNetworkHandler() != null && (playerEntry = mc.getNetworkHandler().getPlayerListEntry(player.getGameProfile().getId())) != null) {
+        if (this.pingConfig.getValue() && mc.getNetworkHandler() != null && (playerEntry = mc.getNetworkHandler().getPlayerListEntry(player.getGameProfile().getId())) != null) {
             info.append(playerEntry.getLatency());
             info.append("ms ");
         }
-        if (this.healthConfig.getValue().booleanValue()) {
+        if (this.healthConfig.getValue()) {
             double health = Math.ceil(player.getHealth() + player.getAbsorptionAmount());
             Formatting hcolor = health > 18.0 ? Formatting.GREEN : (health > 16.0 ? Formatting.DARK_GREEN : (health > 12.0 ? Formatting.YELLOW : (health > 8.0 ? Formatting.GOLD : (health > 4.0 ? Formatting.RED : Formatting.DARK_RED))));
             int phealth = (int) health;
@@ -334,7 +334,7 @@ public class NametagsModule
             info.append(phealth);
             info.append(" ");
         }
-        if (this.totemsConfig.getValue().booleanValue() && player != NametagsModule.mc.player && (totems = Managers.TOTEM.getTotems(player)) > 0) {
+        if (this.totemsConfig.getValue() && player != NametagsModule.mc.player && (totems = Managers.TOTEM.getTotems(player)) > 0) {
             Formatting pcolor = Formatting.GREEN;
             if (totems > 1) {
                 pcolor = Formatting.DARK_GREEN;
@@ -378,6 +378,6 @@ public class NametagsModule
     }
 
     public float getScaling() {
-        return this.scalingConfig.getValue().floatValue();
+        return this.scalingConfig.getValue();
     }
 }

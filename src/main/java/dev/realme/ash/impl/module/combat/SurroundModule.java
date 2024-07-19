@@ -29,20 +29,20 @@ import net.minecraft.util.math.MathHelper;
 
 public class SurroundModule
 extends RotationModule {
-    Config<Boolean> rotate = new BooleanConfig("Rotate", "", false);
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
-    Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<Float> delay = new NumberConfig<Float>("Delay", "Delay to throw xp in ticks.", 0.0f, 0.0f, 10.0f, NumberDisplay.DEFAULT);
-    Config<Boolean> helper = new BooleanConfig("Helper", "", true);
-    Config<Boolean> extend = new BooleanConfig("Extend", "", true);
-    Config<Boolean> onlyGround = new BooleanConfig("OnlyGround", "", true);
-    Config<Boolean> moveDisable = new BooleanConfig("MoveDisable", "", true);
-    Config<Boolean> strictDisable = new BooleanConfig("StrictDisable", "", false);
-    Config<Boolean> isMoving = new BooleanConfig("IsMoving", "", false);
-    Config<Boolean> jumpDisable = new BooleanConfig("JumpDisable", "", true);
-    Config<Boolean> inMoving = new BooleanConfig("InMoving", "", false);
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 10.0f, 100.0f);
+    final Config<Boolean> rotate = new BooleanConfig("Rotate", "", false);
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
+    final Config<SwapMode> swapMode = new EnumConfig<>("SwapMode", "", SwapMode.SILENT, SwapMode.values());
+    final Config<Integer> multiPlace = new NumberConfig<>("MultiPlace", "", 0, 1, 5);
+    final Config<Float> delay = new NumberConfig<>("Delay", "Delay to throw xp in ticks.", 0.0f, 0.0f, 10.0f, NumberDisplay.DEFAULT);
+    final Config<Boolean> helper = new BooleanConfig("Helper", "", true);
+    final Config<Boolean> extend = new BooleanConfig("Extend", "", true);
+    final Config<Boolean> onlyGround = new BooleanConfig("OnlyGround", "", true);
+    final Config<Boolean> moveDisable = new BooleanConfig("MoveDisable", "", true);
+    final Config<Boolean> strictDisable = new BooleanConfig("StrictDisable", "", false);
+    final Config<Boolean> isMoving = new BooleanConfig("IsMoving", "", false);
+    final Config<Boolean> jumpDisable = new BooleanConfig("JumpDisable", "", true);
+    final Config<Boolean> inMoving = new BooleanConfig("InMoving", "", false);
+    public final Config<Float> attackDelay = new NumberConfig<>("AttackDelay", "", 0.0f, 10.0f, 100.0f);
     private final Timer timer = new CacheTimer();
     public final Timer attackTimer = new CacheTimer();
     double startX = 0.0;
@@ -69,15 +69,15 @@ extends RotationModule {
 
     @EventListener
     public void onUpdateWalking(UpdateWalkingEvent event) {
-        if (!this.timer.passed(this.delay.getValue().floatValue() * 100.0f)) {
+        if (!this.timer.passed(this.delay.getValue() * 100.0f)) {
             return;
         }
-        if (this.pauseEat.getValue().booleanValue() && SurroundModule.mc.player.isUsingItem()) {
+        if (this.pauseEat.getValue() && SurroundModule.mc.player.isUsingItem()) {
             return;
         }
         this.progress = 0;
         BlockPos pos = PlayerUtil.playerPos(SurroundModule.mc.player);
-        if (this.startPos == null || !pos.equals(this.startPos) && this.moveDisable.getValue().booleanValue() && this.strictDisable.getValue().booleanValue() && (!this.isMoving.getValue().booleanValue() || MovementUtil.isMoving()) || (double)MathHelper.sqrt((float)SurroundModule.mc.player.squaredDistanceTo(this.startX, this.startY, this.startZ)) > 1.3 && this.moveDisable.getValue().booleanValue() && !this.strictDisable.getValue().booleanValue() && (!this.isMoving.getValue().booleanValue() || MovementUtil.isMoving()) || this.jumpDisable.getValue().booleanValue() && (this.startY - SurroundModule.mc.player.getY() > 0.5 || this.startY - SurroundModule.mc.player.getY() < -0.5) && (!this.inMoving.getValue().booleanValue() || MovementUtil.isMoving())) {
+        if (this.startPos == null || !pos.equals(this.startPos) && this.moveDisable.getValue() && this.strictDisable.getValue() && (!this.isMoving.getValue() || MovementUtil.isMoving()) || (double)MathHelper.sqrt((float)SurroundModule.mc.player.squaredDistanceTo(this.startX, this.startY, this.startZ)) > 1.3 && this.moveDisable.getValue() && !this.strictDisable.getValue() && (!this.isMoving.getValue() || MovementUtil.isMoving()) || this.jumpDisable.getValue() && (this.startY - SurroundModule.mc.player.getY() > 0.5 || this.startY - SurroundModule.mc.player.getY() < -0.5) && (!this.inMoving.getValue() || MovementUtil.isMoving())) {
             this.disable();
             return;
         }
@@ -99,7 +99,7 @@ extends RotationModule {
             this.disable();
             return;
         }
-        if (this.onlyGround.getValue().booleanValue() && !SurroundModule.mc.player.isOnGround()) {
+        if (this.onlyGround.getValue() && !SurroundModule.mc.player.isOnGround()) {
             return;
         }
         for (Direction i : Direction.values()) {
@@ -110,7 +110,7 @@ extends RotationModule {
             } else if (BlockUtil.canReplace(offsetPos)) {
                 this.placeBlock(this.getHelper(offsetPos));
             }
-            if (!SurroundModule.checkSelf(offsetPos) || !this.extend.getValue().booleanValue()) continue;
+            if (!SurroundModule.checkSelf(offsetPos) || !this.extend.getValue()) continue;
             for (Direction i2 : Direction.values()) {
                 if (i2 == Direction.UP) continue;
                 BlockPos offsetPos2 = offsetPos.offset(i2);
@@ -193,7 +193,7 @@ extends RotationModule {
     }
 
     public BlockPos getHelper(BlockPos pos) {
-        if (!this.helper.getValue().booleanValue()) {
+        if (!this.helper.getValue()) {
             return pos.down();
         }
         for (Direction i : Direction.values()) {

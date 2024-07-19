@@ -11,7 +11,7 @@ import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 
 public class XCarryModule
 extends ToggleModule {
-    Config<Boolean> forceCancelConfig = new BooleanConfig("ForceCancel", "Cancels all close window packets", false);
+    final Config<Boolean> forceCancelConfig = new BooleanConfig("ForceCancel", "Cancels all close window packets", false);
 
     public XCarryModule() {
         super("XCarry", "Allow player to carry items in the crafting slots", ModuleCategory.MISCELLANEOUS);
@@ -24,7 +24,7 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof CloseHandledScreenC2SPacket && ((packet = (CloseHandledScreenC2SPacket)packet2).getSyncId() == XCarryModule.mc.player.playerScreenHandler.syncId || this.forceCancelConfig.getValue().booleanValue())) {
+        if (packet2 instanceof CloseHandledScreenC2SPacket && ((packet = (CloseHandledScreenC2SPacket)packet2).getSyncId() == XCarryModule.mc.player.playerScreenHandler.syncId || this.forceCancelConfig.getValue())) {
             event.cancel();
         }
     }

@@ -32,8 +32,8 @@ import net.minecraft.util.shape.VoxelShapes;
 
 public class JesusModule
 extends ToggleModule {
-    Config<JesusMode> modeConfig = new EnumConfig("Mode", "The mode for walking on water", JesusMode.SOLID, JesusMode.values());
-    Config<Boolean> strictConfig = new BooleanConfig("Strict", "NCP Updated bypass for floating offsets", false, () -> this.modeConfig.getValue() == JesusMode.SOLID);
+    final Config<JesusMode> modeConfig = new EnumConfig<>("Mode", "The mode for walking on water", JesusMode.SOLID, JesusMode.values());
+    final Config<Boolean> strictConfig = new BooleanConfig("Strict", "NCP Updated bypass for floating offsets", false, () -> this.modeConfig.getValue() == JesusMode.SOLID);
     private int floatTimer = 1000;
     private boolean fluidState;
     private double floatOffset;
@@ -148,11 +148,11 @@ extends ToggleModule {
         Packet<?> packet2 = event.getPacket();
         if (packet2 instanceof PlayerMoveC2SPacket && (packet = (PlayerMoveC2SPacket) packet2).changesPosition() && this.modeConfig.getValue() == JesusMode.SOLID && !this.isInFluid() && this.isOnFluid() && JesusModule.mc.player.fallDistance <= 3.0f) {
             double y = packet.getY(JesusModule.mc.player.getY());
-            if (!this.strictConfig.getValue().booleanValue()) {
+            if (!this.strictConfig.getValue()) {
                 this.floatOffset = JesusModule.mc.player.age % 2 == 0 ? 0.0 : 0.05;
             }
             ((AccessorPlayerMoveC2SPacket) packet).hookSetY(y - this.floatOffset);
-            if (this.strictConfig.getValue().booleanValue()) {
+            if (this.strictConfig.getValue()) {
                 this.floatOffset += 0.12;
                 if (this.floatOffset > 0.4) {
                     this.floatOffset = 0.2;

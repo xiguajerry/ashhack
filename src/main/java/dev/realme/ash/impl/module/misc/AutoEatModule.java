@@ -14,9 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 
+import java.util.Objects;
+
 public class AutoEatModule
 extends ToggleModule {
-    Config<Float> hungerConfig = new NumberConfig<Float>("Hunger", "The minimum hunger level before eating", 1.0f, 19.0f, 20.0f);
+    final Config<Float> hungerConfig = new NumberConfig<>("Hunger", "The minimum hunger level before eating", 1.0f, 19.0f, 20.0f);
     private int prevSlot;
 
     public AutoEatModule() {
@@ -35,7 +37,7 @@ extends ToggleModule {
 
     @EventListener
     public void onTick(TickEvent event) {
-        if (!AutoEatModule.mc.player.isUsingItem()) {
+        if (!Objects.requireNonNull(AutoEatModule.mc.player).isUsingItem()) {
             if (this.prevSlot != -1) {
                 InventoryUtil.doSwap(this.prevSlot);
                 this.prevSlot = -1;
@@ -44,7 +46,7 @@ extends ToggleModule {
             return;
         }
         HungerManager hungerManager = AutoEatModule.mc.player.getHungerManager();
-        if ((float)hungerManager.getFoodLevel() <= this.hungerConfig.getValue().floatValue()) {
+        if ((float)hungerManager.getFoodLevel() <= this.hungerConfig.getValue()) {
             int slot = this.getFoodSlot();
             if (slot == -1) {
                 return;
@@ -64,8 +66,8 @@ extends ToggleModule {
         int slot = -1;
         for (int i = 0; i < 9; ++i) {
             int hunger;
-            ItemStack stack = AutoEatModule.mc.player.getInventory().getStack(i);
-            if (!stack.getItem().isFood() || stack.getItem() == Items.PUFFERFISH || stack.getItem() == Items.CHORUS_FRUIT || (hunger = stack.getItem().getFoodComponent().getHunger()) <= foodLevel) continue;
+            ItemStack stack = Objects.requireNonNull(AutoEatModule.mc.player).getInventory().getStack(i);
+            if (!stack.getItem().isFood() || stack.getItem() == Items.PUFFERFISH || stack.getItem() == Items.CHORUS_FRUIT || (hunger = Objects.requireNonNull(stack.getItem().getFoodComponent()).getHunger()) <= foodLevel) continue;
             slot = i;
             foodLevel = hunger;
         }
@@ -74,7 +76,7 @@ extends ToggleModule {
             if (offhand.getItem() == Items.PUFFERFISH || offhand.getItem() == Items.CHORUS_FRUIT) {
                 return slot;
             }
-            int hunger = offhand.getItem().getFoodComponent().getHunger();
+            int hunger = Objects.requireNonNull(offhand.getItem().getFoodComponent()).getHunger();
             if (hunger > foodLevel) {
                 slot = 45;
             }

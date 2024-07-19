@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Listener implements Comparable<Listener> {
-   private static final Map<Method, Invokable<Object>> INVOKE_CACHE = new HashMap<Method, Invokable<Object>>();
+   private static final Map<Method, Invokable<Object>> INVOKE_CACHE = new HashMap<>();
    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
    private final Method method;
    private final Object subscriber;

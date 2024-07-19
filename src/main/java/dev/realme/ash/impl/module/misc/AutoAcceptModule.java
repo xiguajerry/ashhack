@@ -16,7 +16,7 @@ import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 public class AutoAcceptModule
 extends ToggleModule {
     private final Timer acceptTimer = new CacheTimer();
-    Config<Float> delayConfig = new NumberConfig<Float>("Delay", "The delay before accepting teleport requests", 0.0f, 3.0f, 10.0f);
+    final Config<Float> delayConfig = new NumberConfig<>("Delay", "The delay before accepting teleport requests", 0.0f, 3.0f, 10.0f);
 
     public AutoAcceptModule() {
         super("AutoAccept", "Automatically accepts teleport requests", ModuleCategory.MISCELLANEOUS);
@@ -27,7 +27,7 @@ extends ToggleModule {
         ChatMessageS2CPacket packet;
         String text;
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof ChatMessageS2CPacket && ((text = (packet = (ChatMessageS2CPacket) packet2).body().content()).contains("has requested to teleport to you.") || text.contains("has requested you teleport to them.")) && this.acceptTimer.passed(this.delayConfig.getValue().floatValue() * 1000.0f)) {
+        if (packet2 instanceof ChatMessageS2CPacket && ((text = (packet = (ChatMessageS2CPacket) packet2).body().content()).contains("has requested to teleport to you.") || text.contains("has requested you teleport to them.")) && this.acceptTimer.passed(this.delayConfig.getValue() * 1000.0f)) {
             for (String friend : Managers.SOCIAL.getFriends()) {
                 if (!text.contains(friend)) continue;
                 ChatUtil.serverSendMessage("/tpaccept");

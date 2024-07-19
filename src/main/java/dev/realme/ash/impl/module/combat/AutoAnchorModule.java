@@ -40,38 +40,38 @@ import net.minecraft.util.math.Vec3d;
 
 public class AutoAnchorModule
 extends RotationModule {
-    Config<Float> updateDelay = new NumberConfig<Float>("UpdateDelay", "", 0.0f, 32.0f, 500.0f);
-    Config<Float> calcDelay = new NumberConfig<Float>("CalcDelay", "", 0.0f, 0.3f, 0.5f);
-    Config<Float> targetRange = new NumberConfig<Float>("EnemyRange", "", 0.0f, 10.0f, 13.0f);
-    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 8.0f);
-    Config<Double> spamDelay = new NumberConfig<Double>("Delay", "", 0.0, 2.0, 5.0, NumberDisplay.DEGREES);
-    Config<Double> headDelay = new NumberConfig<Double>("HeadDelay", "", 0.0, 2.0, 5.0, NumberDisplay.DEGREES);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
-    Config<Double> minPrefer = new NumberConfig<Double>("MinDmg", "", 0.0, 6.0, 36.0);
-    Config<Double> maxSelfDamage = new NumberConfig<Double>("MaxSelfDamage", "", 0.0, 6.0, 36.0);
-    public Config<Integer> predictTicks = new NumberConfig<Integer>("PredictTicks", "", 0, 8, 20);
-    Config<Double> minDamage = new NumberConfig<Double>("PlaceMinDmg", "", 0.0, 6.0, 36.0);
-    Config<Double> breakMin = new NumberConfig<Double>("BreakMinDmg", "", 0.0, 7.5, 36.0);
-    Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
-    Config<Boolean> newRotate = new BooleanConfig("YawStep", "", false);
-    Config<Float> yawStep = new NumberConfig<Float>("Step", "", 0.0f, 0.1f, 1.0f);
-    Config<Boolean> checkLook = new BooleanConfig("CheckLook", "", true);
-    Config<Float> fov = new NumberConfig<Float>("Fov", "", 0.0f, 10.0f, 30.0f);
-    Config<Boolean> box = new BooleanConfig("Box", "", true);
-    Config<Boolean> outline = new BooleanConfig("Outline", "", true);
-    Config<Color> color = new ColorConfig("Color", "", new Color(90, 90, 255), false, false);
-    Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
-    Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 80, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 10.0f, 100.0f);
+    final Config<Float> updateDelay = new NumberConfig<>("UpdateDelay", "", 0.0f, 32.0f, 500.0f);
+    final Config<Float> calcDelay = new NumberConfig<>("CalcDelay", "", 0.0f, 0.3f, 0.5f);
+    final Config<Float> targetRange = new NumberConfig<>("EnemyRange", "", 0.0f, 10.0f, 13.0f);
+    final Config<Float> range = new NumberConfig<>("Range", "", 0.0f, 5.0f, 8.0f);
+    final Config<Double> spamDelay = new NumberConfig<>("Delay", "", 0.0, 2.0, 5.0, NumberDisplay.DEGREES);
+    final Config<Double> headDelay = new NumberConfig<>("HeadDelay", "", 0.0, 2.0, 5.0, NumberDisplay.DEGREES);
+    final Config<SwapMode> swapMode = new EnumConfig<>("SwapMode", "", SwapMode.SILENT, SwapMode.values());
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
+    final Config<Double> minPrefer = new NumberConfig<>("MinDmg", "", 0.0, 6.0, 36.0);
+    final Config<Double> maxSelfDamage = new NumberConfig<>("MaxSelfDamage", "", 0.0, 6.0, 36.0);
+    public final Config<Integer> predictTicks = new NumberConfig<>("PredictTicks", "", 0, 8, 20);
+    final Config<Double> minDamage = new NumberConfig<>("PlaceMinDmg", "", 0.0, 6.0, 36.0);
+    final Config<Double> breakMin = new NumberConfig<>("BreakMinDmg", "", 0.0, 7.5, 36.0);
+    final Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
+    final Config<Boolean> newRotate = new BooleanConfig("YawStep", "", false);
+    final Config<Float> yawStep = new NumberConfig<>("Step", "", 0.0f, 0.1f, 1.0f);
+    final Config<Boolean> checkLook = new BooleanConfig("CheckLook", "", true);
+    final Config<Float> fov = new NumberConfig<>("Fov", "", 0.0f, 10.0f, 30.0f);
+    final Config<Boolean> box = new BooleanConfig("Box", "", true);
+    final Config<Boolean> outline = new BooleanConfig("Outline", "", true);
+    final Config<Color> color = new ColorConfig("Color", "", new Color(90, 90, 255), false, false);
+    final Config<Integer> boxAlpha = new NumberConfig<>("BoxAlpha", "", 0, 80, 255);
+    final Config<Integer> olAlpha = new NumberConfig<>("OLAlpha", "", 0, 80, 255);
+    final Config<Float> olWidth = new NumberConfig<>("OLWidth", "", 0.1f, 1.5f, 5.0f);
+    public final Config<Float> attackDelay = new NumberConfig<>("AttackDelay", "", 0.0f, 10.0f, 100.0f);
     private final Timer updateTimer = new CacheTimer();
     private final Timer delayTimer = new CacheTimer();
     private final Timer calcTimer = new CacheTimer();
     public Vec3d directionVec = null;
     private float lastYaw = 0.0f;
     private float lastPitch = 0.0f;
-    private final ArrayList<BlockPos> chargeList = new ArrayList();
+    private final ArrayList<BlockPos> chargeList = new ArrayList<>();
     public BlockPos currentPos;
     public PlayerEntity target;
 
@@ -115,19 +115,19 @@ extends RotationModule {
         this.update();
         if (this.currentPos != null) {
             ColorConfig first = (ColorConfig)this.color;
-            if (this.box.getValue().booleanValue()) {
+            if (this.box.getValue()) {
                 RenderManager.renderBox(event.getMatrices(), this.currentPos, first.getRgb(this.boxAlpha.getValue()));
             }
-            if (this.outline.getValue().booleanValue()) {
-                RenderManager.renderBoundingBox(event.getMatrices(), this.currentPos, this.olWidth.getValue().floatValue(), first.getRgb(this.olAlpha.getValue()));
+            if (this.outline.getValue()) {
+                RenderManager.renderBoundingBox(event.getMatrices(), this.currentPos, this.olWidth.getValue(), first.getRgb(this.olAlpha.getValue()));
             }
         }
     }
 
     @EventListener
     public void onRotate(RotateEvent event) {
-        if (this.currentPos != null && this.newRotate.getValue().booleanValue() && this.directionVec != null) {
-            float[] newAngle = this.injectStep(EntityUtil.getLegitRotations(this.directionVec), this.yawStep.getValue().floatValue());
+        if (this.currentPos != null && this.newRotate.getValue() && this.directionVec != null) {
+            float[] newAngle = this.injectStep(EntityUtil.getLegitRotations(this.directionVec), this.yawStep.getValue());
             this.lastYaw = newAngle[0];
             this.lastPitch = newAngle[1];
             event.setYaw(this.lastYaw);
@@ -144,15 +144,16 @@ extends RotationModule {
         if (event.isCanceled()) {
             return;
         }
-        if (this.newRotate.getValue().booleanValue() && this.currentPos != null && this.directionVec != null && !Managers.ROTATION.rotating && (packet = event.getPacket()) instanceof PlayerMoveC2SPacket) {
+        if (this.newRotate.getValue() && this.currentPos != null && this.directionVec != null && !Managers.ROTATION.rotating && (packet = event.getPacket()) instanceof PlayerMoveC2SPacket) {
             PlayerMoveC2SPacket packet2 = (PlayerMoveC2SPacket) packet;
             if (!packet2.changesLook()) {
                 return;
             }
             float yaw = packet2.getYaw(114514.0f);
             float pitch = packet2.getPitch(114514.0f);
+            assert AutoAnchorModule.mc.player != null;
             if (yaw == AutoAnchorModule.mc.player.getYaw() && pitch == AutoAnchorModule.mc.player.getPitch()) {
-                float[] angle = this.injectStep(EntityUtil.getLegitRotations(this.directionVec), this.yawStep.getValue().floatValue());
+                float[] angle = this.injectStep(EntityUtil.getLegitRotations(this.directionVec), this.yawStep.getValue());
                 ((IPlayerMoveC2SPacket) event.getPacket()).setYaw(angle[0]);
                 ((IPlayerMoveC2SPacket) event.getPacket()).setPitch(angle[1]);
             }
@@ -186,6 +187,7 @@ extends RotationModule {
                 unBlock = InventoryUtil.findUnBlockItemInventory(true);
             }
         }
+        assert AutoAnchorModule.mc.player != null;
         int old = AutoAnchorModule.mc.player.getInventory().selectedSlot;
         if (anchor == -1) {
             this.currentPos = null;
@@ -203,18 +205,18 @@ extends RotationModule {
             this.currentPos = null;
             return;
         }
-        if (this.pauseEat.getValue().booleanValue() && AutoAnchorModule.mc.player.isUsingItem()) {
+        if (this.pauseEat.getValue() && AutoAnchorModule.mc.player.isUsingItem()) {
             this.currentPos = null;
             return;
         }
         this.updateTimer.reset();
-        if (this.calcTimer.passed((long)(this.calcDelay.getValue().floatValue() * 1000.0f))) {
+        if (this.calcTimer.passed((long)(this.calcDelay.getValue() * 1000.0f))) {
             this.calcTimer.reset();
             this.currentPos = null;
             double placeDamage = this.minDamage.getValue();
             double breakDamage = this.breakMin.getValue();
             boolean anchorFound = false;
-            this.target = EntityUtil.getTarget(this.targetRange.getValue().floatValue());
+            this.target = EntityUtil.getTarget(this.targetRange.getValue());
             if (this.target == null) {
                 return;
             }
@@ -226,6 +228,7 @@ extends RotationModule {
                         double damage;
                         if (anchorFound || !BlockUtil.canPlace(pos, true)) continue;
                         BlockState preState = BlockUtil.getState(pos);
+                        assert AutoAnchorModule.mc.world != null;
                         AutoAnchorModule.mc.world.setBlockState(pos, Blocks.RESPAWN_ANCHOR.getDefaultState());
                         boolean skip = Managers.INTERACT.getClickDirection(pos) == null;
                         AutoAnchorModule.mc.world.setBlockState(pos, preState);
@@ -246,7 +249,7 @@ extends RotationModule {
             }
         }
         if (this.currentPos != null) {
-            EntityUtil.attackCrystal(this.currentPos, this.attackDelay.getValue().floatValue());
+            EntityUtil.attackCrystal(this.currentPos, this.attackDelay.getValue());
             boolean bl = this.currentPos.equals(PlayerUtil.playerPos(this.target).up(2)) && !Managers.BREAK.isMining(this.currentPos);
             double delay = bl ? this.headDelay.getValue() : this.spamDelay.getValue();
             if (!this.delayTimer.passed(delay * 100.0)) {
@@ -307,6 +310,7 @@ extends RotationModule {
             }
             if (bl) {
                 BlockState preState = BlockUtil.getState(this.currentPos);
+                assert AutoAnchorModule.mc.world != null;
                 AutoAnchorModule.mc.world.setBlockState(this.currentPos, Blocks.AIR.getDefaultState());
                 this.placeBlock(this.currentPos, this.rotate.getValue(), anchor);
                 switch (this.swapMode.getValue()) {
@@ -336,6 +340,7 @@ extends RotationModule {
         Direction side;
         if (InteractionManager.airPlace()) {
             for (Direction i : Direction.values()) {
+                assert AutoAnchorModule.mc.world != null;
                 if (!AutoAnchorModule.mc.world.isAir(pos.offset(i))) continue;
                 this.clickBlock(pos, i, rotate, slot);
                 return;
@@ -387,13 +392,13 @@ extends RotationModule {
     }
 
     public boolean faceVector(Vec3d directionVec) {
-        if (!this.newRotate.getValue().booleanValue()) {
+        if (!this.newRotate.getValue()) {
             this.setRotation(directionVec);
             return true;
         }
         this.directionVec = directionVec;
         float[] angle = EntityUtil.getLegitRotations(directionVec);
-        if (Math.abs(MathHelper.wrapDegrees(angle[0] - this.lastYaw)) < this.fov.getValue().floatValue() && Math.abs(MathHelper.wrapDegrees(angle[1] - this.lastPitch)) < this.fov.getValue().floatValue()) {
+        if (Math.abs(MathHelper.wrapDegrees(angle[0] - this.lastYaw)) < this.fov.getValue() && Math.abs(MathHelper.wrapDegrees(angle[1] - this.lastPitch)) < this.fov.getValue()) {
             return true;
         }
         return !this.checkLook.getValue();
@@ -417,6 +422,7 @@ extends RotationModule {
                 angle[1] = packetPitch + diff * (90.0f * steps / Math.abs(diff));
             }
         }
+        assert angle != null;
         return new float[]{angle[0], angle[1]};
     }
 

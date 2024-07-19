@@ -22,9 +22,9 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntitySpeedModule
 extends ToggleModule {
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The speed of the entity while moving", 0.1f, 0.5f, 4.0f);
-    Config<Boolean> antiStuckConfig = new BooleanConfig("AntiStuck", "Prevents entities from getting stuck when moving up", false);
-    Config<Boolean> strictConfig = new BooleanConfig("Strict", "The NCP-Updated bypass for speeding up entity movement", false);
+    final Config<Float> speedConfig = new NumberConfig<>("Speed", "The speed of the entity while moving", 0.1f, 0.5f, 4.0f);
+    final Config<Boolean> antiStuckConfig = new BooleanConfig("AntiStuck", "Prevents entities from getting stuck when moving up", false);
+    final Config<Boolean> strictConfig = new BooleanConfig("Strict", "The NCP-Updated bypass for speeding up entity movement", false);
     private final Timer entityJumpTimer = new CacheTimer();
 
     public EntitySpeedModule() {
@@ -47,34 +47,34 @@ extends ToggleModule {
             double d2 = Math.sin(Math.toRadians(EntitySpeedModule.mc.player.getYaw() + 90.0f));
             BlockPos pos1 = BlockPos.ofFloored(EntitySpeedModule.mc.player.getX() + 2.0 * d, EntitySpeedModule.mc.player.getY() - 1.0, EntitySpeedModule.mc.player.getZ() + 2.0 * d2);
             BlockPos pos2 = BlockPos.ofFloored(EntitySpeedModule.mc.player.getX() + 2.0 * d, EntitySpeedModule.mc.player.getY() - 2.0, EntitySpeedModule.mc.player.getZ() + 2.0 * d2);
-            if (this.antiStuckConfig.getValue().booleanValue() && !EntitySpeedModule.mc.player.getControllingVehicle().isOnGround() && !EntitySpeedModule.mc.world.getBlockState(pos1).blocksMovement() && !EntitySpeedModule.mc.world.getBlockState(pos2).blocksMovement()) {
+            if (this.antiStuckConfig.getValue() && !EntitySpeedModule.mc.player.getControllingVehicle().isOnGround() && !EntitySpeedModule.mc.world.getBlockState(pos1).blocksMovement() && !EntitySpeedModule.mc.world.getBlockState(pos2).blocksMovement()) {
                 this.entityJumpTimer.reset();
                 return;
             }
             BlockPos pos3 = BlockPos.ofFloored(EntitySpeedModule.mc.player.getX() + 2.0 * d, EntitySpeedModule.mc.player.getY(), EntitySpeedModule.mc.player.getZ() + 2.0 * d2);
-            if (this.antiStuckConfig.getValue().booleanValue() && EntitySpeedModule.mc.world.getBlockState(pos3).blocksMovement()) {
+            if (this.antiStuckConfig.getValue() && EntitySpeedModule.mc.world.getBlockState(pos3).blocksMovement()) {
                 this.entityJumpTimer.reset();
                 return;
             }
             BlockPos pos4 = BlockPos.ofFloored(EntitySpeedModule.mc.player.getX() + d, EntitySpeedModule.mc.player.getY() + 1.0, EntitySpeedModule.mc.player.getZ() + d2);
-            if (this.antiStuckConfig.getValue().booleanValue() && EntitySpeedModule.mc.world.getBlockState(pos4).blocksMovement()) {
+            if (this.antiStuckConfig.getValue() && EntitySpeedModule.mc.world.getBlockState(pos4).blocksMovement()) {
                 this.entityJumpTimer.reset();
                 return;
             }
             if (EntitySpeedModule.mc.player.input.jumping) {
                 this.entityJumpTimer.reset();
             }
-            if (this.entityJumpTimer.passed(10000) || !this.antiStuckConfig.getValue().booleanValue()) {
+            if (this.entityJumpTimer.passed(10000) || !this.antiStuckConfig.getValue()) {
                 if (!EntitySpeedModule.mc.player.getControllingVehicle().isTouchingWater() || EntitySpeedModule.mc.player.input.jumping || !this.entityJumpTimer.passed(1000)) {
                     if (EntitySpeedModule.mc.player.getControllingVehicle().isOnGround()) {
                         EntitySpeedModule.mc.player.getControllingVehicle().setVelocity(EntitySpeedModule.mc.player.getVelocity().x, 0.4, EntitySpeedModule.mc.player.getVelocity().z);
                     }
                     EntitySpeedModule.mc.player.getControllingVehicle().setVelocity(EntitySpeedModule.mc.player.getVelocity().x, -0.4, EntitySpeedModule.mc.player.getVelocity().z);
                 }
-                if (this.strictConfig.getValue().booleanValue()) {
+                if (this.strictConfig.getValue()) {
                     Managers.NETWORK.sendPacket(PlayerInteractEntityC2SPacket.interact(EntitySpeedModule.mc.player.getControllingVehicle(), false, Hand.MAIN_HAND));
                 }
-                this.handleEntityMotion(this.speedConfig.getValue().floatValue(), d, d2);
+                this.handleEntityMotion(this.speedConfig.getValue(), d, d2);
                 this.entityJumpTimer.reset();
             }
         }
@@ -85,7 +85,7 @@ extends ToggleModule {
         if (EntitySpeedModule.mc.player == null || !EntitySpeedModule.mc.player.isRiding() || EntitySpeedModule.mc.options.sneakKey.isPressed() || EntitySpeedModule.mc.player.getControllingVehicle() == null) {
             return;
         }
-        if (this.strictConfig.getValue().booleanValue()) {
+        if (this.strictConfig.getValue()) {
             if (event.getPacket() instanceof EntityPassengersSetS2CPacket) {
                 event.cancel();
             } else if (event.getPacket() instanceof PlayerPositionLookS2CPacket) {

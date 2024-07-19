@@ -29,12 +29,12 @@ import net.minecraft.util.math.Direction;
 
 public class CevBreakerModule
 extends ToggleModule {
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 20.0f, 2000.0f);
-    public Config<Float> placeDelay = new NumberConfig<Float>("PlaceDelay", "", 0.0f, 100.0f, 2000.0f);
-    Config<InventoryUtil.SwapMode> swapMode = new EnumConfig("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
-    Config<Boolean> placeRotate = new BooleanConfig("PlaceObsRotate", "", true);
-    Config<Boolean> placeCryRotate = new BooleanConfig("PlaceCryRotate", "", false);
+    public final Config<Float> attackDelay = new NumberConfig<>("AttackDelay", "", 0.0f, 20.0f, 2000.0f);
+    public final Config<Float> placeDelay = new NumberConfig<>("PlaceDelay", "", 0.0f, 100.0f, 2000.0f);
+    final Config<InventoryUtil.SwapMode> swapMode = new EnumConfig<>("SwapMode", "", InventoryUtil.SwapMode.SILENT, InventoryUtil.SwapMode.values());
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
+    final Config<Boolean> placeRotate = new BooleanConfig("PlaceObsRotate", "", true);
+    final Config<Boolean> placeCryRotate = new BooleanConfig("PlaceCryRotate", "", false);
     public final Timer attackTimer = new CacheTimer();
     public final Timer placeTimer = new CacheTimer();
     int obsSlot = -1;
@@ -50,7 +50,7 @@ extends ToggleModule {
         if (CevBreakerModule.nullCheck()) {
             return;
         }
-        if (this.pauseEat.getValue().booleanValue() && CevBreakerModule.mc.player.isUsingItem()) {
+        if (this.pauseEat.getValue() && CevBreakerModule.mc.player.isUsingItem()) {
             return;
         }
         switch (this.swapMode.getValue()) {

@@ -18,31 +18,31 @@ public class ModulesCommand extends Command {
    public void buildCommand(LiteralArgumentBuilder builder) {
       builder.executes((c) -> {
          StringBuilder modulesList = new StringBuilder();
-         Iterator var2 = Managers.MODULE.getModules().iterator();
 
-         while(var2.hasNext()) {
-            String var10000;
-            Module module;
-            label24: {
-               module = (Module)var2.next();
-               if (module instanceof ToggleModule t) {
-                  if (t.isEnabled()) {
-                     var10000 = "§s";
-                     break label24;
+          for (Module value : Managers.MODULE.getModules()) {
+              String var10000;
+              Module module;
+              label24:
+              {
+                  module = value;
+                  if (module instanceof ToggleModule t) {
+                      if (t.isEnabled()) {
+                          var10000 = "§s";
+                          break label24;
+                      }
                   }
-               }
 
-               var10000 = "§f";
-            }
+                  var10000 = "§f";
+              }
 
-            String formatting = var10000;
-            modulesList.append(formatting);
-            modulesList.append(module.getName());
-            modulesList.append(Formatting.RESET);
-            if (!module.getName().equalsIgnoreCase(AshMod.isBaritonePresent() ? "Baritone" : "Speedmine")) {
-               modulesList.append(", ");
-            }
-         }
+              String formatting = var10000;
+              modulesList.append(formatting);
+              modulesList.append(module.getName());
+              modulesList.append(Formatting.RESET);
+              if (!module.getName().equalsIgnoreCase(AshMod.isBaritonePresent() ? "Baritone" : "Speedmine")) {
+                  modulesList.append(", ");
+              }
+          }
 
          ChatUtil.clientSendMessageRaw(" §7Modules:§f " + modulesList);
          return 1;

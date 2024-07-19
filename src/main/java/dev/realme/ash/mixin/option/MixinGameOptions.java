@@ -40,7 +40,7 @@ public class MixinGameOptions {
             case 70 -> GameOptions.getGenericValueText(optionText, Text.translatable("options.fov.min"));
             case 110 -> GameOptions.getGenericValueText(optionText, Text.translatable("options.fov.max"));
             default -> GameOptions.getGenericValueText(optionText, value);
-        }, new ValidatingIntSliderCallbacks(30, 180), Codec.DOUBLE.xmap((value) -> (int) (value * 40.0D + 70.0D), (value) -> ((double) value.intValue() - 70.0D) / 40.0D), 70, (value) -> MinecraftClient.getInstance().worldRenderer.scheduleTerrainUpdate());
+        }, new ValidatingIntSliderCallbacks(30, 180), Codec.DOUBLE.xmap((value) -> (int) (value * 40.0D + 70.0D), (value) -> ((double) value - 70.0D) / 40.0D), 70, (value) -> MinecraftClient.getInstance().worldRenderer.scheduleTerrainUpdate());
     }
 }
  

@@ -141,7 +141,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ModuleManager {
-   private final Map modules = Collections.synchronizedMap(new LinkedHashMap());
+   private final Map modules = Collections.synchronizedMap(new LinkedHashMap<>());
 
    public ModuleManager() {
       if (AshMod.isBaritonePresent()) {
@@ -175,6 +175,6 @@ public class ModuleManager {
    }
 
    public List<Module> getModules() {
-      return new ArrayList(this.modules.values());
+      return new ArrayList<>(this.modules.values());
    }
 }

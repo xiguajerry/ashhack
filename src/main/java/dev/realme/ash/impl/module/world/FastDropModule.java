@@ -14,7 +14,7 @@ import net.minecraft.util.math.Direction;
 
 public class FastDropModule
 extends ToggleModule {
-    Config<Integer> delayConfig = new NumberConfig<Integer>("Delay", "The delay for dropping items", 0, 0, 4);
+    final Config<Integer> delayConfig = new NumberConfig<>("Delay", "The delay for dropping items", 0, 0, 4);
     private int dropTicks;
 
     public FastDropModule() {

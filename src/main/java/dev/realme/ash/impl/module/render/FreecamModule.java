@@ -33,11 +33,11 @@ import net.minecraft.util.math.Vec3d;
 
 public class FreecamModule
 extends RotationModule {
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The move speed of the camera", 0.1f, 4.0f, 10.0f);
-    Config<Macro> controlConfig = new MacroConfig("ControlKey", "", new Macro(this.getId() + "-control", 342, () -> {}));
-    Config<Boolean> toggleControlConfig = new BooleanConfig("ToggleControl", "Allows toggling control key instead of holding", false);
-    Config<Interact> interactConfig = new EnumConfig("Interact", "The interaction type of the camera", Interact.CAMERA, Interact.values());
-    Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotate to the point of interaction", false);
+    final Config<Float> speedConfig = new NumberConfig<>("Speed", "The move speed of the camera", 0.1f, 4.0f, 10.0f);
+    final Config<Macro> controlConfig = new MacroConfig("ControlKey", "", new Macro(this.getId() + "-control", 342, () -> {}));
+    final Config<Boolean> toggleControlConfig = new BooleanConfig("ToggleControl", "Allows toggling control key instead of holding", false);
+    final Config<Interact> interactConfig = new EnumConfig<>("Interact", "The interaction type of the camera", Interact.CAMERA, Interact.values());
+    final Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotate to the point of interaction", false);
     public Vec3d position;
     public Vec3d lastPosition;
     public float yaw;
@@ -71,7 +71,7 @@ extends RotationModule {
     @EventListener
     public void onKey(KeyboardInputEvent event) {
         if (event.getAction() != 2 && event.getKeycode() == this.controlConfig.getValue().getKeycode()) {
-            if (!this.toggleControlConfig.getValue().booleanValue()) {
+            if (!this.toggleControlConfig.getValue()) {
                 this.control = event.getAction() == 1;
             } else if (event.getAction() == 1) {
                 this.control = !this.control;
@@ -127,7 +127,7 @@ extends RotationModule {
         if (event.getStage() != EventStage.PRE) {
             return;
         }
-        if (!this.control && this.rotateConfig.getValue().booleanValue()) {
+        if (!this.control && this.rotateConfig.getValue()) {
             float[] currentAngles = new float[]{this.yaw, this.pitch};
             Vec3d eyePos = this.position;
             HitResult result = RayCastUtil.rayCast(FreecamModule.mc.interactionManager.getReachDistance(), eyePos, currentAngles);
@@ -211,7 +211,7 @@ extends RotationModule {
                 super.tick(slowDown, slowDownFactor);
             } else {
                 this.unset();
-                float speed = FreecamModule.this.speedConfig.getValue().floatValue() / 10.0f;
+                float speed = FreecamModule.this.speedConfig.getValue() / 10.0f;
                 float fakeMovementForward = FreecamModule.this.getMovementMultiplier(this.options.forwardKey.isPressed(), this.options.backKey.isPressed());
                 float fakeMovementSideways = FreecamModule.this.getMovementMultiplier(this.options.leftKey.isPressed(), this.options.rightKey.isPressed());
                 Vec2f dir = FreecamModule.this.handleVanillaMotion(speed, fakeMovementForward, fakeMovementSideways);

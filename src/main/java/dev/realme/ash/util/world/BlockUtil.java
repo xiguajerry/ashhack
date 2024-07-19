@@ -52,9 +52,7 @@ public class BlockUtil implements Globals {
    }
 
    public static ArrayList<BlockEntity> getTileEntities() {
-      return getLoadedChunks().flatMap((chunk) -> {
-         return chunk.getBlockEntities().values().stream();
-      }).collect(Collectors.toCollection(ArrayList::new));
+      return getLoadedChunks().flatMap((chunk) -> chunk.getBlockEntities().values().stream()).collect(Collectors.toCollection(ArrayList::new));
    }
 
    public static Stream<WorldChunk> getLoadedChunks() {
@@ -73,11 +71,7 @@ public class BlockUtil implements Globals {
          }
 
          return new ChunkPos(x, z);
-      }).limit((long)diameter * (long)diameter).filter((c) -> {
-         return mc.world.isChunkLoaded(c.x, c.z);
-      }).map((c) -> {
-         return mc.world.getChunk(c.x, c.z);
-      }).filter(Objects::nonNull);
+      }).limit((long)diameter * (long)diameter).filter((c) -> mc.world.isChunkLoaded(c.x, c.z)).map((c) -> mc.world.getChunk(c.x, c.z)).filter(Objects::nonNull);
    }
 
    public static boolean isHole(BlockPos pos) {
@@ -89,12 +83,11 @@ public class BlockUtil implements Globals {
       Direction[] var5 = Direction.values();
       int var6 = var5.length;
 
-      for(int var7 = 0; var7 < var6; ++var7) {
-         Direction i = var5[var7];
-         if (i != Direction.UP && i != Direction.DOWN && (anyBlock && !mc.world.isAir(pos.offset(i)) || isHard(pos.offset(i)))) {
-            ++blockProgress;
-         }
-      }
+       for (Direction i : var5) {
+           if (i != Direction.UP && i != Direction.DOWN && (anyBlock && !mc.world.isAir(pos.offset(i)) || isHard(pos.offset(i)))) {
+               ++blockProgress;
+           }
+       }
 
       return (!checkTrap || getBlock(pos) == Blocks.AIR && getBlock(pos.add(0, 1, 0)) == Blocks.AIR && getBlock(pos.add(0, 2, 0)) == Blocks.AIR) && blockProgress > 3 && (!canStand || getState(pos.add(0, -1, 0)).blocksMovement());
    }
@@ -216,12 +209,11 @@ public class BlockUtil implements Globals {
 
    public static List blockEntities() {
       List list = new ArrayList();
-      Iterator var1 = loadedChunks().iterator();
 
-      while(var1.hasNext()) {
-         WorldChunk chunk = (WorldChunk)var1.next();
-         list.addAll(chunk.getBlockEntities().values());
-      }
+       for (Object o : loadedChunks()) {
+           WorldChunk chunk = (WorldChunk) o;
+           list.addAll(chunk.getBlockEntities().values());
+       }
 
       return list;
    }
@@ -266,12 +258,11 @@ public class BlockUtil implements Globals {
       Direction[] var2 = Direction.values();
       int var3 = var2.length;
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Direction enumFacing = var2[var4];
-         if (!isAir(pos.offset(enumFacing))) {
-            supported = true;
-         }
-      }
+       for (Direction enumFacing : var2) {
+           if (!isAir(pos.offset(enumFacing))) {
+               supported = true;
+           }
+       }
 
       return supported;
    }

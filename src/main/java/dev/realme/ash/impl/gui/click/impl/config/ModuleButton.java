@@ -33,30 +33,29 @@ public class ModuleButton extends Button {
       super(frame, x, y, 103.0F, 13.0F);
       this.settingsAnimation = new Animation(false, 200.0F, Easing.CUBIC_IN_OUT);
       this.module = module;
-      Iterator var5 = module.getConfigs().iterator();
 
-      while(var5.hasNext()) {
-         Config config = (Config)var5.next();
-         if (!config.getName().equalsIgnoreCase("Enabled")) {
-            if (config.getValue() instanceof Boolean) {
-               this.configComponents.add(new CheckboxButton(frame, this, config, x, y));
-            } else if (config.getValue() instanceof Double) {
-               this.configComponents.add(new SliderButton(frame, this, config, x, y));
-            } else if (config.getValue() instanceof Float) {
-               this.configComponents.add(new SliderButton(frame, this, config, x, y));
-            } else if (config.getValue() instanceof Integer) {
-               this.configComponents.add(new SliderButton(frame, this, config, x, y));
-            } else if (config.getValue() instanceof Enum) {
-               this.configComponents.add(new DropdownButton(frame, this, config, x, y));
-            } else if (config.getValue() instanceof String) {
-               this.configComponents.add(new TextButton(frame, this, config, x, y));
-            } else if (config.getValue() instanceof Macro) {
-               this.configComponents.add(new BindButton(frame, this, config, x, y));
-            } else if (config.getValue() instanceof Color) {
-               this.configComponents.add(new ColorButton(frame, this, config, x, y));
-            }
-         }
-      }
+       for (Config<?> value : module.getConfigs()) {
+           Config config = (Config) value;
+           if (!config.getName().equalsIgnoreCase("Enabled")) {
+               if (config.getValue() instanceof Boolean) {
+                   this.configComponents.add(new CheckboxButton(frame, this, config, x, y));
+               } else if (config.getValue() instanceof Double) {
+                   this.configComponents.add(new SliderButton(frame, this, config, x, y));
+               } else if (config.getValue() instanceof Float) {
+                   this.configComponents.add(new SliderButton(frame, this, config, x, y));
+               } else if (config.getValue() instanceof Integer) {
+                   this.configComponents.add(new SliderButton(frame, this, config, x, y));
+               } else if (config.getValue() instanceof Enum) {
+                   this.configComponents.add(new DropdownButton(frame, this, config, x, y));
+               } else if (config.getValue() instanceof String) {
+                   this.configComponents.add(new TextButton(frame, this, config, x, y));
+               } else if (config.getValue() instanceof Macro) {
+                   this.configComponents.add(new BindButton(frame, this, config, x, y));
+               } else if (config.getValue() instanceof Color) {
+                   this.configComponents.add(new ColorButton(frame, this, config, x, y));
+               }
+           }
+       }
 
       this.open = false;
    }
@@ -152,36 +151,33 @@ public class ModuleButton extends Button {
       }
 
       if (this.open) {
-         Iterator var8 = this.configComponents.iterator();
 
-         while(var8.hasNext()) {
-            ConfigButton component = (ConfigButton)var8.next();
-            component.mouseClicked(mouseX, mouseY, button);
-         }
+          for (Object configComponent : this.configComponents) {
+              ConfigButton component = (ConfigButton) configComponent;
+              component.mouseClicked(mouseX, mouseY, button);
+          }
       }
 
    }
 
    public void mouseReleased(double mouseX, double mouseY, int button) {
       if (this.open) {
-         Iterator var6 = this.configComponents.iterator();
 
-         while(var6.hasNext()) {
-            ConfigButton component = (ConfigButton)var6.next();
-            component.mouseReleased(mouseX, mouseY, button);
-         }
+          for (Object configComponent : this.configComponents) {
+              ConfigButton component = (ConfigButton) configComponent;
+              component.mouseReleased(mouseX, mouseY, button);
+          }
       }
 
    }
 
    public void keyPressed(int keyCode, int scanCode, int modifiers) {
       if (this.open) {
-         Iterator var4 = this.configComponents.iterator();
 
-         while(var4.hasNext()) {
-            ConfigButton component = (ConfigButton)var4.next();
-            component.keyPressed(keyCode, scanCode, modifiers);
-         }
+          for (Object configComponent : this.configComponents) {
+              ConfigButton component = (ConfigButton) configComponent;
+              component.keyPressed(keyCode, scanCode, modifiers);
+          }
       }
 
    }

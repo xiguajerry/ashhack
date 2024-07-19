@@ -17,10 +17,10 @@ import net.minecraft.util.math.Vec3d;
 
 public class PhaseESPModule
 extends ToggleModule {
-    Config<Boolean> safeConfig = new BooleanConfig("Safe", "Highlights safe phase blocks", false);
-    Config<Color> unsafeConfig = new ColorConfig("UnsafeColor", "The color for rendering unsafe phase blocks", new Color(255, 0, 0), false, false);
-    Config<Color> obsidianConfig = new ColorConfig("ObsidianColor", "The color for rendering obsidian phase blocks", new Color(255, 255, 0), false, false, () -> this.safeConfig.getValue());
-    Config<Color> bedrockConfig = new ColorConfig("BedrockColor", "The color for rendering bedrock phase blocks", new Color(0, 255, 0), false, false, () -> this.safeConfig.getValue());
+    final Config<Boolean> safeConfig = new BooleanConfig("Safe", "Highlights safe phase blocks", false);
+    final Config<Color> unsafeConfig = new ColorConfig("UnsafeColor", "The color for rendering unsafe phase blocks", new Color(255, 0, 0), false, false);
+    final Config<Color> obsidianConfig = new ColorConfig("ObsidianColor", "The color for rendering obsidian phase blocks", new Color(255, 255, 0), false, false, () -> this.safeConfig.getValue());
+    final Config<Color> bedrockConfig = new ColorConfig("BedrockColor", "The color for rendering bedrock phase blocks", new Color(0, 255, 0), false, false, () -> this.safeConfig.getValue());
 
     public PhaseESPModule() {
         super("PhaseESP", "Displays safe phase blocks", ModuleCategory.RENDER);
@@ -40,7 +40,7 @@ extends ToggleModule {
             Color color = null;
             if (state.isReplaceable()) {
                 color = this.unsafeConfig.getValue();
-            } else if (this.safeConfig.getValue().booleanValue()) {
+            } else if (this.safeConfig.getValue()) {
                 color = BlastResistantBlocks.isUnbreakable(state.getBlock()) ? this.bedrockConfig.getValue() : this.obsidianConfig.getValue();
             }
             if (color == null) continue;

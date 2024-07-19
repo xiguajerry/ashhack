@@ -19,7 +19,7 @@ import net.minecraft.network.packet.Packet;
 
 public class NetworkManager
         implements Globals {
-   private static final Set<Packet<?>> PACKET_CACHE = new HashSet();
+   private static final Set<Packet<?>> PACKET_CACHE = new HashSet<>();
    private ServerAddress address;
    private ServerInfo info;
 

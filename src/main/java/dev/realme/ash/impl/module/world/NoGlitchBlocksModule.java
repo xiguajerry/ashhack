@@ -13,8 +13,8 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 
 public class NoGlitchBlocksModule
 extends ToggleModule {
-    Config<Boolean> placeConfig = new BooleanConfig("Place", "Places blocks only after the server confirms", true);
-    Config<Boolean> destroyConfig = new BooleanConfig("Destroy", "Destroys blocks only after the server confirms", true);
+    final Config<Boolean> placeConfig = new BooleanConfig("Place", "Places blocks only after the server confirms", true);
+    final Config<Boolean> destroyConfig = new BooleanConfig("Destroy", "Destroys blocks only after the server confirms", true);
 
     public NoGlitchBlocksModule() {
         super("NoGlitchBlocks", "Prevents blocks from being glitched in the world", ModuleCategory.WORLD);
@@ -22,7 +22,7 @@ extends ToggleModule {
 
     @EventListener
     public void onInteractBlock(InteractBlockEvent event) {
-        if (this.placeConfig.getValue().booleanValue() && !mc.isInSingleplayer()) {
+        if (this.placeConfig.getValue() && !mc.isInSingleplayer()) {
             event.cancel();
             Managers.NETWORK.sendSequencedPacket(id -> new PlayerInteractBlockC2SPacket(event.getHand(), event.getHitResult(), id));
         }
@@ -30,7 +30,7 @@ extends ToggleModule {
 
     @EventListener
     public void onBreakBlock(BreakBlockEvent event) {
-        if (this.destroyConfig.getValue().booleanValue() && !mc.isInSingleplayer()) {
+        if (this.destroyConfig.getValue() && !mc.isInSingleplayer()) {
             event.cancel();
             BlockState state = NoGlitchBlocksModule.mc.world.getBlockState(event.getPos());
             state.getBlock().onBreak(NoGlitchBlocksModule.mc.world, event.getPos(), state, NoGlitchBlocksModule.mc.player);

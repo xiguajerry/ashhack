@@ -18,9 +18,12 @@ extends ToggleModule {
 
     @EventListener
     public void onTick(TickEvent event) {
-        if (event.getStage() == EventStage.PRE && this.respawn && AutoRespawnModule.mc.player.isDead()) {
-            AutoRespawnModule.mc.player.requestRespawn();
-            this.respawn = false;
+        if (event.getStage() == EventStage.PRE && this.respawn) {
+            assert AutoRespawnModule.mc.player != null;
+            if (AutoRespawnModule.mc.player.isDead()) {
+                AutoRespawnModule.mc.player.requestRespawn();
+                this.respawn = false;
+            }
         }
     }
 

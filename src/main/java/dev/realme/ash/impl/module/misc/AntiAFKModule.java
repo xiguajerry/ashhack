@@ -20,9 +20,9 @@ extends ToggleModule {
     Config<Boolean> messageConfig = new BooleanConfig("Message", "Messages in chat to prevent AFK kick", true);
     Config<Boolean> tabCompleteConfig = new BooleanConfig("TabComplete", "Uses tab complete in chat to prevent AFK kick", true);
     Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotates the player to prevent AFK kick", true);
-    Config<Boolean> autoReplyConfig = new BooleanConfig("AutoReply", "Replies to players messaging you in chat", true);
-    Config<String> replyConfig = new StringConfig("Reply", "The reply message for AutoReply", "[Ash] I am currently AFK.");
-    Config<Float> delayConfig = new NumberConfig<Float>("Delay", "The delay between actions", 5.0f, 60.0f, 270.0f);
+    final Config<Boolean> autoReplyConfig = new BooleanConfig("AutoReply", "Replies to players messaging you in chat", true);
+    final Config<String> replyConfig = new StringConfig("Reply", "The reply message for AutoReply", "[Ash] I am currently AFK.");
+    Config<Float> delayConfig = new NumberConfig<>("Delay", "The delay between actions", 5.0f, 60.0f, 270.0f);
 
     public AntiAFKModule() {
         super("AntiAFK", "Prevents the player from being kicked for AFK", ModuleCategory.MISCELLANEOUS);
@@ -30,6 +30,7 @@ extends ToggleModule {
 
     @EventListener
     public void onTick(TickEvent event) {
+        assert AntiAFKModule.mc.player != null;
         Managers.NETWORK.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(AntiAFKModule.mc.player.getX(), AntiAFKModule.mc.player.getY(), AntiAFKModule.mc.player.getZ(), false));
         Managers.NETWORK.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(AntiAFKModule.mc.player.getX(), AntiAFKModule.mc.player.getY(), AntiAFKModule.mc.player.getZ(), false));
         Managers.NETWORK.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(AntiAFKModule.mc.player.getX(), AntiAFKModule.mc.player.getY(), AntiAFKModule.mc.player.getZ(), false));
@@ -45,7 +46,7 @@ extends ToggleModule {
         if (packet instanceof ChatMessageS2CPacket) {
             String[] words;
             ChatMessageS2CPacket packet2 = (ChatMessageS2CPacket) packet;
-            if (this.autoReplyConfig.getValue().booleanValue() && (words = packet2.body().content().split(" "))[1].startsWith("whispers:")) {
+            if (this.autoReplyConfig.getValue() && (words = packet2.body().content().split(" "))[1].startsWith("whispers:")) {
                 ChatUtil.serverSendMessage("/r " + this.replyConfig.getValue());
             }
         }

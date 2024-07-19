@@ -56,12 +56,10 @@ public class PredictUtility {
       copyEntity.prevZ = original.prevZ;
       copyEntity.prevY = original.prevY;
       copyEntity.getInventory().clone(original.getInventory());
-      Iterator var3 = original.getStatusEffects().iterator();
 
-      while(var3.hasNext()) {
-         StatusEffectInstance se = (StatusEffectInstance)var3.next();
-         copyEntity.addStatusEffect(se);
-      }
+       for (StatusEffectInstance se : original.getStatusEffects()) {
+           copyEntity.addStatusEffect(se);
+       }
 
       return copyEntity;
    }

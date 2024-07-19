@@ -93,23 +93,13 @@ public abstract class MixinTitleScreen extends Screen {
          this.initWidgetsNormal(l, 24);
       }
 
-      TextIconButtonWidget textIconButtonWidget = this.addDrawableChild(AccessibilityOnboardingButtons.createLanguageButton(20, (button) -> {
-         this.client.setScreen(new LanguageOptionsScreen(this, this.client.options, this.client.getLanguageManager()));
-      }, true));
+      TextIconButtonWidget textIconButtonWidget = this.addDrawableChild(AccessibilityOnboardingButtons.createLanguageButton(20, (button) -> this.client.setScreen(new LanguageOptionsScreen(this, this.client.options, this.client.getLanguageManager())), true));
       textIconButtonWidget.setPosition(this.width / 2 - 124, l + 72 + 24);
-      this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.options"), (button) -> {
-         this.client.setScreen(new OptionsScreen(this, this.client.options));
-      }).dimensions(this.width / 2 - 100, l + 72 + 24, 98, 20).build());
-      this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.quit"), (button) -> {
-         this.client.scheduleStop();
-      }).dimensions(this.width / 2 + 2, l + 72 + 24, 98, 20).build());
-      TextIconButtonWidget textIconButtonWidget2 = this.addDrawableChild(AccessibilityOnboardingButtons.createAccessibilityButton(20, (button) -> {
-         this.client.setScreen(new AccessibilityOptionsScreen(this, this.client.options));
-      }, true));
+      this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.options"), (button) -> this.client.setScreen(new OptionsScreen(this, this.client.options))).dimensions(this.width / 2 - 100, l + 72 + 24, 98, 20).build());
+      this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.quit"), (button) -> this.client.scheduleStop()).dimensions(this.width / 2 + 2, l + 72 + 24, 98, 20).build());
+      TextIconButtonWidget textIconButtonWidget2 = this.addDrawableChild(AccessibilityOnboardingButtons.createAccessibilityButton(20, (button) -> this.client.setScreen(new AccessibilityOptionsScreen(this, this.client.options)), true));
       textIconButtonWidget2.setPosition(this.width / 2 + 104, l + 72 + 24);
-      this.addDrawableChild(new PressableTextWidget(j, this.height - 10, i, 10, COPYRIGHT, (button) -> {
-         this.client.setScreen(new CreditsAndAttributionScreen(this));
-      }, this.textRenderer));
+      this.addDrawableChild(new PressableTextWidget(j, this.height - 10, i, 10, COPYRIGHT, (button) -> this.client.setScreen(new CreditsAndAttributionScreen(this)), this.textRenderer));
       if (this.realmsNotificationGui == null) {
          this.realmsNotificationGui = new RealmsNotificationsScreen();
       }
@@ -130,9 +120,7 @@ public abstract class MixinTitleScreen extends Screen {
 )}
    )
    public void hookInit(int y, int spacingY, CallbackInfo ci) {
-      ButtonWidget widget = ButtonWidget.builder(Text.of("Account Manager"), (action) -> {
-         this.client.setScreen(new AccountSelectorScreen(this));
-      }).dimensions(this.width / 2 - 100, y + spacingY * 3, 200, 20).tooltip(Tooltip.of(Text.of("Allows you to switch your in-game account"))).build();
+      ButtonWidget widget = ButtonWidget.builder(Text.of("Account Manager"), (action) -> this.client.setScreen(new AccountSelectorScreen(this))).dimensions(this.width / 2 - 100, y + spacingY * 3, 200, 20).tooltip(Tooltip.of(Text.of("Allows you to switch your in-game account"))).build();
       widget.active = true;
       this.addDrawableChild(widget);
    }

@@ -46,30 +46,28 @@ public class BreakManager implements Globals {
 
    public boolean isFriendMining(BlockPos pos) {
       boolean mining = false;
-      Iterator var3 = (new HashMap(this.breakMap)).values().iterator();
 
-      while(var3.hasNext()) {
-         BreakData breakData = (BreakData)var3.next();
-         if (breakData.getEntity() != null && Managers.SOCIAL.isFriend(breakData.getEntity().getName().getString()) && breakData.pos.equals(pos)) {
-            mining = true;
-            break;
-         }
-      }
+       for (Object o : (new HashMap(this.breakMap)).values()) {
+           BreakData breakData = (BreakData) o;
+           if (breakData.getEntity() != null && Managers.SOCIAL.isFriend(breakData.getEntity().getName().getString()) && breakData.pos.equals(pos)) {
+               mining = true;
+               break;
+           }
+       }
 
       return mining;
    }
 
    public boolean isMining(BlockPos pos) {
       boolean mining = false;
-      Iterator var3 = (new HashMap(this.breakMap)).values().iterator();
 
-      while(var3.hasNext()) {
-         BreakData breakData = (BreakData)var3.next();
-         if (breakData.getEntity() != null && breakData.pos.equals(pos)) {
-            mining = true;
-            break;
-         }
-      }
+       for (Object o : (new HashMap(this.breakMap)).values()) {
+           BreakData breakData = (BreakData) o;
+           if (breakData.getEntity() != null && breakData.pos.equals(pos)) {
+               mining = true;
+               break;
+           }
+       }
 
       return mining;
    }

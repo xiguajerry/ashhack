@@ -28,16 +28,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class AutoArmorModule extends ToggleModule {
-    Config<AutoArmorModule.Priority> priorityConfig = new EnumConfig("Priority", "Armor enchantment priority", AutoArmorModule.Priority.BLAST_PROTECTION, AutoArmorModule.Priority.values());
-    Config<Float> minDurabilityConfig = new NumberConfig("MinDurability", "Durability percent to replace armor", 0.0F, 0.0F, 20.0F, NumberDisplay.PERCENT);
-    Config<Boolean> elytraPriorityConfig = new BooleanConfig("ElytraPriority", "Prioritizes existing elytras in the chestplate armor slot", true);
-    Config<Boolean> blastLeggingsConfig = new BooleanConfig("Leggings-BlastPriority", "Prioritizes Blast Protection leggings", true);
-    Config<Boolean> noBindingConfig = new BooleanConfig("NoBinding", "Avoids armor with the Curse of Binding enchantment", true);
-    Config<Boolean> inventoryConfig = new BooleanConfig("AllowInventory", "Allows armor to be swapped while in the inventory menu", false);
-    private final Queue<AutoArmorModule.ArmorSlot> helmet = new PriorityQueue();
-    private final Queue<AutoArmorModule.ArmorSlot> chestplate = new PriorityQueue();
-    private final Queue<AutoArmorModule.ArmorSlot> leggings = new PriorityQueue();
-    private final Queue<AutoArmorModule.ArmorSlot> boots = new PriorityQueue();
+    final Config<AutoArmorModule.Priority> priorityConfig = new EnumConfig<>("Priority", "Armor enchantment priority", AutoArmorModule.Priority.BLAST_PROTECTION, AutoArmorModule.Priority.values());
+    final Config<Float> minDurabilityConfig = new NumberConfig<>("MinDurability", "Durability percent to replace armor", 0.0F, 0.0F, 20.0F, NumberDisplay.PERCENT);
+    final Config<Boolean> elytraPriorityConfig = new BooleanConfig("ElytraPriority", "Prioritizes existing elytras in the chestplate armor slot", true);
+    final Config<Boolean> blastLeggingsConfig = new BooleanConfig("Leggings-BlastPriority", "Prioritizes Blast Protection leggings", true);
+    final Config<Boolean> noBindingConfig = new BooleanConfig("NoBinding", "Avoids armor with the Curse of Binding enchantment", true);
+    final Config<Boolean> inventoryConfig = new BooleanConfig("AllowInventory", "Allows armor to be swapped while in the inventory menu", false);
+    private final Queue<AutoArmorModule.ArmorSlot> helmet = new PriorityQueue<>();
+    private final Queue<AutoArmorModule.ArmorSlot> chestplate = new PriorityQueue<>();
+    private final Queue<AutoArmorModule.ArmorSlot> leggings = new PriorityQueue<>();
+    private final Queue<AutoArmorModule.ArmorSlot> boots = new PriorityQueue<>();
 
     public AutoArmorModule() {
         super("AutoArmor", "Automatically replaces armor pieces", ModuleCategory.COMBAT);
@@ -53,6 +53,7 @@ public class AutoArmorModule extends ToggleModule {
                 this.boots.clear();
 
                 for(int j = 0; j < 45; ++j) {
+                    assert mc.player != null;
                     ItemStack stack = mc.player.getInventory().getStack(j);
                     if (!stack.isEmpty()) {
                         Item bootsSlot = stack.getItem();
@@ -120,6 +121,7 @@ public class AutoArmorModule extends ToggleModule {
     }
 
     public void swapArmor(int armorSlot, int slot) {
+        assert mc.player != null;
         ItemStack stack = mc.player.getInventory().getArmorStack(armorSlot);
         boolean rt = !stack.isEmpty();
         InventoryUtil.move().from(slot).toArmor(armorSlot);

@@ -31,15 +31,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class HolePushModule extends RotationModule {
-    Config<Float> targetRange = new NumberConfig("TargetRange", "", 0.0F, 5.2F, 6.0F);
-    Config<Float> updateDelay = new NumberConfig("UpdateDelay", "Added delays", 0.0F, 50.0F, 500.0F);
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
-    Config<Boolean> mine = new BooleanConfig("MineRedStone", "", false);
-    Config<HolePushModule.SwapMode> swapMode = new EnumConfig("SwapMode", "", HolePushModule.SwapMode.SILENT, HolePushModule.SwapMode.values());
-    Config<Boolean> pistonPacket = new BooleanConfig("PistonPacket", "", false);
-    Config<Boolean> redStonePacket = new BooleanConfig("RedStonePacket", "", false);
-    Config<Boolean> pistonRotate = new BooleanConfig("PistonRotate", "", true);
-    Config<Boolean> redStoneRotate = new BooleanConfig("RedStoneRotate", "", false);
+    final Config<Float> targetRange = new NumberConfig<>("TargetRange", "", 0.0F, 5.2F, 6.0F);
+    final Config<Float> updateDelay = new NumberConfig<>("UpdateDelay", "Added delays", 0.0F, 50.0F, 500.0F);
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "", true);
+    final Config<Boolean> mine = new BooleanConfig("MineRedStone", "", false);
+    final Config<HolePushModule.SwapMode> swapMode = new EnumConfig<>("SwapMode", "", HolePushModule.SwapMode.SILENT, HolePushModule.SwapMode.values());
+    final Config<Boolean> pistonPacket = new BooleanConfig("PistonPacket", "", false);
+    final Config<Boolean> redStonePacket = new BooleanConfig("RedStonePacket", "", false);
+    final Config<Boolean> pistonRotate = new BooleanConfig("PistonRotate", "", true);
+    final Config<Boolean> redStoneRotate = new BooleanConfig("RedStoneRotate", "", false);
     int redBlock;
     int redTorch;
     int pistonBlock;
@@ -135,7 +135,7 @@ public class HolePushModule extends RotationModule {
     }
 
     private void update() {
-        this.target = EntityUtil.getTarget(this.targetRange.getValue().floatValue());
+        this.target = EntityUtil.getTarget(this.targetRange.getValue());
         if (this.target == null) {
             this.disable();
         } else {

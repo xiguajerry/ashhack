@@ -52,14 +52,12 @@ public final class PlayerUtil implements Globals {
 
    public static boolean isTurtle(PlayerEntity player) {
       int duration = -1;
-      Iterator var2 = player.getStatusEffects().iterator();
 
-      while(var2.hasNext()) {
-         StatusEffectInstance e = (StatusEffectInstance)var2.next();
-         if (e.getEffectType().equals(StatusEffects.RESISTANCE) && e.getAmplifier() > 2) {
-            duration = e.getDuration();
-         }
-      }
+       for (StatusEffectInstance e : player.getStatusEffects()) {
+           if (e.getEffectType().equals(StatusEffects.RESISTANCE) && e.getAmplifier() > 2) {
+               duration = e.getDuration();
+           }
+       }
 
       return duration >= 0;
    }
@@ -69,25 +67,22 @@ public final class PlayerUtil implements Globals {
       float[] var2 = new float[]{0.0F, 0.3F, -0.3F};
       int var3 = var2.length;
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         float x = var2[var4];
-         float[] var6 = new float[]{0.0F, 0.3F, -0.3F};
-         int var7 = var6.length;
+       for (float x : var2) {
+           float[] var6 = new float[]{0.0F, 0.3F, -0.3F};
+           int var7 = var6.length;
 
-         for(int var8 = 0; var8 < var7; ++var8) {
-            float z = var6[var8];
-            float[] var10 = new float[]{0.0F, 1.0F, -1.0F};
-            int var11 = var10.length;
+           for (float z : var6) {
+               float[] var10 = new float[]{0.0F, 1.0F, -1.0F};
+               int var11 = var10.length;
 
-            for(int var12 = 0; var12 < var11; ++var12) {
-               float y = var10[var12];
-               BlockPosX pos = new BlockPosX(playerPos.getX() + (double)x, playerPos.getY() + (double)y, playerPos.getZ() + (double)z);
-               if (isTargetHere(pos, player) && BlockUtil.getBlock(pos) == Blocks.COBWEB) {
-                  return true;
+               for (float y : var10) {
+                   BlockPosX pos = new BlockPosX(playerPos.getX() + (double) x, playerPos.getY() + (double) y, playerPos.getZ() + (double) z);
+                   if (isTargetHere(pos, player) && BlockUtil.getBlock(pos) == Blocks.COBWEB) {
+                       return true;
+                   }
                }
-            }
-         }
-      }
+           }
+       }
 
       return false;
    }
@@ -97,34 +92,34 @@ public final class PlayerUtil implements Globals {
       float[] var4 = new float[]{0.0F, 0.3F, -0.3F};
       int var5 = var4.length;
 
-      for(int var6 = 0; var6 < var5; ++var6) {
-         float x = var4[var6];
-         float[] var8 = new float[]{0.0F, 0.3F, -0.3F};
-         int var9 = var8.length;
+       for (float item : var4) {
+           float x = item;
+           float[] var8 = new float[]{0.0F, 0.3F, -0.3F};
+           int var9 = var8.length;
 
-         for(int var10 = 0; var10 < var9; ++var10) {
-            float z = var8[var10];
-            float[] var12 = new float[]{0.0F, 1.0F, -1.0F};
-            int var13 = var12.length;
+           for (float value : var8) {
+               float z = value;
+               float[] var12 = new float[]{0.0F, 1.0F, -1.0F};
+               int var13 = var12.length;
 
-            for(int var14 = 0; var14 < var13; ++var14) {
-               float y = var12[var14];
-               if (!face) {
-                  y = 0.0F;
+               for (float v : var12) {
+                   float y = v;
+                   if (!face) {
+                       y = 0.0F;
+                   }
+
+                   if (!feet) {
+                       x = 0.0F;
+                       z = 0.0F;
+                   }
+
+                   BlockPosX pos = new BlockPosX(playerPos.getX() + (double) x, playerPos.getY() + (double) y, playerPos.getZ() + (double) z);
+                   if (isTargetHere(pos, player) && BlockUtil.getBlock(pos) == Blocks.COBWEB) {
+                       return true;
+                   }
                }
-
-               if (!feet) {
-                  x = 0.0F;
-                  z = 0.0F;
-               }
-
-               BlockPosX pos = new BlockPosX(playerPos.getX() + (double)x, playerPos.getY() + (double)y, playerPos.getZ() + (double)z);
-               if (isTargetHere(pos, player) && BlockUtil.getBlock(pos) == Blocks.COBWEB) {
-                  return true;
-               }
-            }
-         }
-      }
+           }
+       }
 
       return false;
    }
@@ -176,19 +171,17 @@ public final class PlayerUtil implements Globals {
       float[] var2 = new float[]{0.0F, 0.3F, -0.3F};
       int var3 = var2.length;
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         float x = var2[var4];
-         float[] var6 = new float[]{0.0F, 0.3F, -0.3F};
-         int var7 = var6.length;
+       for (float x : var2) {
+           float[] var6 = new float[]{0.0F, 0.3F, -0.3F};
+           int var7 = var6.length;
 
-         for(int var8 = 0; var8 < var7; ++var8) {
-            float z = var6[var8];
-            BlockPosX pos = new BlockPosX(playerPos.getX() + (double)x, playerPos.getY(), playerPos.getZ() + (double)z);
-            if (isTargetHere(pos, player) && BlockUtil.mineBlocks.contains(BlockUtil.getBlock(pos))) {
-               return true;
-            }
-         }
-      }
+           for (float z : var6) {
+               BlockPosX pos = new BlockPosX(playerPos.getX() + (double) x, playerPos.getY(), playerPos.getZ() + (double) z);
+               if (isTargetHere(pos, player) && BlockUtil.mineBlocks.contains(BlockUtil.getBlock(pos))) {
+                   return true;
+               }
+           }
+       }
 
       return false;
    }
@@ -201,12 +194,11 @@ public final class PlayerUtil implements Globals {
       KeyBinding[] var0 = mc.options.hotbarKeys;
       int var1 = var0.length;
 
-      for(int var2 = 0; var2 < var1; ++var2) {
-         KeyBinding binding = var0[var2];
-         if (binding.isPressed()) {
-            return true;
-         }
-      }
+       for (KeyBinding binding : var0) {
+           if (binding.isPressed()) {
+               return true;
+           }
+       }
 
       return false;
    }

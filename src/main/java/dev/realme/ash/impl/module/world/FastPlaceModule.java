@@ -27,12 +27,12 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 
 public class FastPlaceModule
 extends ToggleModule {
-    Config<Selection> selectionConfig = new EnumConfig<Selection>("Selection", "The selection of items to apply fast placements", Selection.WHITELIST, Selection.values());
-    Config<Integer> delayConfig = new NumberConfig<Integer>("Delay", "Fast place click delay", 0, 1, 4);
-    Config<Float> startDelayConfig = new NumberConfig<Float>("StartDelay", "Fast place start delay", 0.0f, 0.0f, 1.0f);
-    Config<Boolean> ghostFixConfig = new BooleanConfig("GhostFix", "Fixes item ghosting issue on some servers", false);
-    Config<List<Item>> whitelistConfig = new ItemListConfig("Whitelist", "Valid item whitelist", Items.EXPERIENCE_BOTTLE, Items.SNOWBALL, Items.EGG);
-    Config<List<Item>> blacklistConfig = new ItemListConfig("Blacklist", "Valid item blacklist", Items.ENDER_PEARL, Items.ENDER_EYE);
+    final Config<Selection> selectionConfig = new EnumConfig<>("Selection", "The selection of items to apply fast placements", Selection.WHITELIST, Selection.values());
+    final Config<Integer> delayConfig = new NumberConfig<>("Delay", "Fast place click delay", 0, 1, 4);
+    final Config<Float> startDelayConfig = new NumberConfig<>("StartDelay", "Fast place start delay", 0.0f, 0.0f, 1.0f);
+    final Config<Boolean> ghostFixConfig = new BooleanConfig("GhostFix", "Fixes item ghosting issue on some servers", false);
+    final Config<List<Item>> whitelistConfig = new ItemListConfig("Whitelist", "Valid item whitelist", Items.EXPERIENCE_BOTTLE, Items.SNOWBALL, Items.EGG);
+    final Config<List<Item>> blacklistConfig = new ItemListConfig("Blacklist", "Valid item blacklist", Items.ENDER_PEARL, Items.ENDER_EYE);
     private final CacheTimer startTimer = new CacheTimer();
 
     public FastPlaceModule() {
@@ -47,7 +47,7 @@ extends ToggleModule {
         if (!FastPlaceModule.mc.options.useKey.isPressed()) {
             this.startTimer.reset();
         } else if (this.startTimer.passed(this.startDelayConfig.getValue(), TimeUnit.SECONDS) && ((AccessorMinecraftClient) mc).hookGetItemUseCooldown() > this.delayConfig.getValue() && this.placeCheck(FastPlaceModule.mc.player.getMainHandStack())) {
-            if (this.ghostFixConfig.getValue().booleanValue()) {
+            if (this.ghostFixConfig.getValue()) {
                 Managers.NETWORK.sendSequencedPacket(id -> new PlayerInteractItemC2SPacket(FastPlaceModule.mc.player.getActiveHand(), id));
             }
             ((AccessorMinecraftClient) mc).hookSetItemUseCooldown(this.delayConfig.getValue());
@@ -62,7 +62,7 @@ extends ToggleModule {
         Packet<?> packet = event.getPacket();
         if (packet instanceof PlayerInteractBlockC2SPacket packet2) {
             BlockState state;
-            if (this.ghostFixConfig.getValue().booleanValue() && !event.isClientPacket() && this.placeCheck(FastPlaceModule.mc.player.getStackInHand(packet2.getHand())) && !SneakBlocks.isSneakBlock(state = FastPlaceModule.mc.world.getBlockState(packet2.getBlockHitResult().getBlockPos()))) {
+            if (this.ghostFixConfig.getValue() && !event.isClientPacket() && this.placeCheck(FastPlaceModule.mc.player.getStackInHand(packet2.getHand())) && !SneakBlocks.isSneakBlock(state = FastPlaceModule.mc.world.getBlockState(packet2.getBlockHitResult().getBlockPos()))) {
                 event.cancel();
             }
         }

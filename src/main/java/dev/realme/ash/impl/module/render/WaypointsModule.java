@@ -23,9 +23,9 @@ import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
 
 public class WaypointsModule
 extends ToggleModule {
-    Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
-    Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 0, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
+    final Config<Integer> boxAlpha = new NumberConfig<>("BoxAlpha", "", 0, 80, 255);
+    final Config<Integer> olAlpha = new NumberConfig<>("OLAlpha", "", 0, 0, 255);
+    final Config<Float> olWidth = new NumberConfig<>("OLWidth", "", 0.1f, 1.5f, 5.0f);
     private final Map<UUID, PlayerEntity> playerCache = Maps.newConcurrentMap();
     private final Map<UUID, PlayerEntity> logoutCache = Maps.newConcurrentMap();
 
@@ -61,7 +61,7 @@ extends ToggleModule {
                     for (UUID uuid : this.logoutCache.keySet()) {
                         if (!uuid.equals(addedPlayer.profile().getId())) continue;
                         player = this.logoutCache.get(uuid);
-                        ChatUtil.sendChatMessageWidthId(player.getName().getString() + " \u00a7alogged back at X: " + (int)player.getX() + " Y: " + (int)player.getY() + " Z: " + (int)player.getZ(), player.getId() - 999);
+                        ChatUtil.sendChatMessageWidthId(player.getName().getString() + " §alogged back at X: " + (int)player.getX() + " Y: " + (int)player.getY() + " Z: " + (int)player.getZ(), player.getId() - 999);
                         this.logoutCache.remove(uuid);
                     }
                 }
@@ -75,7 +75,7 @@ extends ToggleModule {
                     if (!uuid.equals(uuid2)) continue;
                     player = this.playerCache.get(uuid);
                     if (this.logoutCache.containsKey(uuid)) continue;
-                    ChatUtil.sendChatMessageWidthId(player.getName().getString() + " \u00a7clogged out at X: " + (int)player.getX() + " Y: " + (int)player.getY() + " Z: " + (int)player.getZ(), player.getId() - 999);
+                    ChatUtil.sendChatMessageWidthId(player.getName().getString() + " §clogged out at X: " + (int)player.getX() + " Y: " + (int)player.getY() + " Z: " + (int)player.getZ(), player.getId() - 999);
                     this.logoutCache.put(uuid, player);
                 }
             }
@@ -93,7 +93,7 @@ extends ToggleModule {
             if (data == null) continue;
             RenderManager.post(() -> RenderManager.renderSign(data.getName().getString(), data.getPos().add(0.0, data.getBoundingBox().getLengthY() + 0.4, 0.0)));
             RenderManager.renderBox(event.getMatrices(), ((IEntity) data).getDimensions().getBoxAt(data.getPos()), Modules.CLIENT_SETTING.getRGB(this.boxAlpha.getValue()));
-            RenderManager.renderBoundingBox(event.getMatrices(), ((IEntity) data).getDimensions().getBoxAt(data.getPos()), this.olWidth.getValue().floatValue(), Modules.CLIENT_SETTING.getRGB(this.olAlpha.getValue()));
+            RenderManager.renderBoundingBox(event.getMatrices(), ((IEntity) data).getDimensions().getBoxAt(data.getPos()), this.olWidth.getValue(), Modules.CLIENT_SETTING.getRGB(this.olAlpha.getValue()));
         }
     }
 }

@@ -16,13 +16,13 @@ import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 
 public class SkyboxModule
 extends ToggleModule {
-    Config<Integer> dayTimeConfig = new NumberConfig<Integer>("WorldTime", "The world time of day", 0, 6000, 24000);
-    Config<Boolean> skyConfig = new BooleanConfig("Sky", "Changes the world skybox color", true);
-    Config<Color> skyColorConfig = new ColorConfig("SkyColor", "The color for the world skybox", new Color(255, 0, 0), false, true, () -> this.skyConfig.getValue());
-    Config<Boolean> cloudConfig = new BooleanConfig("Cloud", "Changes the world cloud color", false);
-    Config<Color> cloudColorConfig = new ColorConfig("CloudColor", "The color for the world clouds", new Color(255, 0, 0), false, true, () -> this.cloudConfig.getValue());
-    Config<Boolean> fogConfig = new BooleanConfig("Fog", "Changes the world fog color", false);
-    Config<Color> fogColorConfig = new ColorConfig("FogColor", "The color for the world fog", new Color(255, 0, 0), false, true, () -> this.fogConfig.getValue());
+    final Config<Integer> dayTimeConfig = new NumberConfig<>("WorldTime", "The world time of day", 0, 6000, 24000);
+    final Config<Boolean> skyConfig = new BooleanConfig("Sky", "Changes the world skybox color", true);
+    final Config<Color> skyColorConfig = new ColorConfig("SkyColor", "The color for the world skybox", new Color(255, 0, 0), false, true, () -> this.skyConfig.getValue());
+    final Config<Boolean> cloudConfig = new BooleanConfig("Cloud", "Changes the world cloud color", false);
+    final Config<Color> cloudColorConfig = new ColorConfig("CloudColor", "The color for the world clouds", new Color(255, 0, 0), false, true, () -> this.cloudConfig.getValue());
+    final Config<Boolean> fogConfig = new BooleanConfig("Fog", "Changes the world fog color", false);
+    final Config<Color> fogColorConfig = new ColorConfig("FogColor", "The color for the world fog", new Color(255, 0, 0), false, true, () -> this.fogConfig.getValue());
 
     public SkyboxModule() {
         super("Skybox", "Changes the rendering of the world skybox", ModuleCategory.RENDER);
@@ -31,7 +31,7 @@ extends ToggleModule {
     @EventListener
     public void onTick(TickEvent event) {
         if (event.getStage() == EventStage.POST) {
-            SkyboxModule.mc.world.setTimeOfDay(this.dayTimeConfig.getValue().intValue());
+            SkyboxModule.mc.world.setTimeOfDay(this.dayTimeConfig.getValue());
         }
     }
 
@@ -44,7 +44,7 @@ extends ToggleModule {
 
     @EventListener
     public void onSkyboxSky(SkyboxEvent.Sky event) {
-        if (this.skyConfig.getValue().booleanValue()) {
+        if (this.skyConfig.getValue()) {
             event.cancel();
             event.setColor(this.skyColorConfig.getValue());
         }
@@ -52,7 +52,7 @@ extends ToggleModule {
 
     @EventListener
     public void onSkyboxCloud(SkyboxEvent.Cloud event) {
-        if (this.cloudConfig.getValue().booleanValue()) {
+        if (this.cloudConfig.getValue()) {
             event.cancel();
             event.setColor(this.cloudColorConfig.getValue());
         }
@@ -60,7 +60,7 @@ extends ToggleModule {
 
     @EventListener
     public void onSkyboxFog(SkyboxEvent.Fog event) {
-        if (this.fogConfig.getValue().booleanValue()) {
+        if (this.fogConfig.getValue()) {
             event.cancel();
             event.setColor(this.fogColorConfig.getValue());
         }

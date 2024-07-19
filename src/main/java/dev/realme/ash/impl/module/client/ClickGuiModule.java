@@ -11,7 +11,7 @@ public class ClickGuiModule
 extends ToggleModule {
     public static ClickGuiScreen CLICK_GUI_SCREEN;
     private final Animation openCloseAnimation = new Animation(false, 300.0f, Easing.CUBIC_IN_OUT);
-    public float scaleConfig = 1.0f;
+    public final float scaleConfig = 1.0f;
 
     public ClickGuiModule() {
         super("ClickGui", "Opens the clickgui screen", ModuleCategory.CLIENT, 344);

@@ -19,9 +19,9 @@ import net.minecraft.sound.SoundEvents;
 
 public class AutoFishModule
 extends ToggleModule {
-    Config<Boolean> openInventoryConfig = new BooleanConfig("OpenInventory", "Allows you to fish while in the inventory", true);
-    Config<Integer> castDelayConfig = new NumberConfig<Integer>("CastingDelay", "The delay between fishing rod casts", 10, 15, 25);
-    Config<Float> maxSoundDistConfig = new NumberConfig<Float>("MaxSoundDist", "The maximum distance from the splash sound", 0.0f, 2.0f, 5.0f);
+    final Config<Boolean> openInventoryConfig = new BooleanConfig("OpenInventory", "Allows you to fish while in the inventory", true);
+    final Config<Integer> castDelayConfig = new NumberConfig<>("CastingDelay", "The delay between fishing rod casts", 10, 15, 25);
+    final Config<Float> maxSoundDistConfig = new NumberConfig<>("MaxSoundDist", "The maximum distance from the splash sound", 0.0f, 2.0f, 5.0f);
     private boolean autoReel;
     private int autoReelTicks;
     private int autoCastTicks;
@@ -43,7 +43,7 @@ extends ToggleModule {
                 return;
             }
             double dist = fishHook.squaredDistanceTo(packet.getX(), packet.getY(), packet.getZ());
-            if (dist <= (double)this.maxSoundDistConfig.getValue().floatValue()) {
+            if (dist <= (double) this.maxSoundDistConfig.getValue()) {
                 this.autoReel = true;
                 this.autoReelTicks = 4;
             }
@@ -55,7 +55,8 @@ extends ToggleModule {
         if (event.getStage() != EventStage.PRE) {
             return;
         }
-        if (AutoFishModule.mc.currentScreen == null || AutoFishModule.mc.currentScreen instanceof ChatScreen || this.openInventoryConfig.getValue().booleanValue()) {
+        if (AutoFishModule.mc.currentScreen == null || AutoFishModule.mc.currentScreen instanceof ChatScreen || this.openInventoryConfig.getValue()) {
+            assert AutoFishModule.mc.player != null;
             if (AutoFishModule.mc.player.getMainHandStack().getItem() != Items.FISHING_ROD) {
                 return;
             }

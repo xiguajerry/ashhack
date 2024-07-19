@@ -50,7 +50,7 @@ public class DamageUtil implements Globals {
    public static final float field_29964 = 2.0F;
    public static final float field_29965 = 0.2F;
    private static final int field_29966 = 4;
-   public static RaycastContext raycastContext;
+   public static final RaycastContext raycastContext;
    private static final Vec3d vec3d;
 
    public static float getCrystalDamage(Vec3d crystalPos, PlayerEntity target) {
@@ -629,9 +629,7 @@ public class DamageUtil implements Globals {
             BlockHitResult hitResult = blockState.getCollisionShape(mc.world, blockPos).raycast(start, end, blockPos);
             return hitResult == null ? null : hitResult.getType();
          }
-      }, (_null) -> {
-         return Type.MISS;
-      });
+      }, (_null) -> Type.MISS);
    }
 
    private static BlockHitResult raycast(RaycastContext context, BlockPos ignore, boolean ignoreTerrain) {

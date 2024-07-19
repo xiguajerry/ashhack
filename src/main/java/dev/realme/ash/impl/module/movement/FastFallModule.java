@@ -19,9 +19,9 @@ import net.minecraft.util.math.Box;
 
 public class FastFallModule
 extends ToggleModule {
-    Config<Float> heightConfig = new NumberConfig<Float>("Height", "The maximum fall height", 1.0f, 3.0f, 10.0f);
-    Config<FallMode> fallModeConfig = new EnumConfig("Mode", "The mode for falling down blocks", FallMode.STEP, FallMode.values());
-    Config<Integer> shiftTicksConfig = new NumberConfig<Integer>("ShiftTicks", "Number of ticks to shift ahead", 1, 3, 5, () -> this.fallModeConfig.getValue() == FallMode.SHIFT);
+    final Config<Float> heightConfig = new NumberConfig<>("Height", "The maximum fall height", 1.0f, 3.0f, 10.0f);
+    final Config<FallMode> fallModeConfig = new EnumConfig<>("Mode", "The mode for falling down blocks", FallMode.STEP, FallMode.values());
+    final Config<Integer> shiftTicksConfig = new NumberConfig<>("ShiftTicks", "Number of ticks to shift ahead", 1, 3, 5, () -> this.fallModeConfig.getValue() == FallMode.SHIFT);
     private boolean prevOnGround;
     private boolean cancelFallMovement;
     private int fallTicks;
@@ -48,7 +48,7 @@ extends ToggleModule {
                 if (Modules.SPEED.isEnabled() || Modules.LONG_JUMP.isEnabled() || Modules.FLIGHT.isEnabled() || Modules.PACKET_FLY.isEnabled()) {
                     return;
                 }
-                if (FastFallModule.mc.player.isOnGround() && this.isNearestBlockWithinHeight(this.heightConfig.getValue().floatValue())) {
+                if (FastFallModule.mc.player.isOnGround() && this.isNearestBlockWithinHeight(this.heightConfig.getValue())) {
                     MovementUtil.setMotionY(-3.0);
                 }
             }
@@ -64,7 +64,7 @@ extends ToggleModule {
             if (!Managers.ANTICHEAT.hasPassed(1000L) || !this.fallTimer.passed(1000) || Modules.SPEED.isEnabled() || Modules.LONG_JUMP.isEnabled() || Modules.FLIGHT.isEnabled() || Modules.PACKET_FLY.isEnabled()) {
                 return;
             }
-            if (FastFallModule.mc.player.getVelocity().y < 0.0 && this.prevOnGround && !FastFallModule.mc.player.isOnGround() && this.isNearestBlockWithinHeight((double)this.heightConfig.getValue().floatValue() + 0.01)) {
+            if (FastFallModule.mc.player.getVelocity().y < 0.0 && this.prevOnGround && !FastFallModule.mc.player.isOnGround() && this.isNearestBlockWithinHeight((double) this.heightConfig.getValue() + 0.01)) {
                 this.fallTimer.reset();
                 event.cancel();
                 event.setIterations(this.shiftTicksConfig.getValue());

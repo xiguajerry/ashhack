@@ -10,7 +10,7 @@ import dev.realme.ash.util.player.PlayerUtil;
 
 public class BurrowStrafeModule
 extends ToggleModule {
-    Config<Float> speed = new NumberConfig<Float>("Speed", "The speed for alternative modes", 0.0f, 10.0f, 20.0f);
+    final Config<Float> speed = new NumberConfig<>("Speed", "The speed for alternative modes", 0.0f, 10.0f, 20.0f);
 
     public BurrowStrafeModule() {
         super("BurrowStrafe", "Move in block", ModuleCategory.MOVEMENT);
@@ -25,7 +25,7 @@ extends ToggleModule {
         if (PlayerUtil.isInWeb(BurrowStrafeModule.mc.player)) {
             return;
         }
-        double speed = this.speed.getValue().floatValue();
+        double speed = this.speed.getValue();
         double moveSpeed = 0.002873 * speed;
         double n = BurrowStrafeModule.mc.player.input.movementForward;
         double n2 = BurrowStrafeModule.mc.player.input.movementSideways;

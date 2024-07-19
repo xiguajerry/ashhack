@@ -14,8 +14,8 @@ import java.text.DecimalFormat;
 
 public class TimerModule
 extends ToggleModule {
-    Config<Float> ticksConfig = new NumberConfig<Float>("Ticks", "The game tick speed", 0.1f, 2.0f, 50.0f);
-    Config<Boolean> tpsSyncConfig = new BooleanConfig("TPSSync", "Syncs game tick speed to server tick speed", false);
+    final Config<Float> ticksConfig = new NumberConfig<>("Ticks", "The game tick speed", 0.1f, 2.0f, 50.0f);
+    final Config<Boolean> tpsSyncConfig = new BooleanConfig("TPSSync", "Syncs game tick speed to server tick speed", false);
     private float prevTimer = -1.0f;
     private float timer = 1.0f;
 
@@ -37,11 +37,11 @@ extends ToggleModule {
     @EventListener
     public void onTick(TickEvent event) {
         if (event.getStage() == EventStage.PRE) {
-            if (this.tpsSyncConfig.getValue().booleanValue()) {
+            if (this.tpsSyncConfig.getValue()) {
                 this.timer = Math.max(Managers.TICK.getTpsCurrent() / 20.0f, 0.1f);
                 return;
             }
-            this.timer = this.ticksConfig.getValue().floatValue();
+            this.timer = this.ticksConfig.getValue();
         }
     }
 

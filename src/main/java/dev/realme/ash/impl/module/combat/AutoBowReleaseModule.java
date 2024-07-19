@@ -20,9 +20,9 @@ import net.minecraft.util.math.Direction;
 
 public class AutoBowReleaseModule
 extends ToggleModule {
-    Config<Boolean> crossbowConfig = new BooleanConfig("Crossbow", "Automatically releases crossbow when fully charged", false);
-    Config<Integer> ticksConfig = new NumberConfig<Integer>("Ticks", "Ticks before releasing the bow charge", 3, 5, 20);
-    Config<Boolean> tpsSyncConfig = new BooleanConfig("TPS-Sync", "Sync bow release to server ticks", false);
+    final Config<Boolean> crossbowConfig = new BooleanConfig("Crossbow", "Automatically releases crossbow when fully charged", false);
+    final Config<Integer> ticksConfig = new NumberConfig<>("Ticks", "Ticks before releasing the bow charge", 3, 5, 20);
+    final Config<Boolean> tpsSyncConfig = new BooleanConfig("TPS-Sync", "Sync bow release to server ticks", false);
 
     public AutoBowReleaseModule() {
         super("AutoBowRelease", "Automatically releases a charged bow", ModuleCategory.COMBAT);
@@ -34,17 +34,19 @@ extends ToggleModule {
             return;
         }
         if (event.getStage() == EventStage.POST) {
+            assert AutoBowReleaseModule.mc.player != null;
             ItemStack mainhand = AutoBowReleaseModule.mc.player.getMainHandStack();
             if (mainhand.getItem() == Items.BOW) {
                 float off;
                 float f = off = this.tpsSyncConfig.getValue() ? 20.0f - Managers.TICK.getTpsAverage() : 0.0f;
-                if ((float)AutoBowReleaseModule.mc.player.getItemUseTime() + off >= (float)this.ticksConfig.getValue().intValue()) {
+                if ((float)AutoBowReleaseModule.mc.player.getItemUseTime() + off >= (float) this.ticksConfig.getValue()) {
                     Managers.NETWORK.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, Direction.DOWN));
                     AutoBowReleaseModule.mc.player.stopUsingItem();
                 }
-            } else if (this.crossbowConfig.getValue().booleanValue() && mainhand.getItem() == Items.CROSSBOW && (float)AutoBowReleaseModule.mc.player.getItemUseTime() / (float)CrossbowItem.getPullTime(AutoBowReleaseModule.mc.player.getMainHandStack()) > 1.0f) {
+            } else if (this.crossbowConfig.getValue() && mainhand.getItem() == Items.CROSSBOW && (float)AutoBowReleaseModule.mc.player.getItemUseTime() / (float)CrossbowItem.getPullTime(AutoBowReleaseModule.mc.player.getMainHandStack()) > 1.0f) {
                 Managers.NETWORK.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, Direction.DOWN));
                 AutoBowReleaseModule.mc.player.stopUsingItem();
+                assert AutoBowReleaseModule.mc.interactionManager != null;
                 AutoBowReleaseModule.mc.interactionManager.interactItem(AutoBowReleaseModule.mc.player, Hand.MAIN_HAND);
             }
         }

@@ -14,8 +14,8 @@ import net.minecraft.entity.passive.LlamaEntity;
 
 public class YawModule
 extends ToggleModule {
-    Config<Float> pitch = new NumberConfig<Float>("Pitch", "", -90.0f, 0.0f, 90.0f);
-    Config<Boolean> lockConfig = new BooleanConfig("Lock", "Locks the yaw in cardinal direction", false);
+    final Config<Float> pitch = new NumberConfig<>("Pitch", "", -90.0f, 0.0f, 90.0f);
+    final Config<Boolean> lockConfig = new BooleanConfig("Lock", "Locks the yaw in cardinal direction", false);
 
     public YawModule() {
         super("Yaw", "Locks player yaw to a cardinal axis", ModuleCategory.MOVEMENT);
@@ -34,7 +34,7 @@ extends ToggleModule {
                 }
                 return;
             }
-            YawModule.mc.player.setPitch(this.pitch.getValue().floatValue());
+            YawModule.mc.player.setPitch(this.pitch.getValue());
             YawModule.mc.player.setYaw(yaw);
             YawModule.mc.player.setHeadYaw(yaw);
         }
@@ -42,7 +42,7 @@ extends ToggleModule {
 
     @EventListener
     public void onLookDirection(LookDirectionEvent event) {
-        if (this.lockConfig.getValue().booleanValue()) {
+        if (this.lockConfig.getValue()) {
             event.cancel();
         }
     }

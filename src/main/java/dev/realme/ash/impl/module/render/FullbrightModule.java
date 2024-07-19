@@ -15,7 +15,7 @@ import net.minecraft.entity.effect.StatusEffects;
 
 public class FullbrightModule
 extends ToggleModule {
-    Config<Brightness> brightnessConfig = new EnumConfig("Mode", "Mode for world brightness", Brightness.GAMMA, Brightness.values());
+    final Config<Brightness> brightnessConfig = new EnumConfig<>("Mode", "Mode for world brightness", Brightness.GAMMA, Brightness.values());
 
     public FullbrightModule() {
         super("Fullbright", "Brightens the world", ModuleCategory.RENDER);

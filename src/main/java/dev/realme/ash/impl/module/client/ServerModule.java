@@ -15,9 +15,9 @@ import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 
 public class ServerModule
 extends ConcurrentModule {
-    Config<Boolean> packetKickConfig = new BooleanConfig("NoPacketKick", "Prevents thrown exceptions from kicking you", true);
-    Config<Boolean> demoConfig = new BooleanConfig("NoDemo", "Prevents servers from forcing you to a demo screen", true);
-    Config<Boolean> resourcePackConfig = new BooleanConfig("NoResourcePack", "Prevents server from forcing resource pack", false);
+    final Config<Boolean> packetKickConfig = new BooleanConfig("NoPacketKick", "Prevents thrown exceptions from kicking you", true);
+    final Config<Boolean> demoConfig = new BooleanConfig("NoDemo", "Prevents servers from forcing you to a demo screen", true);
+    final Config<Boolean> resourcePackConfig = new BooleanConfig("NoResourcePack", "Prevents server from forcing resource pack", false);
 
     public ServerModule() {
         super("Server", "Prevents servers actions on player", ModuleCategory.CLIENT);
@@ -27,11 +27,11 @@ extends ConcurrentModule {
     public void onPacketInbound(PacketEvent.Receive event) {
         GameStateChangeS2CPacket packet;
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof GameStateChangeS2CPacket && (packet = (GameStateChangeS2CPacket) packet2).getReason() == GameStateChangeS2CPacket.DEMO_MESSAGE_SHOWN && !mc.isDemo() && this.demoConfig.getValue().booleanValue()) {
+        if (packet2 instanceof GameStateChangeS2CPacket && (packet = (GameStateChangeS2CPacket) packet2).getReason() == GameStateChangeS2CPacket.DEMO_MESSAGE_SHOWN && !mc.isDemo() && this.demoConfig.getValue()) {
             Ash.info("Server attempted to use Demo mode features on you!");
             event.cancel();
         }
-        if (event.getPacket() instanceof ResourcePackSendS2CPacket && this.resourcePackConfig.getValue().booleanValue()) {
+        if (event.getPacket() instanceof ResourcePackSendS2CPacket && this.resourcePackConfig.getValue()) {
             event.cancel();
             Managers.NETWORK.sendPacket(new ResourcePackStatusC2SPacket(ServerModule.mc.player.getUuid(), ResourcePackStatusC2SPacket.Status.DECLINED));
         }

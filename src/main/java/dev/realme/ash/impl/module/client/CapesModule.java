@@ -7,7 +7,7 @@ import dev.realme.ash.api.module.ToggleModule;
 
 public class CapesModule
 extends ToggleModule {
-    Config<Boolean> optifineConfig = new BooleanConfig("Optifine", "If to show optifine capes", true);
+    final Config<Boolean> optifineConfig = new BooleanConfig("Optifine", "If to show optifine capes", true);
 
     public CapesModule() {
         super("Capes", "Shows player capes", ModuleCategory.CLIENT);

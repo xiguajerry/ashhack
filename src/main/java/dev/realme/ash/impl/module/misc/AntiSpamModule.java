@@ -16,8 +16,8 @@ import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 
 public class AntiSpamModule
 extends ToggleModule {
-    Config<Boolean> unicodeConfig = new BooleanConfig("Unicode", "Prevents unicode characters from being rendered in chat", false);
-    private final Map<UUID, String> messages = new HashMap<UUID, String>();
+    final Config<Boolean> unicodeConfig = new BooleanConfig("Unicode", "Prevents unicode characters from being rendered in chat", false);
+    private final Map<UUID, String> messages = new HashMap<>();
 
     public AntiSpamModule() {
         super("AntiSpam", "Prevents players from spamming the game chat", ModuleCategory.MISCELLANEOUS);
@@ -32,7 +32,7 @@ extends ToggleModule {
         if (packet instanceof ChatMessageS2CPacket) {
             String lastMessage;
             ChatMessageS2CPacket packet2 = (ChatMessageS2CPacket) packet;
-            if (this.unicodeConfig.getValue().booleanValue()) {
+            if (this.unicodeConfig.getValue()) {
                 String msg = packet2.body().content();
                 Pattern pattern = Pattern.compile("[\\x00-\\x7F]", 2);
                 Matcher matcher = pattern.matcher(msg);

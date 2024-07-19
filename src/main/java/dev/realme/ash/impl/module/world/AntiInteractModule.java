@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class AntiInteractModule
 extends ToggleModule {
-    List<Block> blacklist = Arrays.asList(Blocks.ENDER_CHEST, Blocks.ANVIL);
+    final List<Block> blacklist = Arrays.asList(Blocks.ENDER_CHEST, Blocks.ANVIL);
 
     public AntiInteractModule() {
         super("AntiInteract", "Prevents player from interacting with certain objects", ModuleCategory.WORLD);
@@ -25,6 +25,7 @@ extends ToggleModule {
     @EventListener
     public void onInteractBlock(InteractBlockEvent event) {
         BlockPos pos = event.getHitResult().getBlockPos();
+        assert AntiInteractModule.mc.world != null;
         BlockState state = AntiInteractModule.mc.world.getBlockState(pos);
         if (this.blacklist.contains(state.getBlock())) {
             event.cancel();

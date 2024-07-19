@@ -206,15 +206,14 @@ public class HoleManager implements Globals {
 
       public Set call() throws Exception {
          Set holes1 = new HashSet();
-         Iterator var2 = this.blocks.iterator();
 
-         while(var2.hasNext()) {
-            BlockPos blockPos = (BlockPos)var2.next();
-            Hole hole = HoleManager.this.checkHole(blockPos);
-            if (hole != null) {
-               holes1.add(hole);
-            }
-         }
+          for (Object block : this.blocks) {
+              BlockPos blockPos = (BlockPos) block;
+              Hole hole = HoleManager.this.checkHole(blockPos);
+              if (hole != null) {
+                  holes1.add(hole);
+              }
+          }
 
          return holes1;
       }

@@ -22,15 +22,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 public class PlaceRenderModule extends ToggleModule {
-    Config<PlaceRenderModule.FadeMode> fadeMode = new EnumConfig("FadeMode", "", PlaceRenderModule.FadeMode.None, PlaceRenderModule.FadeMode.values());
-    Config<Color> color = new ColorConfig("Color", "", new Color(255, 255, 255), false, false);
-    Config<Boolean> fadeAlpha = new BooleanConfig("FadeAlpha", "", true);
-    Config<Integer> fadeTime = new NumberConfig("FadeTime", "", 0, 200, 5000);
-    Config<Boolean> box = new BooleanConfig("Box", "", true);
-    Config<Integer> boxAlpha = new NumberConfig("BoxAlpha", "", 0, 80, 255);
-    Config<Boolean> line = new BooleanConfig("lines", "", true);
-    Config<Integer> olAlpha = new NumberConfig("OLAlpha", "", 0, 255, 255);
-    public final HashMap<BlockPos, PlaceRenderModule.placePosition> PlaceMap = new HashMap();
+    final Config<PlaceRenderModule.FadeMode> fadeMode = new EnumConfig<>("FadeMode", "", PlaceRenderModule.FadeMode.None, PlaceRenderModule.FadeMode.values());
+    final Config<Color> color = new ColorConfig("Color", "", new Color(255, 255, 255), false, false);
+    final Config<Boolean> fadeAlpha = new BooleanConfig("FadeAlpha", "", true);
+    final Config<Integer> fadeTime = new NumberConfig<>("FadeTime", "", 0, 200, 5000);
+    final Config<Boolean> box = new BooleanConfig("Box", "", true);
+    final Config<Integer> boxAlpha = new NumberConfig<>("BoxAlpha", "", 0, 80, 255);
+    final Config<Boolean> line = new BooleanConfig("lines", "", true);
+    final Config<Integer> olAlpha = new NumberConfig<>("OLAlpha", "", 0, 255, 255);
+    public final HashMap<BlockPos, PlaceRenderModule.placePosition> PlaceMap = new HashMap<>();
 
     public PlaceRenderModule() {
         super("PlaceRender", "mio client.", ModuleCategory.RENDER);
@@ -70,11 +70,11 @@ public class PlaceRenderModule extends ToggleModule {
 
         Box bb = var10000;
         if (this.box.getValue()) {
-            RenderManager.renderBox(matrixStack, bb, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double) this.boxAlpha.getValue().intValue() * -alpha) : this.boxAlpha.getValue()));
+            RenderManager.renderBox(matrixStack, bb, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double) this.boxAlpha.getValue() * -alpha) : this.boxAlpha.getValue()));
         }
 
         if (this.line.getValue()) {
-            RenderManager.renderBoundingBox(matrixStack, bb, 1.0F, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double) this.olAlpha.getValue().intValue() * -alpha) : this.olAlpha.getValue()));
+            RenderManager.renderBoundingBox(matrixStack, bb, 1.0F, sb.getRgb(this.fadeAlpha.getValue() ? (int)Math.round((double) this.olAlpha.getValue() * -alpha) : this.olAlpha.getValue()));
         }
 
     }
@@ -90,7 +90,7 @@ public class PlaceRenderModule extends ToggleModule {
     }
 
     public static class placePosition {
-        public final FadeUtils firstFade = new FadeUtils(Modules.PLACE_RENDER.fadeTime.getValue().intValue());
+        public final FadeUtils firstFade = new FadeUtils(Modules.PLACE_RENDER.fadeTime.getValue());
         public final BlockPos pos;
 
         public placePosition(BlockPos placePos) {

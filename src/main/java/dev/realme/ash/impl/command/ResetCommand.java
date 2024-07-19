@@ -20,14 +20,13 @@ public class ResetCommand extends Command {
             ChatUtil.error("Invalid module!");
             return 0;
          } else {
-            Iterator var2 = module.getConfigs().iterator();
 
-            while(var2.hasNext()) {
-               Config config = (Config)var2.next();
-               if (!config.getName().equalsIgnoreCase("Enabled") && !config.getName().equalsIgnoreCase("Keybind") && !config.getName().equalsIgnoreCase("Hidden")) {
-                  config.resetValue();
-               }
-            }
+             for (Config<?> value : module.getConfigs()) {
+                 Config config = (Config) value;
+                 if (!config.getName().equalsIgnoreCase("Enabled") && !config.getName().equalsIgnoreCase("Keybind") && !config.getName().equalsIgnoreCase("Hidden")) {
+                     config.resetValue();
+                 }
+             }
 
             ChatUtil.clientSendMessage("§7" + module.getName() + "§f settings were reset to default values");
             return 1;

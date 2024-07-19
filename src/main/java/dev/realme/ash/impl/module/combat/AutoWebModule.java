@@ -31,25 +31,25 @@ import net.minecraft.util.math.Vec3d;
 
 public class AutoWebModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 60.0f, 500.0f);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
-    Config<Integer> predictTicks = new NumberConfig<Integer>("PredictTicks", "", 0, 8, 20);
-    Config<Integer> multiPlace = new NumberConfig<Integer>("MultiPlace", "", 0, 1, 5);
-    Config<Integer> surCheck = new NumberConfig<Integer>("SurCheck", "", 0, 3, 4);
-    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 8.0f);
-    Config<Boolean> face = new BooleanConfig("Face", "", true);
-    Config<Boolean> feet = new BooleanConfig("Feet", "", true);
-    Config<Boolean> down = new BooleanConfig("Down", "", true);
-    Config<Boolean> extend = new BooleanConfig("Extend", "", false);
-    Config<Boolean> checkAutoCrystal = new BooleanConfig("CheckAutoCrystal", "", false);
-    Config<Boolean> sendPacket = new BooleanConfig("SendPacket", "", false);
-    Config<Boolean> onlyPlaceOne = new BooleanConfig("OnlyPlaceOne", "", false);
-    Config<Boolean> noAnchor = new BooleanConfig("NoAnchor", "", false);
-    Config<Boolean> swing = new BooleanConfig("Swing", "", false);
-    Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
-    Config<Float> yawStep = new NumberConfig<Float>("Step", "", 0.0f, 0.1f, 1.0f);
-    Config<Float> fov = new NumberConfig<Float>("Fov", "", 0.0f, 10.0f, 30.0f);
+    final Config<Float> delay = new NumberConfig<>("Delay", "", 0.0f, 60.0f, 500.0f);
+    final Config<SwapMode> swapMode = new EnumConfig<>("SwapMode", "", SwapMode.SILENT, SwapMode.values());
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
+    final Config<Integer> predictTicks = new NumberConfig<>("PredictTicks", "", 0, 8, 20);
+    final Config<Integer> multiPlace = new NumberConfig<>("MultiPlace", "", 0, 1, 5);
+    final Config<Integer> surCheck = new NumberConfig<>("SurCheck", "", 0, 3, 4);
+    final Config<Float> range = new NumberConfig<>("Range", "", 0.0f, 5.0f, 8.0f);
+    final Config<Boolean> face = new BooleanConfig("Face", "", true);
+    final Config<Boolean> feet = new BooleanConfig("Feet", "", true);
+    final Config<Boolean> down = new BooleanConfig("Down", "", true);
+    final Config<Boolean> extend = new BooleanConfig("Extend", "", false);
+    final Config<Boolean> checkAutoCrystal = new BooleanConfig("CheckAutoCrystal", "", false);
+    final Config<Boolean> sendPacket = new BooleanConfig("SendPacket", "", false);
+    final Config<Boolean> onlyPlaceOne = new BooleanConfig("OnlyPlaceOne", "", false);
+    final Config<Boolean> noAnchor = new BooleanConfig("NoAnchor", "", false);
+    final Config<Boolean> swing = new BooleanConfig("Swing", "", false);
+    final Config<Boolean> rotate = new BooleanConfig("Rotate", "", true);
+    final Config<Float> yawStep = new NumberConfig<>("Step", "", 0.0f, 0.1f, 1.0f);
+    final Config<Float> fov = new NumberConfig<>("Fov", "", 0.0f, 10.0f, 30.0f);
     private final Timer delayTimer = new CacheTimer();
     int progress = 0;
     PlayerEntity target;
@@ -80,7 +80,7 @@ extends RotationModule {
     @EventListener(priority=98)
     public void onRotate(RotateEvent event) {
         if (this.directionVec != null) {
-            float[] newAngle = this.injectStep(EntityUtil.getLegitRotations(this.directionVec), this.yawStep.getValue().floatValue());
+            float[] newAngle = this.injectStep(EntityUtil.getLegitRotations(this.directionVec), this.yawStep.getValue());
             this.lastYaw = newAngle[0];
             this.lastPitch = newAngle[1];
             event.setYaw(this.lastYaw);
@@ -97,7 +97,7 @@ extends RotationModule {
             return;
         }
         this.progress = 0;
-        if (this.noAnchor.getValue().booleanValue() && Modules.AUTO_ANCHOR.currentPos != null) {
+        if (this.noAnchor.getValue() && Modules.AUTO_ANCHOR.currentPos != null) {
             this.target = null;
             return;
         }
@@ -123,15 +123,15 @@ extends RotationModule {
             this.target = null;
             return;
         }
-        if (this.pauseEat.getValue().booleanValue() && AutoWebModule.mc.player.isUsingItem()) {
+        if (this.pauseEat.getValue() && AutoWebModule.mc.player.isUsingItem()) {
             return;
         }
-        this.target = EntityUtil.getTarget(this.range.getValue().floatValue());
+        this.target = EntityUtil.getTarget(this.range.getValue());
         if (this.target == null) {
             return;
         }
         Vec3d vec3d = playerPos = this.predictTicks.getValue() > 0 ? EntityUtil.getEntityPosVec(this.target, this.predictTicks.getValue()) : this.target.getPos();
-        if (this.feet.getValue().booleanValue() && this.surCheck(this.target)) {
+        if (this.feet.getValue() && this.surCheck(this.target)) {
             this.placeWeb(new BlockPosX(playerPos.getX(), playerPos.getY(), playerPos.getZ()));
             if (this.canExtend() || !PlayerUtil.isInWeb(this.target)) {
                 this.placeWeb(new BlockPosX(playerPos.getX() + 0.3, playerPos.getY(), playerPos.getZ() + 0.3));
@@ -140,7 +140,7 @@ extends RotationModule {
                 this.placeWeb(new BlockPosX(playerPos.getX() + 0.3, playerPos.getY(), playerPos.getZ() - 0.3));
             }
         }
-        if (this.down.getValue().booleanValue()) {
+        if (this.down.getValue()) {
             this.placeWeb(new BlockPosX(playerPos.getX(), playerPos.getY() - 0.8, playerPos.getZ()));
             if (this.canExtend() || !PlayerUtil.isInWeb(this.target)) {
                 this.placeWeb(new BlockPosX(playerPos.getX() + 0.3, playerPos.getY() - 0.8, playerPos.getZ() + 0.3));
@@ -149,7 +149,7 @@ extends RotationModule {
                 this.placeWeb(new BlockPosX(playerPos.getX() + 0.3, playerPos.getY() - 0.8, playerPos.getZ() - 0.3));
             }
         }
-        if (this.face.getValue().booleanValue() && this.surCheck(this.target)) {
+        if (this.face.getValue() && this.surCheck(this.target)) {
             this.placeWeb(new BlockPosX(playerPos.getX(), playerPos.getY() + 1.2, playerPos.getZ()));
             if (this.canExtend() || !PlayerUtil.isInWeb(this.target)) {
                 this.placeWeb(new BlockPosX(playerPos.getX() + 0.3, playerPos.getY() + 1.2, playerPos.getZ() + 0.3));
@@ -161,7 +161,7 @@ extends RotationModule {
     }
 
     private boolean canExtend() {
-        if (!this.extend.getValue().booleanValue()) {
+        if (!this.extend.getValue()) {
             return false;
         }
         return Modules.AUTO_CRYSTAL.placePos == null || !this.checkAutoCrystal.getValue();
@@ -190,7 +190,7 @@ extends RotationModule {
         if (direction == null) {
             return false;
         }
-        if (BlockUtil.getBlock(pos.down()) == Blocks.COBWEB && this.onlyPlaceOne.getValue().booleanValue() && Modules.AUTO_CRYSTAL.placePos != null) {
+        if (BlockUtil.getBlock(pos.down()) == Blocks.COBWEB && this.onlyPlaceOne.getValue() && Modules.AUTO_CRYSTAL.placePos != null) {
             return false;
         }
         return BlockUtil.canReplace(pos);
@@ -235,7 +235,7 @@ extends RotationModule {
                 InventoryUtil.doPickSwap(this.slot);
             }
         }
-        if (this.rotate.getValue().booleanValue()) {
+        if (this.rotate.getValue()) {
             Direction side = Managers.INTERACT.getPlaceDirection(pos);
             if (side == null) {
                 return;
@@ -262,12 +262,12 @@ extends RotationModule {
     }
 
     private void faceVector(Vec3d directionVec) {
-        if (!this.rotate.getValue().booleanValue()) {
+        if (!this.rotate.getValue()) {
             return;
         }
         this.directionVec = directionVec;
         float[] angle = EntityUtil.getLegitRotations(directionVec);
-        if (Math.abs(MathHelper.wrapDegrees(angle[0] - this.lastYaw)) < this.fov.getValue().floatValue() && Math.abs(MathHelper.wrapDegrees(angle[1] - this.lastPitch)) < this.fov.getValue().floatValue()) {
+        if (Math.abs(MathHelper.wrapDegrees(angle[0] - this.lastYaw)) < this.fov.getValue() && Math.abs(MathHelper.wrapDegrees(angle[1] - this.lastPitch)) < this.fov.getValue()) {
             this.setRotation(directionVec, this.sendPacket.getValue());
         }
     }

@@ -19,12 +19,12 @@ import net.minecraft.util.math.Vec3d;
 
 public class ElytraFlyModule
 extends ToggleModule {
-    Config<Float> speed = new NumberConfig<Float>("Speed", "", 0.0f, 1.0f, 3.0f);
-    Config<Float> downSpeed = new NumberConfig<Float>("DownSpeed", "", 0.0f, 1.0f, 2.0f);
-    Config<Float> upPitch = new NumberConfig<Float>("UpPitch", "", 0.0f, 85.0f, 90.0f);
-    Config<Float> upFactor = new NumberConfig<Float>("UpFactor", "", 0.0f, 2.0f, 10.0f);
-    Config<Float> downFactor = new NumberConfig<Float>("DownFactor", "", 0.0f, 2.0f, 10.0f);
-    Config<Double> timeout = new NumberConfig<Double>("Timeout", "", 0.1, 0.5, 2.0);
+    final Config<Float> speed = new NumberConfig<>("Speed", "", 0.0f, 1.0f, 3.0f);
+    final Config<Float> downSpeed = new NumberConfig<>("DownSpeed", "", 0.0f, 1.0f, 2.0f);
+    final Config<Float> upPitch = new NumberConfig<>("UpPitch", "", 0.0f, 85.0f, 90.0f);
+    final Config<Float> upFactor = new NumberConfig<>("UpFactor", "", 0.0f, 2.0f, 10.0f);
+    final Config<Float> downFactor = new NumberConfig<>("DownFactor", "", 0.0f, 2.0f, 10.0f);
+    final Config<Double> timeout = new NumberConfig<>("Timeout", "", 0.1, 0.5, 2.0);
     private boolean hasElytra = false;
     private final Timer instantFlyTimer = new CacheTimer();
 
@@ -89,7 +89,7 @@ extends ToggleModule {
     }
 
     public final Vec3d getRotationVec(float tickDelta) {
-        return this.getRotationVector(-this.upPitch.getValue().floatValue(), ElytraFlyModule.mc.player.getYaw(tickDelta));
+        return this.getRotationVector(-this.upPitch.getValue(), ElytraFlyModule.mc.player.getYaw(tickDelta));
     }
 
     @EventListener
@@ -102,18 +102,18 @@ extends ToggleModule {
         double lookDist = Math.sqrt(lookVec.x * lookVec.x + lookVec.z * lookVec.z);
         double motionDist = Math.sqrt(this.getX() * this.getX() + this.getZ() * this.getZ());
         if (ElytraFlyModule.mc.options.sneakKey.isPressed()) {
-            this.setY(-this.downSpeed.getValue().floatValue());
+            this.setY(-this.downSpeed.getValue());
         } else if (!ElytraFlyModule.mc.player.input.jumping) {
-            this.setY(-3.0E-14 * (double)this.downFactor.getValue().floatValue());
+            this.setY(-3.0E-14 * (double) this.downFactor.getValue());
         }
         if (ElytraFlyModule.mc.player.input.jumping) {
-            if (motionDist > (double)(this.upFactor.getValue().floatValue() / 10.0f)) {
+            if (motionDist > (double)(this.upFactor.getValue() / 10.0f)) {
                 double rawUpSpeed = motionDist * 0.01325;
                 this.setY(this.getY() + rawUpSpeed * 3.2);
                 this.setX(this.getX() - lookVec.x * rawUpSpeed / lookDist);
                 this.setZ(this.getZ() - lookVec.z * rawUpSpeed / lookDist);
             } else {
-                double[] dir = MovementUtil.directionSpeed(this.speed.getValue().floatValue());
+                double[] dir = MovementUtil.directionSpeed(this.speed.getValue());
                 this.setX(dir[0]);
                 this.setZ(dir[1]);
             }
@@ -123,7 +123,7 @@ extends ToggleModule {
             this.setZ(this.getZ() + (lookVec.z / lookDist * motionDist - this.getZ()) * 0.1);
         }
         if (!ElytraFlyModule.mc.player.input.jumping) {
-            double[] dir = MovementUtil.directionSpeed(this.speed.getValue().floatValue());
+            double[] dir = MovementUtil.directionSpeed(this.speed.getValue());
             this.setX(dir[0]);
             this.setZ(dir[1]);
         }

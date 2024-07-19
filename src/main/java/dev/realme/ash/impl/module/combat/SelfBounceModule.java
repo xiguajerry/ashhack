@@ -15,9 +15,9 @@ import net.minecraft.util.math.Box;
 
 public class SelfBounceModule
 extends ToggleModule {
-    Config<Boolean> smart = new BooleanConfig("Smart", "", false);
-    Config<Integer> offset = new NumberConfig<Integer>("Offset", "", -15, 1, 15);
-    Config<Boolean> pauseWeb = new BooleanConfig("PauseWeb", "", true);
+    final Config<Boolean> smart = new BooleanConfig("Smart", "", false);
+    final Config<Integer> offset = new NumberConfig<>("Offset", "", -15, 1, 15);
+    final Config<Boolean> pauseWeb = new BooleanConfig("PauseWeb", "", true);
 
     public SelfBounceModule() {
         super("SelfBounce", "Rubberband.", ModuleCategory.COMBAT);
@@ -32,7 +32,7 @@ extends ToggleModule {
             this.disable();
             return;
         }
-        if (PlayerUtil.isInWeb(SelfBounceModule.mc.player, !PlayerUtil.isInsideBlock(), true) && this.pauseWeb.getValue().booleanValue()) {
+        if (PlayerUtil.isInWeb(SelfBounceModule.mc.player, !PlayerUtil.isInsideBlock(), true) && this.pauseWeb.getValue()) {
             this.disable();
             return;
         }
@@ -48,8 +48,8 @@ extends ToggleModule {
     private double getOffsets() {
         assert (SelfBounceModule.mc.player != null);
         BlockPos selfPos = PlayerUtil.playerPos(SelfBounceModule.mc.player);
-        if (!this.smart.getValue().booleanValue()) {
-            return this.offset.getValue().intValue();
+        if (!this.smart.getValue()) {
+            return this.offset.getValue();
         }
         if (this.canTeleport(selfPos.up(), 1)) {
             return 1.0;

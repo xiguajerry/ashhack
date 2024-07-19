@@ -151,14 +151,12 @@ public class InventoryUtil implements Globals {
       for(int i = pick ? 9 : 0; i < 45; ++i) {
          ItemStack stack = mc.player.getInventory().getStack(i);
          if (stack.getItem() == Items.SPLASH_POTION) {
-            Iterator var4 = PotionUtil.getPotion(stack).getEffects().iterator();
 
-            while(var4.hasNext()) {
-               StatusEffectInstance effect = (StatusEffectInstance)var4.next();
-               if (effect.getEffectType() == statusEffect) {
-                  return i < 9 ? i + 36 : i;
-               }
-            }
+             for (StatusEffectInstance effect : PotionUtil.getPotion(stack).getEffects()) {
+                 if (effect.getEffectType() == statusEffect) {
+                     return i < 9 ? i + 36 : i;
+                 }
+             }
          }
       }
 
@@ -212,16 +210,14 @@ public class InventoryUtil implements Globals {
             } while(!(((ItemStack)entry.getValue()).getItem() instanceof SplashPotionItem));
 
             List effects = new ArrayList(PotionUtil.getPotionEffects((ItemStack)entry.getValue()));
-            Iterator var5 = effects.iterator();
 
-            while(var5.hasNext()) {
-               Object effect = var5.next();
-               StatusEffectInstance potionEffect = (StatusEffectInstance)effect;
-               if (potionEffect.getEffectType() == potion) {
-                  count += ((ItemStack)entry.getValue()).getCount();
-                  break;
-               }
-            }
+             for (Object effect : effects) {
+                 StatusEffectInstance potionEffect = (StatusEffectInstance) effect;
+                 if (potionEffect.getEffectType() == potion) {
+                     count += ((ItemStack) entry.getValue()).getCount();
+                     break;
+                 }
+             }
          }
       }
    }

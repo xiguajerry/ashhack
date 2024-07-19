@@ -24,20 +24,20 @@ public final class AccountEncryptionScreen extends Screen {
 
    protected void init() {
       this.clearChildren();
-      this.passwordTextField = new TextFieldWidget(this.client.textRenderer, 145, 20, Text.empty());
+       assert this.client != null;
+       this.passwordTextField = new TextFieldWidget(this.client.textRenderer, 145, 20, Text.empty());
       this.passwordTextField.setPlaceholder(Text.of("Enter Password..."));
       this.passwordTextField.setPosition(this.width / 2 - this.passwordTextField.getWidth() / 2, this.height / 2 - 60);
       this.addDrawableChild(this.passwordTextField);
       this.addDrawableChild(ButtonWidget.builder(Text.of("Encrypt"), (action) -> {
       }).dimensions(this.width / 2 - 72, this.passwordTextField.getY() + 90, 145, 20).tooltip(Tooltip.of(Text.of("This will require you to enter a password every time you enter the account manager the first time!"))).build());
-      this.addDrawableChild(ButtonWidget.builder(Text.of("Go Back"), (action) -> {
-         this.client.setScreen(this.parent);
-      }).dimensions(this.width / 2 - 72, this.passwordTextField.getY() + 112, 145, 20).build());
+      this.addDrawableChild(ButtonWidget.builder(Text.of("Go Back"), (action) -> this.client.setScreen(this.parent)).dimensions(this.width / 2 - 72, this.passwordTextField.getY() + 112, 145, 20).build());
    }
 
    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
       super.render(context, mouseX, mouseY, delta);
-      TextRenderer var10001 = this.client.textRenderer;
+       assert this.client != null;
+       TextRenderer var10001 = this.client.textRenderer;
       int var10002 = Managers.ACCOUNT.getAccounts().size();
       context.drawCenteredTextWithShadow(var10001, "Encrypt Accounts (" + var10002 + ")", this.width / 2, this.height / 2 - 125, -1);
       var10001 = this.client.textRenderer;

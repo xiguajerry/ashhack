@@ -15,7 +15,7 @@ import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 
 public class NoRotateModule
 extends ToggleModule {
-    Config<Boolean> positionAdjustConfig = new BooleanConfig("PositionAdjust", "Adjusts outgoing rotation packets", false);
+    final Config<Boolean> positionAdjustConfig = new BooleanConfig("PositionAdjust", "Adjusts outgoing rotation packets", false);
     private float yaw;
     private float pitch;
     private boolean cancelRotate;
@@ -47,7 +47,7 @@ extends ToggleModule {
         Packet<?> packet = event.getPacket();
         if (packet instanceof PlayerMoveC2SPacket.Full packet2) {
             if (this.cancelRotate) {
-                if (this.positionAdjustConfig.getValue().booleanValue()) {
+                if (this.positionAdjustConfig.getValue()) {
                     ((AccessorPlayerMoveC2SPacket) packet2).hookSetYaw(this.yaw);
                     ((AccessorPlayerMoveC2SPacket) packet2).hookSetPitch(this.pitch);
                 }

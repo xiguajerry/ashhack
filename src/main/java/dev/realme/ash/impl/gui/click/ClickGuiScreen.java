@@ -35,12 +35,11 @@ public class ClickGuiScreen extends Screen implements Globals {
       ModuleCategory[] var3 = ModuleCategory.values();
       int var4 = var3.length;
 
-      for(int var5 = 0; var5 < var4; ++var5) {
-         ModuleCategory category = var3[var5];
-         CategoryFrame frame = new CategoryFrame(category, x, 15.0F);
-         this.frames.add(frame);
-         x += frame.getWidth() + 2.0F;
-      }
+       for (ModuleCategory category : var3) {
+           CategoryFrame frame = new CategoryFrame(category, x, 15.0F);
+           this.frames.add(frame);
+           x += frame.getWidth() + 2.0F;
+       }
 
    }
 
@@ -73,23 +72,22 @@ public class ClickGuiScreen extends Screen implements Globals {
          } while(scale == 1.0F);
 
          frame.setDimensions(frame.getWidth() * scale, frame.getHeight() * scale);
-         Iterator var8 = frame.getModuleButtons().iterator();
 
-         while(var8.hasNext()) {
-            ModuleButton button = (ModuleButton)var8.next();
-            button.setDimensions(button.getWidth() * scale, button.getHeight() * scale);
+          for (Object o : frame.getModuleButtons()) {
+              ModuleButton button = (ModuleButton) o;
+              button.setDimensions(button.getWidth() * scale, button.getHeight() * scale);
 
-            ConfigButton component;
-            for(Iterator var10 = button.getConfigButtons().iterator(); var10.hasNext(); component.setDimensions(component.getWidth() * scale, component.getHeight() * scale)) {
-               component = (ConfigButton)var10.next();
-               if (component instanceof BindButton bindButton) {
-                  if (bindButton.isListening() && !button.isOpen()) {
-                     bindButton.setListening(false);
-                     this.setCloseOnEscape(true);
+              ConfigButton component;
+              for (Iterator var10 = button.getConfigButtons().iterator(); var10.hasNext(); component.setDimensions(component.getWidth() * scale, component.getHeight() * scale)) {
+                  component = (ConfigButton) var10.next();
+                  if (component instanceof BindButton bindButton) {
+                      if (bindButton.isListening() && !button.isOpen()) {
+                          bindButton.setListening(false);
+                          this.setCloseOnEscape(true);
+                      }
                   }
-               }
-            }
-         }
+              }
+          }
       }
    }
 
@@ -102,12 +100,10 @@ public class ClickGuiScreen extends Screen implements Globals {
          MOUSE_RIGHT_HOLD = true;
       }
 
-      Iterator var6 = this.frames.iterator();
-
-      while(var6.hasNext()) {
-         CategoryFrame frame = (CategoryFrame)var6.next();
-         frame.mouseClicked(mouseX, mouseY, mouseButton);
-      }
+       for (Object o : this.frames) {
+           CategoryFrame frame = (CategoryFrame) o;
+           frame.mouseClicked(mouseX, mouseY, mouseButton);
+       }
 
       return super.mouseClicked(mouseX, mouseY, mouseButton);
    }
@@ -119,12 +115,10 @@ public class ClickGuiScreen extends Screen implements Globals {
          MOUSE_RIGHT_HOLD = false;
       }
 
-      Iterator var6 = this.frames.iterator();
-
-      while(var6.hasNext()) {
-         CategoryFrame frame = (CategoryFrame)var6.next();
-         frame.mouseReleased(mouseX, mouseY, button);
-      }
+       for (Object o : this.frames) {
+           CategoryFrame frame = (CategoryFrame) o;
+           frame.mouseReleased(mouseX, mouseY, button);
+       }
 
       return super.mouseReleased(mouseX, mouseY, button);
    }
@@ -141,12 +135,10 @@ public class ClickGuiScreen extends Screen implements Globals {
       if (keyCode == 82 && (modifiers & 2) != 0) {
       }
 
-      Iterator var4 = this.frames.iterator();
-
-      while(var4.hasNext()) {
-         CategoryFrame frame = (CategoryFrame)var4.next();
-         frame.keyPressed(keyCode, scanCode, modifiers);
-      }
+       for (Object o : this.frames) {
+           CategoryFrame frame = (CategoryFrame) o;
+           frame.keyPressed(keyCode, scanCode, modifiers);
+       }
 
       return super.keyPressed(keyCode, scanCode, modifiers);
    }

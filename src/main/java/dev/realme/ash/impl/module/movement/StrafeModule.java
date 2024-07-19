@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec2f;
 
 public class StrafeModule
 extends ToggleModule {
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The speed for alternative modes", 0.0f, 5.5f, 10.0f);
+    final Config<Float> speedConfig = new NumberConfig<>("Speed", "The speed for alternative modes", 0.0f, 5.5f, 10.0f);
 
     public StrafeModule() {
         super("Strafe", "Move ice", ModuleCategory.MOVEMENT);
@@ -36,7 +36,7 @@ extends ToggleModule {
             event.setY(StrafeModule.mc.player.getVelocity().y);
             event.setZ(0.0);
         }
-        Vec2f motion = this.handleStrafeMotion(this.speedConfig.getValue().floatValue() / 10.0f);
+        Vec2f motion = this.handleStrafeMotion(this.speedConfig.getValue() / 10.0f);
         event.setX(motion.x);
         event.setZ(motion.y);
     }

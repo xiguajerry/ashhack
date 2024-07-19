@@ -17,13 +17,13 @@ import dev.realme.ash.util.string.EnumFormatter;
 
 public class FlightModule
 extends ToggleModule {
-    Config<FlightMode> modeConfig = new EnumConfig("Mode", "The mode for vanilla flight", FlightMode.NORMAL, FlightMode.values());
-    Config<Float> speedConfig = new NumberConfig<Float>("Speed", "The horizontal flight speed", 0.1f, 2.5f, 10.0f);
-    Config<Float> vspeedConfig = new NumberConfig<Float>("VerticalSpeed", "The vertical flight speed", 0.1f, 1.0f, 5.0f);
-    Config<Boolean> antiKickConfig = new BooleanConfig("AntiKick", "Prevents vanilla flight detection", true);
-    Config<Boolean> accelerateConfig = new BooleanConfig("Accelerate", "Accelerate as you fly", false);
-    Config<Float> accelerateSpeedConfig = new NumberConfig<Float>("AccelerateSpeed", "Speed to accelerate as", 0.01f, 0.2f, 1.0f, () -> this.accelerateConfig.getValue());
-    Config<Float> maxSpeedConfig = new NumberConfig<Float>("MaxSpeed", "Max speed to acceleratee to", 1.0f, 5.0f, 10.0f, () -> this.accelerateConfig.getValue());
+    final Config<FlightMode> modeConfig = new EnumConfig<>("Mode", "The mode for vanilla flight", FlightMode.NORMAL, FlightMode.values());
+    final Config<Float> speedConfig = new NumberConfig<>("Speed", "The horizontal flight speed", 0.1f, 2.5f, 10.0f);
+    final Config<Float> vspeedConfig = new NumberConfig<>("VerticalSpeed", "The vertical flight speed", 0.1f, 1.0f, 5.0f);
+    final Config<Boolean> antiKickConfig = new BooleanConfig("AntiKick", "Prevents vanilla flight detection", true);
+    final Config<Boolean> accelerateConfig = new BooleanConfig("Accelerate", "Accelerate as you fly", false);
+    final Config<Float> accelerateSpeedConfig = new NumberConfig<>("AccelerateSpeed", "Speed to accelerate as", 0.01f, 0.2f, 1.0f, () -> this.accelerateConfig.getValue());
+    final Config<Float> maxSpeedConfig = new NumberConfig<>("MaxSpeed", "Max speed to acceleratee to", 1.0f, 5.0f, 10.0f, () -> this.accelerateConfig.getValue());
     private double speed;
     private final Timer antiKickTimer = new CacheTimer();
     private final Timer antiKick2Timer = new CacheTimer();
@@ -56,34 +56,34 @@ extends ToggleModule {
 
     @EventListener
     public void onPlayerTick(PlayerTickEvent event) {
-        if (this.accelerateConfig.getValue().booleanValue()) {
+        if (this.accelerateConfig.getValue()) {
             if (!MovementUtil.isInputtingMovement() || FlightModule.mc.player.horizontalCollision) {
                 this.speed = 0.0;
             }
-            this.speed += this.accelerateSpeedConfig.getValue().floatValue();
-            if (this.speed > (double)this.maxSpeedConfig.getValue().floatValue()) {
-                this.speed = this.maxSpeedConfig.getValue().floatValue();
+            this.speed += this.accelerateSpeedConfig.getValue();
+            if (this.speed > (double) this.maxSpeedConfig.getValue()) {
+                this.speed = this.maxSpeedConfig.getValue();
             }
         } else {
-            this.speed = this.speedConfig.getValue().floatValue();
+            this.speed = this.speedConfig.getValue();
         }
         if (this.modeConfig.getValue().equals(FlightMode.VANILLA)) {
             FlightModule.mc.player.getAbilities().setFlySpeed((float)(this.speed * (double)0.05f));
         } else {
             FlightModule.mc.player.getAbilities().setFlySpeed(0.05f);
         }
-        if (this.antiKickTimer.passed(3900) && this.antiKickConfig.getValue().booleanValue()) {
+        if (this.antiKickTimer.passed(3900) && this.antiKickConfig.getValue()) {
             MovementUtil.setMotionY(-0.04);
             this.antiKickTimer.reset();
-        } else if (this.antiKick2Timer.passed(4000) && this.antiKickConfig.getValue().booleanValue()) {
+        } else if (this.antiKick2Timer.passed(4000) && this.antiKickConfig.getValue()) {
             MovementUtil.setMotionY(0.04);
             this.antiKick2Timer.reset();
         } else if (this.modeConfig.getValue() == FlightMode.NORMAL) {
             MovementUtil.setMotionY(0.0);
             if (FlightModule.mc.options.jumpKey.isPressed()) {
-                MovementUtil.setMotionY(this.vspeedConfig.getValue().floatValue());
+                MovementUtil.setMotionY(this.vspeedConfig.getValue());
             } else if (FlightModule.mc.options.sneakKey.isPressed()) {
-                MovementUtil.setMotionY(-this.vspeedConfig.getValue().floatValue());
+                MovementUtil.setMotionY(-this.vspeedConfig.getValue());
             }
         }
         if (this.modeConfig.getValue() == FlightMode.NORMAL) {

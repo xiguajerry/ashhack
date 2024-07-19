@@ -3,6 +3,8 @@ package dev.realme.ash.util.math.path;
 import dev.realme.ash.util.Globals;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
+
 import net.minecraft.block.CactusBlock;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.EnderChestBlock;
@@ -44,11 +46,11 @@ public class AStarCustomPathFinder implements Globals {
    }
 
    private static boolean isBlockSolid(BlockPos block) {
-      return mc.world.getBlockState(block).shapeCache != null && mc.world.getBlockState(block).shapeCache.isFullCube || mc.world.getBlockState(block).getBlock() instanceof SlabBlock || mc.world.getBlockState(block).getBlock() instanceof StairsBlock || mc.world.getBlockState(block).getBlock() instanceof CactusBlock || mc.world.getBlockState(block).getBlock() instanceof ChestBlock || mc.world.getBlockState(block).getBlock() instanceof EnderChestBlock || mc.world.getBlockState(block).getBlock() instanceof SkullBlock || mc.world.getBlockState(block).getBlock() instanceof PaneBlock || mc.world.getBlockState(block).getBlock() instanceof FenceBlock || mc.world.getBlockState(block).getBlock() instanceof WallBlock || mc.world.getBlockState(block).getBlock() instanceof StainedGlassBlock || mc.world.getBlockState(block).getBlock() instanceof PistonBlock || mc.world.getBlockState(block).getBlock() instanceof PistonExtensionBlock || mc.world.getBlockState(block).getBlock() instanceof PistonHeadBlock || mc.world.getBlockState(block).getBlock() instanceof StainedGlassBlock || mc.world.getBlockState(block).getBlock() instanceof TrapdoorBlock;
+      return Objects.requireNonNull(mc.world).getBlockState(block).shapeCache != null && Objects.requireNonNull(mc.world.getBlockState(block).shapeCache).isFullCube || mc.world.getBlockState(block).getBlock() instanceof SlabBlock || mc.world.getBlockState(block).getBlock() instanceof StairsBlock || mc.world.getBlockState(block).getBlock() instanceof CactusBlock || mc.world.getBlockState(block).getBlock() instanceof ChestBlock || mc.world.getBlockState(block).getBlock() instanceof EnderChestBlock || mc.world.getBlockState(block).getBlock() instanceof SkullBlock || mc.world.getBlockState(block).getBlock() instanceof PaneBlock || mc.world.getBlockState(block).getBlock() instanceof FenceBlock || mc.world.getBlockState(block).getBlock() instanceof WallBlock || mc.world.getBlockState(block).getBlock() instanceof StainedGlassBlock || mc.world.getBlockState(block).getBlock() instanceof PistonBlock || mc.world.getBlockState(block).getBlock() instanceof PistonExtensionBlock || mc.world.getBlockState(block).getBlock() instanceof PistonHeadBlock || mc.world.getBlockState(block).getBlock() instanceof StainedGlassBlock || mc.world.getBlockState(block).getBlock() instanceof TrapdoorBlock;
    }
 
    private static boolean isSafeToWalkOn(BlockPos block) {
-      return !(mc.world.getBlockState(block).getBlock() instanceof FenceBlock) && !(mc.world.getBlockState(block).getBlock() instanceof WallBlock);
+      return !(Objects.requireNonNull(mc.world).getBlockState(block).getBlock() instanceof FenceBlock) && !(mc.world.getBlockState(block).getBlock() instanceof WallBlock);
    }
 
    public ArrayList getPath() {
@@ -73,39 +75,37 @@ public class AStarCustomPathFinder implements Globals {
             break;
          }
 
-         Iterator var6 = (new ArrayList(this.hubsToWork)).iterator();
+          for (Object object : new ArrayList(this.hubsToWork)) {
+              Hub o = (Hub) object;
+              ++j;
+              if (j > depth) {
+                  break;
+              }
 
-         while(var6.hasNext()) {
-            Hub o = (Hub)var6.next();
-            ++j;
-            if (j > depth) {
-               break;
-            }
+              this.hubsToWork.remove(o);
+              this.hubs.add(o);
+              Vec3[] var8 = flatCardinalDirections;
+              int var9 = var8.length;
 
-            this.hubsToWork.remove(o);
-            this.hubs.add(o);
-            Vec3[] var8 = flatCardinalDirections;
-            int var9 = var8.length;
+              Vec3 loc2;
+              for (Vec3 vec3 : var8) {
+                  loc2 = vec3;
+                  Vec3 loc = o.getLoc().add(loc2).floor();
+                  if (checkPositionValidity(loc, false) && this.addHub(o, loc, 0.0)) {
+                      break label54;
+                  }
+              }
 
-            Vec3 loc2;
-            for(int var10 = 0; var10 < var9; ++var10) {
-               loc2 = var8[var10];
-               Vec3 loc = o.getLoc().add(loc2).floor();
-               if (checkPositionValidity(loc, false) && this.addHub(o, loc, 0.0)) {
+              Vec3 loc1 = o.getLoc().addVector(0.0, 1.0, 0.0).floor();
+              if (checkPositionValidity(loc1, false) && this.addHub(o, loc1, 0.0)) {
                   break label54;
-               }
-            }
+              }
 
-            Vec3 loc1 = o.getLoc().addVector(0.0, 1.0, 0.0).floor();
-            if (checkPositionValidity(loc1, false) && this.addHub(o, loc1, 0.0)) {
-               break label54;
-            }
-
-            loc2 = o.getLoc().addVector(0.0, -1.0, 0.0).floor();
-            if (checkPositionValidity(loc2, false) && this.addHub(o, loc2, 0.0)) {
-               break label54;
-            }
-         }
+              loc2 = o.getLoc().addVector(0.0, -1.0, 0.0).floor();
+              if (checkPositionValidity(loc2, false) && this.addHub(o, loc2, 0.0)) {
+                  break label54;
+              }
+          }
       }
 
       this.path = ((Hub)this.hubs.get(0)).getPath();
@@ -147,16 +147,16 @@ public class AStarCustomPathFinder implements Globals {
          double minDistanceSquared = 9.0;
          if (loc.getX() == this.endVec3.getX() && loc.getY() == this.endVec3.getY() && loc.getZ() == this.endVec3.getZ() || loc.squareDistanceTo(this.endVec3) <= minDistanceSquared) {
             this.path.clear();
-            this.path = parent.getPath();
+            this.path = Objects.requireNonNull(parent).getPath();
             this.path.add(loc);
             return true;
          }
 
-         ArrayList path = new ArrayList(parent.getPath());
+         ArrayList path = new ArrayList(Objects.requireNonNull(parent).getPath());
          path.add(loc);
          this.hubsToWork.add(new Hub(loc, parent, path, loc.squareDistanceTo(this.endVec3), cost, totalCost));
       } else if (existingHub.getCost() > cost) {
-         ArrayList path = new ArrayList(parent.getPath());
+         ArrayList path = new ArrayList(Objects.requireNonNull(parent).getPath());
          path.add(loc);
          existingHub.setLoc(loc);
          existingHub.setParent(parent);

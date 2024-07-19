@@ -392,7 +392,7 @@ public final class MSAAuthenticator {
    }
 
    private Map<String, String> parseQueryString(String query) {
-      LinkedHashMap<String, String> parameterMap = new LinkedHashMap<String, String>();
+      LinkedHashMap<String, String> parameterMap = new LinkedHashMap<>();
       for (String part : query.split("&")) {
          String[] kv = part.split("=");
          parameterMap.put(kv[0], kv.length == 1 ? null : kv[1]);

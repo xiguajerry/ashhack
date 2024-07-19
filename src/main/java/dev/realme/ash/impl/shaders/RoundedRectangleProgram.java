@@ -9,10 +9,10 @@ import net.minecraft.util.math.Vec2f;
 import org.lwjgl.opengl.GL20;
 
 public final class RoundedRectangleProgram extends Program implements Globals {
-   Uniform radius = new Uniform("radius");
-   Uniform softness = new Uniform("softness");
-   Uniform size = new Uniform("size");
-   Uniform color = new Uniform("color");
+   final Uniform radius = new Uniform("radius");
+   final Uniform softness = new Uniform("softness");
+   final Uniform size = new Uniform("size");
+   final Uniform color = new Uniform("color");
 
    public RoundedRectangleProgram() {
       super(new Shader("roundedrect.frag", 35632));

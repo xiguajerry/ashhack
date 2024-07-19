@@ -36,9 +36,9 @@ import org.joml.Vector3f;
 
 public class PopChamsModule
 extends ToggleModule {
-    Config<Color> colorConfig = new ColorConfig("Color", "", new Color(255, 255, 255), true, false);
-    Config<Integer> aSpeed = new NumberConfig<Integer>("ASpeed", "", 1, 5, 100);
-    private final CopyOnWriteArrayList<Person> popList = new CopyOnWriteArrayList();
+    final Config<Color> colorConfig = new ColorConfig("Color", "", new Color(255, 255, 255), true, false);
+    final Config<Integer> aSpeed = new NumberConfig<>("ASpeed", "", 1, 5, 100);
+    private final CopyOnWriteArrayList<Person> popList = new CopyOnWriteArrayList<>();
 
     public PopChamsModule() {
         super("PopChams", "Renders shaders.", ModuleCategory.RENDER);
@@ -144,7 +144,7 @@ extends ToggleModule {
 
         public Person(PlayerEntity player) {
             this.player = player;
-            this.modelPlayer = new PlayerEntityModel(new EntityRendererFactory.Context(Globals.mc.getEntityRenderDispatcher(), Globals.mc.getItemRenderer(), Globals.mc.getBlockRenderManager(), Globals.mc.getEntityRenderDispatcher().getHeldItemRenderer(), Globals.mc.getResourceManager(), Globals.mc.getEntityModelLoader(), Globals.mc.textRenderer).getPart(EntityModelLayers.PLAYER), false);
+            this.modelPlayer = new PlayerEntityModel<>(new EntityRendererFactory.Context(Globals.mc.getEntityRenderDispatcher(), Globals.mc.getItemRenderer(), Globals.mc.getBlockRenderManager(), Globals.mc.getEntityRenderDispatcher().getHeldItemRenderer(), Globals.mc.getResourceManager(), Globals.mc.getEntityModelLoader(), Globals.mc.textRenderer).getPart(EntityModelLayers.PLAYER), false);
             this.modelPlayer.getHead().scale(new Vector3f(-0.3f, -0.3f, -0.3f));
             this.alpha = PopChamsModule.this.colorConfig.getValue().getAlpha();
         }
@@ -156,7 +156,7 @@ extends ToggleModule {
                 this.player.remove(Entity.RemovalReason.KILLED);
                 this.player.onRemoved();
             } else {
-                this.alpha = (int)(PopChamsModule.animate(this.alpha, 0.0, PopChamsModule.this.aSpeed.getValue().intValue()) - 0.2);
+                this.alpha = (int)(PopChamsModule.animate(this.alpha, 0.0, PopChamsModule.this.aSpeed.getValue()) - 0.2);
             }
         }
 

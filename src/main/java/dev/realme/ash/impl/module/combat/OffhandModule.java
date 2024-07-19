@@ -26,17 +26,17 @@ import net.minecraft.screen.slot.SlotActionType;
 
 public class OffhandModule
 extends ToggleModule {
-    Config<OffHandItem> mode = new EnumConfig("Mode", "", OffHandItem.Totem, OffHandItem.values());
-    Config<Boolean> removeApple = new BooleanConfig("RemoveApple", "", false);
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 100.0f, 2000.0f, NumberDisplay.DEFAULT);
-    Config<Integer> appleSlot = new NumberConfig<Integer>("AppleSlot", "", 1, 5, 9);
-    Config<Boolean> pickaxeSwap = new BooleanConfig("PickaxeSwap", "", false);
-    Config<Boolean> swapBack = new BooleanConfig("SwapBack", "", true);
-    Config<Boolean> cancelPacket = new BooleanConfig("CancelPacket", "", false);
-    Config<Boolean> mainHandTotem = new BooleanConfig("MainHandTotem", "", false);
-    Config<Float> health = new NumberConfig<Float>("Health", "", 0.0f, 15.0f, 36.0f);
-    Config<Integer> slot = new NumberConfig<Integer>("TotemSlot", "", 1, 1, 9);
-    Config<DisplayMode> displayMode = new EnumConfig("DisplayMode", "", DisplayMode.Totem, DisplayMode.values());
+    final Config<OffHandItem> mode = new EnumConfig<>("Mode", "", OffHandItem.Totem, OffHandItem.values());
+    final Config<Boolean> removeApple = new BooleanConfig("RemoveApple", "", false);
+    final Config<Float> delay = new NumberConfig<>("Delay", "", 0.0f, 100.0f, 2000.0f, NumberDisplay.DEFAULT);
+    final Config<Integer> appleSlot = new NumberConfig<>("AppleSlot", "", 1, 5, 9);
+    final Config<Boolean> pickaxeSwap = new BooleanConfig("PickaxeSwap", "", false);
+    final Config<Boolean> swapBack = new BooleanConfig("SwapBack", "", true);
+    final Config<Boolean> cancelPacket = new BooleanConfig("CancelPacket", "", false);
+    final Config<Boolean> mainHandTotem = new BooleanConfig("MainHandTotem", "", false);
+    final Config<Float> health = new NumberConfig<>("Health", "", 0.0f, 15.0f, 36.0f);
+    final Config<Integer> slot = new NumberConfig<>("TotemSlot", "", 1, 1, 9);
+    final Config<DisplayMode> displayMode = new EnumConfig<>("DisplayMode", "", DisplayMode.Totem, DisplayMode.values());
     int lastSlot = -1;
     private final Timer delayTimer = new CacheTimer();
 
@@ -77,7 +77,7 @@ extends ToggleModule {
         if (OffhandModule.mc.player == null || OffhandModule.mc.world == null) {
             return;
         }
-        if (this.pickaxeSwap.getValue().booleanValue() && (appleSlot = InventoryUtil.findItem(Items.ENCHANTED_GOLDEN_APPLE)) != -1) {
+        if (this.pickaxeSwap.getValue() && (appleSlot = InventoryUtil.findItem(Items.ENCHANTED_GOLDEN_APPLE)) != -1) {
             if (OffhandModule.mc.options.useKey.isPressed()) {
                 if (OffhandModule.mc.player.getMainHandStack().getItem() instanceof PickaxeItem) {
                     if (this.lastSlot == -1) {
@@ -85,23 +85,23 @@ extends ToggleModule {
                     }
                     InventoryUtil.doSwap(appleSlot);
                 }
-            } else if (this.lastSlot != -1 && this.swapBack.getValue().booleanValue()) {
+            } else if (this.lastSlot != -1 && this.swapBack.getValue()) {
                 InventoryUtil.doSwap(this.lastSlot);
                 this.lastSlot = -1;
             }
         }
         if (OffhandModule.mc.currentScreen == null || OffhandModule.mc.currentScreen instanceof InventoryScreen || OffhandModule.mc.currentScreen instanceof ChatScreen || OffhandModule.mc.currentScreen instanceof ClickGuiScreen) {
             int itemSlot;
-            if (this.mainHandTotem.getValue().booleanValue()) {
+            if (this.mainHandTotem.getValue()) {
                 int totemSlot = OffhandModule.getItemSlot(Items.TOTEM_OF_UNDYING);
-                if (OffhandModule.mc.player.getHealth() + OffhandModule.mc.player.getAbsorptionAmount() < this.health.getValue().floatValue() && totemSlot < 9) {
+                if (OffhandModule.mc.player.getHealth() + OffhandModule.mc.player.getAbsorptionAmount() < this.health.getValue() && totemSlot < 9) {
                     InventoryUtil.doSwap(this.slot.getValue() - 1);
                 }
                 if (totemSlot != -1 && OffhandModule.mc.player.getInventory().getStack(this.slot.getValue() - 1).getItem() != Items.TOTEM_OF_UNDYING) {
                     OffhandModule.mc.interactionManager.clickSlot(OffhandModule.mc.player.currentScreenHandler.syncId, totemSlot, this.slot.getValue() - 1, SlotActionType.SWAP, OffhandModule.mc.player);
                 }
             }
-            if (this.removeApple.getValue().booleanValue() && (itemSlot = OffhandModule.getItemSlot(Items.ENCHANTED_GOLDEN_APPLE)) != -1 && OffhandModule.mc.player.getInventory().getStack(this.appleSlot.getValue() - 1).getItem() != Items.ENCHANTED_GOLDEN_APPLE && this.delayTimer.passed(this.delay.getValue())) {
+            if (this.removeApple.getValue() && (itemSlot = OffhandModule.getItemSlot(Items.ENCHANTED_GOLDEN_APPLE)) != -1 && OffhandModule.mc.player.getInventory().getStack(this.appleSlot.getValue() - 1).getItem() != Items.ENCHANTED_GOLDEN_APPLE && this.delayTimer.passed(this.delay.getValue())) {
                 OffhandModule.mc.interactionManager.clickSlot(OffhandModule.mc.player.currentScreenHandler.syncId, itemSlot, this.appleSlot.getValue() - 1, SlotActionType.SWAP, OffhandModule.mc.player);
                 this.delayTimer.reset();
             }
@@ -125,7 +125,7 @@ extends ToggleModule {
             return;
         }
         if (event.getPacket() instanceof UpdateSelectedSlotS2CPacket) {
-            if (this.cancelPacket.getValue().booleanValue()) {
+            if (this.cancelPacket.getValue()) {
                 event.cancel();
             }
             Managers.NETWORK.sendPacket(new UpdateSelectedSlotC2SPacket(OffhandModule.mc.player.getInventory().selectedSlot));

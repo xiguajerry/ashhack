@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentMap;
 import net.minecraft.text.Text;
 
 public class SocialManager implements Globals {
-   private final ConcurrentMap<String, SocialRelation> relationships = new ConcurrentHashMap();
+   private final ConcurrentMap<String, SocialRelation> relationships = new ConcurrentHashMap<>();
 
    public boolean isRelation(String name, SocialRelation relation) {
       return this.relationships.get(name) == relation;

@@ -27,12 +27,12 @@ import net.minecraft.util.Hand;
 
 public class AutoPotModule
 extends RotationModule {
-    Config<Mode> mode = new EnumConfig("Mode", "", Mode.Turtle, Mode.values());
-    Config<Boolean> onlyGround = new BooleanConfig("OnlyGround", "", true);
-    Config<Boolean> autoTurtle = new BooleanConfig("AutoTurtle", "", true);
-    Config<SwapMode> swapMode = new EnumConfig("SwapMode", "", SwapMode.SILENT, SwapMode.values());
-    Config<Float> delay = new NumberConfig<Float>("Delay", "", 0.0f, 1.0f, 1000.0f, NumberDisplay.DEFAULT);
-    Config<Boolean> usingPause = new BooleanConfig("UsingPause", "", true);
+    final Config<Mode> mode = new EnumConfig<>("Mode", "", Mode.Turtle, Mode.values());
+    final Config<Boolean> onlyGround = new BooleanConfig("OnlyGround", "", true);
+    final Config<Boolean> autoTurtle = new BooleanConfig("AutoTurtle", "", true);
+    final Config<SwapMode> swapMode = new EnumConfig<>("SwapMode", "", SwapMode.SILENT, SwapMode.values());
+    final Config<Float> delay = new NumberConfig<>("Delay", "", 0.0f, 1.0f, 1000.0f, NumberDisplay.DEFAULT);
+    final Config<Boolean> usingPause = new BooleanConfig("UsingPause", "", true);
     private final Timer delayTimer = new CacheTimer();
     public int slot;
 
@@ -60,21 +60,22 @@ extends RotationModule {
         if (this.slot == -1) {
             return;
         }
+        assert AutoPotModule.mc.player != null;
         for (StatusEffectInstance e : AutoPotModule.mc.player.getStatusEffects()) {
             int duration;
             if (e == null) {
                 return;
             }
-            if (!e.getEffectType().equals(StatusEffects.RESISTANCE) || e.getAmplifier() <= 2 || (duration = e.getDuration()) < 0 || !this.autoTurtle.getValue().booleanValue()) continue;
+            if (!e.getEffectType().equals(StatusEffects.RESISTANCE) || e.getAmplifier() <= 2 || (duration = e.getDuration()) < 0 || !this.autoTurtle.getValue()) continue;
             return;
         }
         if (AutoPotModule.mc.player.fallDistance >= 2.0f) {
             return;
         }
-        if (this.onlyGround.getValue().booleanValue() && !AutoPotModule.mc.player.isOnGround()) {
+        if (this.onlyGround.getValue() && !AutoPotModule.mc.player.isOnGround()) {
             return;
         }
-        if (this.usingPause.getValue().booleanValue() && AutoPotModule.mc.player.isUsingItem()) {
+        if (this.usingPause.getValue() && AutoPotModule.mc.player.isUsingItem()) {
             return;
         }
         if (Managers.MOVEMENT.getSpeed(AutoPotModule.mc.player) >= 15.0) {
@@ -87,6 +88,7 @@ extends RotationModule {
     }
 
     private void throwPot() {
+        assert AutoPotModule.mc.player != null;
         int prev = AutoPotModule.mc.player.getInventory().selectedSlot;
         switch (this.swapMode.getValue()) {
             case SILENT: 
@@ -144,6 +146,7 @@ extends RotationModule {
     public int findItem() {
         for (int i = this.swapMode.getValue().equals(SwapMode.Pick) ? 9 : 0; i < (this.swapMode.getValue().equals(SwapMode.SILENT) || this.swapMode.getValue().equals(SwapMode.NORMAL) ? 9 : 45); ++i) {
             ItemStack stack = InventoryUtil.getStackInSlot(i);
+            assert stack != null;
             if (!(stack.getItem() instanceof SplashPotionItem) || !this.isStackPotion(stack)) continue;
             return i < 9 ? i + 36 : i;
         }

@@ -19,9 +19,9 @@ import net.minecraft.util.math.MathHelper;
 
 public class NukerModule
 extends ToggleModule {
-    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 6.0f);
-    Config<Boolean> own = new BooleanConfig("Own", "", false);
-    private final ArrayList<BlockPos> ownBlocks = new ArrayList();
+    final Config<Float> range = new NumberConfig<>("Range", "", 0.0f, 5.0f, 6.0f);
+    final Config<Boolean> own = new BooleanConfig("Own", "", false);
+    private final ArrayList<BlockPos> ownBlocks = new ArrayList<>();
 
     public NukerModule() {
         super("Nuker", "zyx.sb", ModuleCategory.MISCELLANEOUS);
@@ -38,7 +38,7 @@ extends ToggleModule {
         ShulkerBoxBlockEntity block = this.getBlock();
         if (block != null) {
             BlockPos pos = block.getPos();
-            if (this.ownBlocks.contains(pos) && this.own.getValue().booleanValue()) {
+            if (this.ownBlocks.contains(pos) && this.own.getValue()) {
                 return;
             }
             Modules.PACKET_DIGGING.mine(this.getBlock().getPos());
@@ -55,7 +55,7 @@ extends ToggleModule {
     private ShulkerBoxBlockEntity getBlock() {
         for (BlockEntity entity : BlockUtil.getTileEntities()) {
             ShulkerBoxBlockEntity shulker;
-            if (!(entity instanceof ShulkerBoxBlockEntity) || !(MathHelper.sqrt((float)NukerModule.mc.player.squaredDistanceTo((shulker = (ShulkerBoxBlockEntity) entity).getPos().toCenterPos())) <= this.range.getValue().floatValue())) continue;
+            if (!(entity instanceof ShulkerBoxBlockEntity) || !(MathHelper.sqrt((float)NukerModule.mc.player.squaredDistanceTo((shulker = (ShulkerBoxBlockEntity) entity).getPos().toCenterPos())) <= this.range.getValue())) continue;
             return shulker;
         }
         return null;

@@ -29,9 +29,7 @@ public abstract class MixinPacketByteBuf {
 
       try {
          NbtElement nbtElement = this.readNbt(sizeTracker);
-         cir.setReturnValue(Util.getResult(codec.parse(ops, nbtElement), (error) -> {
-            return new DecoderException("Failed to decode: " + error + " " + nbtElement);
-         }));
+         cir.setReturnValue(Util.getResult(codec.parse(ops, nbtElement), (error) -> new DecoderException("Failed to decode: " + error + " " + nbtElement)));
       } catch (DecoderException var6) {
          cir.setReturnValue(null);
       }

@@ -73,9 +73,7 @@ public abstract class MixinTridentItem implements Globals {
                PlayerEntity playerEntity = (PlayerEntity)user;
                int j = EnchantmentHelper.getRiptide(stack);
                if (!mc.world.isClient) {
-                  stack.damage(1, playerEntity, (p) -> {
-                     p.sendToolBreakStatus(user.getActiveHand());
-                  });
+                  stack.damage(1, playerEntity, (p) -> p.sendToolBreakStatus(user.getActiveHand()));
                   if (j == 0) {
                      TridentEntity tridentEntity = new TridentEntity(world, playerEntity, stack);
                      tridentEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + (float)j * 0.5F, 1.0F);

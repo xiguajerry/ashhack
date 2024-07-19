@@ -145,12 +145,8 @@ public abstract class MixinChatHud implements IChatHud {
    )
    private void onAddMessage(Text message, @Nullable MessageSignatureData signature, int ticks, @Nullable MessageIndicator indicator, boolean refresh, CallbackInfo info) {
       if (this.nextId != 0) {
-         this.visibleMessages.removeIf((msg) -> {
-            return msg == null || ((IChatHudLine)msg).getId() == this.nextId;
-         });
-         this.messages.removeIf((msg) -> {
-            return msg == null || ((IChatHudLine)msg).getId() == this.nextId;
-         });
+         this.visibleMessages.removeIf((msg) -> msg == null || ((IChatHudLine)msg).getId() == this.nextId);
+         this.messages.removeIf((msg) -> msg == null || ((IChatHudLine)msg).getId() == this.nextId);
       }
 
    }

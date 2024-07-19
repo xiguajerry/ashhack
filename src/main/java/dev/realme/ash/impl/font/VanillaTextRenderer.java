@@ -92,8 +92,8 @@ public class VanillaTextRenderer implements Globals {
       private final TextRenderer.TextLayerType layerType;
       private final int light;
       float x;
-      float y;
-      private @Nullable List rectangles;
+      final float y;
+      private @Nullable List<GlyphRenderer.Rectangle> rectangles;
 
       public Drawer(VertexConsumerProvider vertexConsumers, float x, float y, int color, boolean shadow, Matrix4f matrix, TextRenderer.TextLayerType layerType, int light) {
          this.vertexConsumers = vertexConsumers;
@@ -146,14 +146,11 @@ public class VanillaTextRenderer implements Globals {
          if (this.rectangles != null) {
             GlyphRenderer glyphRenderer = ((AccessorTextRenderer)Globals.mc.textRenderer).hookGetFontStorage(Style.DEFAULT_FONT_ID).getRectangleRenderer();
             VertexConsumer vertexConsumer = this.vertexConsumers.getBuffer(glyphRenderer.getLayer(this.layerType));
-            Iterator var3 = this.rectangles.iterator();
 
-            while(var3.hasNext()) {
-               GlyphRenderer.Rectangle rectangle = (GlyphRenderer.Rectangle)var3.next();
-               glyphRenderer.drawRectangle(rectangle, this.matrix, vertexConsumer, this.light);
-            }
+             for (GlyphRenderer.Rectangle rect : this.rectangles) {
+                 glyphRenderer.drawRectangle(rect, this.matrix, vertexConsumer, this.light);
+             }
          }
-
       }
    }
 }

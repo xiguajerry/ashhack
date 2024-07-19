@@ -33,14 +33,12 @@ public class CategoryFrame extends Frame {
       this.categoryAnimation = new Animation(false, 200.0F, Easing.CUBIC_IN_OUT);
       this.category = category;
       this.name = EnumFormatter.formatEnum(category);
-      Iterator var6 = Managers.MODULE.getModules().iterator();
 
-      while(var6.hasNext()) {
-         Module module = (Module)var6.next();
-         if (module.getCategory() == category) {
-            this.moduleButtons.add(new ModuleButton(module, this, x, y));
-         }
-      }
+       for (Module module : Managers.MODULE.getModules()) {
+           if (module.getCategory() == category) {
+               this.moduleButtons.add(new ModuleButton(module, this, x, y));
+           }
+       }
 
       this.categoryAnimation.setState(true);
       this.open = true;
@@ -98,19 +96,18 @@ public class CategoryFrame extends Frame {
          } while(moduleButton.getScaledTime() < 0.01F);
 
          this.fheight += 3.0F * moduleButton.getScaledTime();
-         Iterator var7 = moduleButton.getConfigButtons().iterator();
 
-         while(var7.hasNext()) {
-            ConfigButton configButton = (ConfigButton)var7.next();
-            if (configButton.getConfig().isVisible()) {
-               this.fheight += configButton.getHeight() * moduleButton.getScaledTime();
-               if (configButton instanceof ColorButton colorPicker) {
-                   if (colorPicker.getScaledTime() > 0.01F) {
-                     this.fheight += colorPicker.getPickerHeight() * colorPicker.getScaledTime() * moduleButton.getScaledTime();
+          for (Object o : moduleButton.getConfigButtons()) {
+              ConfigButton configButton = (ConfigButton) o;
+              if (configButton.getConfig().isVisible()) {
+                  this.fheight += configButton.getHeight() * moduleButton.getScaledTime();
+                  if (configButton instanceof ColorButton colorPicker) {
+                      if (colorPicker.getScaledTime() > 0.01F) {
+                          this.fheight += colorPicker.getPickerHeight() * colorPicker.getScaledTime() * moduleButton.getScaledTime();
+                      }
                   }
-               }
-            }
-         }
+              }
+          }
       }
    }
 
@@ -122,12 +119,11 @@ public class CategoryFrame extends Frame {
       }
 
       if (this.open) {
-         Iterator var6 = this.moduleButtons.iterator();
 
-         while(var6.hasNext()) {
-            ModuleButton button = (ModuleButton)var6.next();
-            button.mouseClicked(mouseX, mouseY, mouseButton);
-         }
+          for (Object moduleButton : this.moduleButtons) {
+              ModuleButton button = (ModuleButton) moduleButton;
+              button.mouseClicked(mouseX, mouseY, mouseButton);
+          }
       }
 
    }
@@ -136,12 +132,11 @@ public class CategoryFrame extends Frame {
       super.mouseReleased(mouseX, mouseY, mouseButton);
       this.drag = false;
       if (this.open) {
-         Iterator var6 = this.moduleButtons.iterator();
 
-         while(var6.hasNext()) {
-            ModuleButton button = (ModuleButton)var6.next();
-            button.mouseReleased(mouseX, mouseY, mouseButton);
-         }
+          for (Object moduleButton : this.moduleButtons) {
+              ModuleButton button = (ModuleButton) moduleButton;
+              button.mouseReleased(mouseX, mouseY, mouseButton);
+          }
       }
 
    }
@@ -149,12 +144,11 @@ public class CategoryFrame extends Frame {
    public void keyPressed(int keyCode, int scanCode, int modifiers) {
       super.keyPressed(keyCode, scanCode, modifiers);
       if (this.open) {
-         Iterator var4 = this.moduleButtons.iterator();
 
-         while(var4.hasNext()) {
-            ModuleButton button = (ModuleButton)var4.next();
-            button.keyPressed(keyCode, scanCode, modifiers);
-         }
+          for (Object moduleButton : this.moduleButtons) {
+              ModuleButton button = (ModuleButton) moduleButton;
+              button.keyPressed(keyCode, scanCode, modifiers);
+          }
       }
 
    }

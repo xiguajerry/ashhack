@@ -16,8 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EventBus
         implements EventHandler {
-   private final Set<Object> subscribers = Collections.synchronizedSet(new HashSet());
-   private final Map<Object, PriorityQueue<Listener>> listeners = new ConcurrentHashMap<Object, PriorityQueue<Listener>>();
+   private final Set<Object> subscribers = Collections.synchronizedSet(new HashSet<>());
+   private final Map<Object, PriorityQueue<Listener>> listeners = new ConcurrentHashMap<>();
 
    @Override
    public void subscribe(Object obj) {
@@ -31,7 +31,7 @@ public class EventBus
          if (!method.isAnnotationPresent(EventListener.class)) continue;
          EventListener listener = method.getAnnotation(EventListener.class);
          if (method.getReturnType() != Void.TYPE || (params = method.getParameterTypes()).length != 1) continue;
-         PriorityQueue<Listener> active = this.listeners.computeIfAbsent(params[0], v -> new PriorityQueue());
+         PriorityQueue<Listener> active = this.listeners.computeIfAbsent(params[0], v -> new PriorityQueue<>());
          active.add(new Listener(method, obj, listener.receiveCanceled(), listener.priority()));
       }
    }
@@ -53,7 +53,7 @@ public class EventBus
       if (active == null || active.isEmpty()) {
          return false;
       }
-      for (Listener listener : new ArrayList<Listener>(active)) {
+      for (Listener listener : new ArrayList<>(active)) {
          if (event.isCanceled() && !listener.isReceiveCanceled()) continue;
          listener.invokeSubscriber(event);
       }

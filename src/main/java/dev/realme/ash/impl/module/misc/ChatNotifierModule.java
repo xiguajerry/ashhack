@@ -29,17 +29,17 @@ import net.minecraft.util.Formatting;
 
 public class ChatNotifierModule
 extends ToggleModule {
-    Config<Boolean> totemPopConfig = new BooleanConfig("TotemPop", "Notifies in chat when a player pops a totem", true);
-    Config<Boolean> visualRangeConfig = new BooleanConfig("VisualRange", "Notifies in chat when player enters visual range", false);
-    Config<Boolean> friendsConfig = new BooleanConfig("Friends", "Notifies for friends", false);
-    Config<Boolean> armorNotify = new BooleanConfig("ArmorNotify", "", false);
-    Config<Double> threshold = new NumberConfig<Double>("Threshold", "", 0.0, 30.0, 100.0);
-    Config<Integer> volume = new NumberConfig<Integer>("Volume", "", 0, 10, 20);
+    final Config<Boolean> totemPopConfig = new BooleanConfig("TotemPop", "Notifies in chat when a player pops a totem", true);
+    final Config<Boolean> visualRangeConfig = new BooleanConfig("VisualRange", "Notifies in chat when player enters visual range", false);
+    final Config<Boolean> friendsConfig = new BooleanConfig("Friends", "Notifies for friends", false);
+    final Config<Boolean> armorNotify = new BooleanConfig("ArmorNotify", "", false);
+    final Config<Double> threshold = new NumberConfig<>("Threshold", "", 0.0, 30.0, 100.0);
+    final Config<Integer> volume = new NumberConfig<>("Volume", "", 0, 10, 20);
     private boolean alertedHelmet;
     private boolean alertedChestplate;
     private boolean alertedLeggings;
     private boolean alertedBoots;
-    public static HashMap<String, Integer> PopContainer = new HashMap();
+    public static final HashMap<String, Integer> PopContainer = new HashMap<>();
 
     public ChatNotifierModule() {
         super("ChatNotifier", "Notifies in chat", ModuleCategory.MISCELLANEOUS);
@@ -50,13 +50,13 @@ extends ToggleModule {
         if (ChatNotifierModule.nullCheck()) {
             return;
         }
-        if (this.armorNotify.getValue().booleanValue()) {
+        if (this.armorNotify.getValue()) {
             Iterable<ItemStack> armorPieces = ChatNotifierModule.mc.player.getArmorItems();
             for (ItemStack armorPiece : armorPieces) {
                 if (ChatNotifierModule.checkNotifyThreshold(armorPiece, this.threshold.getValue())) {
                     if (ChatNotifierModule.isHelmetArmor(armorPiece) && !this.alertedHelmet || ChatNotifierModule.isChestplateArmor(armorPiece) && !this.alertedChestplate || ChatNotifierModule.isLeggingsArmor(armorPiece) && !this.alertedLeggings || ChatNotifierModule.isBootsArmor(armorPiece) && !this.alertedBoots) {
                         ChatUtil.sendChatMessageWidthId("Your armors durability is low.", this.hashCode() - 1337);
-                        ChatNotifierModule.mc.player.playSound(SoundEvents.BLOCK_ANVIL_LAND, this.volume.getValue().intValue(), ChatNotifierModule.mc.player.getPitch());
+                        ChatNotifierModule.mc.player.playSound(SoundEvents.BLOCK_ANVIL_LAND, this.volume.getValue(), ChatNotifierModule.mc.player.getPitch());
                     }
                     if (ChatNotifierModule.isHelmetArmor(armorPiece) && !this.alertedHelmet) {
                         this.alertedHelmet = true;
@@ -144,7 +144,7 @@ extends ToggleModule {
             return;
         }
         Packet<?> packet2 = event.getPacket();
-        if (packet2 instanceof EntityStatusS2CPacket && (packet = (EntityStatusS2CPacket) packet2).getStatus() == 35 && this.totemPopConfig.getValue().booleanValue()) {
+        if (packet2 instanceof EntityStatusS2CPacket && (packet = (EntityStatusS2CPacket) packet2).getStatus() == 35 && this.totemPopConfig.getValue()) {
             Entity entity = packet.getEntity(ChatNotifierModule.mc.world);
             if (!(entity instanceof LivingEntity) || entity.getDisplayName() == null) {
                 return;
@@ -152,7 +152,7 @@ extends ToggleModule {
             int totems = Managers.TOTEM.getTotems(entity);
             String playerName = entity.getDisplayName().getString();
             boolean isFriend = Managers.SOCIAL.isFriend(playerName);
-            if (isFriend && !this.friendsConfig.getValue().booleanValue()) {
+            if (isFriend && !this.friendsConfig.getValue()) {
                 return;
             }
             PopContainer.put(playerName, totems);
@@ -176,7 +176,7 @@ extends ToggleModule {
         block5: {
             block4: {
                 Entity entity;
-                if (!this.visualRangeConfig.getValue().booleanValue() || !((entity = event.getEntity()) instanceof PlayerEntity)) break block4;
+                if (!this.visualRangeConfig.getValue() || !((entity = event.getEntity()) instanceof PlayerEntity)) break block4;
                 player = (PlayerEntity)entity;
                 if (event.getEntity().getDisplayName() != null) break block5;
             }
@@ -184,10 +184,10 @@ extends ToggleModule {
         }
         String playerName = Objects.requireNonNull(player.getDisplayName()).getString();
         boolean isFriend = Managers.SOCIAL.isFriend(playerName);
-        if (isFriend && !this.friendsConfig.getValue().booleanValue() || event.getEntity() == ChatNotifierModule.mc.player) {
+        if (isFriend && !this.friendsConfig.getValue() || event.getEntity() == ChatNotifierModule.mc.player) {
             return;
         }
-        ChatUtil.sendChatMessageWidthId("\u00a7s[VisualRange] " + (isFriend ? "\u00a7b" + playerName : playerName) + "\u00a7f entered your visual range.", player.getId());
+        ChatUtil.sendChatMessageWidthId("§s[VisualRange] " + (isFriend ? "§b" + playerName : playerName) + "§f entered your visual range.", player.getId());
     }
 
     @EventListener
@@ -196,7 +196,7 @@ extends ToggleModule {
         block5: {
             block4: {
                 Entity entity;
-                if (!this.visualRangeConfig.getValue().booleanValue() || !((entity = event.getEntity()) instanceof PlayerEntity)) break block4;
+                if (!this.visualRangeConfig.getValue() || !((entity = event.getEntity()) instanceof PlayerEntity)) break block4;
                 player = (PlayerEntity)entity;
                 if (event.getEntity().getDisplayName() != null) break block5;
             }
@@ -204,23 +204,23 @@ extends ToggleModule {
         }
         String playerName = Objects.requireNonNull(player.getDisplayName()).getString();
         boolean isFriend = Managers.SOCIAL.isFriend(playerName);
-        if (isFriend && !this.friendsConfig.getValue().booleanValue() || event.getEntity() == ChatNotifierModule.mc.player) {
+        if (isFriend && !this.friendsConfig.getValue() || event.getEntity() == ChatNotifierModule.mc.player) {
             return;
         }
-        ChatUtil.sendChatMessageWidthId("\u00a7s[VisualRange] " + (isFriend ? "\u00a7b" + playerName : "\u00a7c" + playerName) + "\u00a7f left your visual range.", player.getId());
+        ChatUtil.sendChatMessageWidthId("§s[VisualRange] " + (isFriend ? "§b" + playerName : "§c" + playerName) + "§f left your visual range.", player.getId());
     }
 
     @EventListener
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity livingEntity;
-        if (event.getEntity().getDisplayName() == null || !this.totemPopConfig.getValue().booleanValue() || !((livingEntity = event.getEntity()) instanceof PlayerEntity)) {
+        if (event.getEntity().getDisplayName() == null || !this.totemPopConfig.getValue() || !((livingEntity = event.getEntity()) instanceof PlayerEntity)) {
             return;
         }
         PlayerEntity player = (PlayerEntity)livingEntity;
         int totems = Managers.TOTEM.getTotems(event.getEntity());
         String playerName = Objects.requireNonNull(player.getDisplayName()).getString();
         boolean isFriend = Managers.SOCIAL.isFriend(playerName);
-        if (isFriend && !this.friendsConfig.getValue().booleanValue()) {
+        if (isFriend && !this.friendsConfig.getValue()) {
             return;
         }
         if (totems == 0) {

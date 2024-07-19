@@ -33,9 +33,7 @@ public final class InteractionManager implements Globals {
    }
 
    public void useItem(Hand hand, boolean swing) {
-      Managers.NETWORK.sendSequencedPacket((id) -> {
-         return new PlayerInteractItemC2SPacket(hand, id);
-      });
+      Managers.NETWORK.sendSequencedPacket((id) -> new PlayerInteractItemC2SPacket(hand, id));
       if (swing) {
          PlayerUtil.doSwing(hand);
       }

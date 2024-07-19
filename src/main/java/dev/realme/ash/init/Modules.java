@@ -423,17 +423,16 @@ public class Modules {
          PLACE_RENDER = (PlaceRenderModule)getRegisteredModule("placerender-module");
          SCAFFOLD = (ScaffoldModule)getRegisteredModule("scaffold-module");
          initialized = true;
-         Iterator var0 = CACHE.iterator();
 
-         while(var0.hasNext()) {
-            Module module = (Module)var0.next();
-            if (module != null) {
-               module.reflectConfigs();
-               if (module instanceof ToggleModule t) {
-                   Managers.MACRO.register(t.getKeybinding());
-               }
-            }
-         }
+          for (Object o : CACHE) {
+              Module module = (Module) o;
+              if (module != null) {
+                  module.reflectConfigs();
+                  if (module instanceof ToggleModule t) {
+                      Managers.MACRO.register(t.getKeybinding());
+                  }
+              }
+          }
 
          CACHE.clear();
       } else {

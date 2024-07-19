@@ -17,8 +17,8 @@ import net.minecraft.util.hit.HitResult;
 
 public class BlockInteractModule
 extends ToggleModule {
-    Config<Float> range = new NumberConfig<Float>("Range", "", 1.0f, 4.0f, 10.0f, NumberDisplay.DEFAULT);
-    Config<Boolean> fluids = new BooleanConfig("Fluids", "", false);
+    final Config<Float> range = new NumberConfig<>("Range", "", 1.0f, 4.0f, 10.0f, NumberDisplay.DEFAULT);
+    final Config<Boolean> fluids = new BooleanConfig("Fluids", "", false);
 
     public BlockInteractModule() {
         super("BlockInteract", "Allows you to place blocks in the air", ModuleCategory.WORLD);
@@ -32,7 +32,7 @@ extends ToggleModule {
         if (stack.isEmpty() || !(stack.getItem() instanceof BlockItem) || !BlockInteractModule.mc.options.useKey.isPressed()) {
             return;
         }
-        HitResult result = BlockInteractModule.mc.player.raycast(this.range.getValue().floatValue(), 1.0f, this.fluids.getValue());
+        HitResult result = BlockInteractModule.mc.player.raycast(this.range.getValue(), 1.0f, this.fluids.getValue());
         if (result instanceof BlockHitResult && (actionResult = BlockInteractModule.mc.interactionManager.interactBlock(BlockInteractModule.mc.player, Hand.MAIN_HAND, blockHitResult = (BlockHitResult)result)).isAccepted() && actionResult.shouldSwingHand()) {
             BlockInteractModule.mc.player.swingHand(Hand.MAIN_HAND);
         }

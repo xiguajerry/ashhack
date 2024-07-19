@@ -15,9 +15,9 @@ import net.minecraft.item.Items;
 
 public class ReplenishModule
 extends ToggleModule {
-    Config<Integer> threshold = new NumberConfig<Integer>("Threshold", "", 0, 32, 64);
-    Config<Integer> tickDelay = new NumberConfig<Integer>("TickDelay", "Added delays", 0, 1, 10);
-    Config<Boolean> unstackable = new BooleanConfig("Unstackable", "", true);
+    final Config<Integer> threshold = new NumberConfig<>("Threshold", "", 0, 32, 64);
+    final Config<Integer> tickDelay = new NumberConfig<>("TickDelay", "Added delays", 0, 1, 10);
+    final Config<Boolean> unstackable = new BooleanConfig("Unstackable", "", true);
     private int tickDelayLeft;
     private boolean prevHadOpenScreen;
     private final ItemStack[] items = new ItemStack[10];
@@ -67,7 +67,7 @@ extends ToggleModule {
         if (stack.isEmpty() && !prevStack.isEmpty()) {
             if (prevStack.isStackable()) {
                 this.addSlots(slot, this.findItem(prevStack, slot, this.threshold.getValue() - stack.getCount() + 1));
-            } else if (this.unstackable.getValue().booleanValue()) {
+            } else if (this.unstackable.getValue()) {
                 this.addSlots(slot, this.findItem(prevStack, slot, 1));
             }
         }

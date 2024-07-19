@@ -29,12 +29,12 @@ import net.minecraft.util.math.Vec3d;
 
 public class ClickCrystalModule
 extends RotationModule {
-    Config<Float> breakDelayConfig = new NumberConfig<Float>("SpawnDelay", "Speed to break crystals after spawning", 0.0f, 0.0f, 20.0f);
-    Config<Float> randomDelayConfig = new NumberConfig<Float>("RandomDelay", "Randomized break delay", 0.0f, 0.0f, 5.0f);
-    Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotate before breaking", false);
-    Config<Boolean> randomRotateConfig = new BooleanConfig("Rotate-Random", "Slightly randomizes rotations", false, () -> this.rotateConfig.getValue());
-    private final Set<BlockPos> placedCrystals = new HashSet<BlockPos>();
-    private final Map<EndCrystalEntity, Long> spawnedCrystals = new LinkedHashMap<EndCrystalEntity, Long>();
+    final Config<Float> breakDelayConfig = new NumberConfig<>("SpawnDelay", "Speed to break crystals after spawning", 0.0f, 0.0f, 20.0f);
+    final Config<Float> randomDelayConfig = new NumberConfig<>("RandomDelay", "Randomized break delay", 0.0f, 0.0f, 5.0f);
+    final Config<Boolean> rotateConfig = new BooleanConfig("Rotate", "Rotate before breaking", false);
+    final Config<Boolean> randomRotateConfig = new BooleanConfig("Rotate-Random", "Slightly randomizes rotations", false, () -> this.rotateConfig.getValue());
+    private final Set<BlockPos> placedCrystals = new HashSet<>();
+    private final Map<EndCrystalEntity, Long> spawnedCrystals = new LinkedHashMap<>();
     private float randomDelay = -1.0f;
 
     public ClickCrystalModule() {
@@ -50,13 +50,13 @@ extends RotationModule {
         EndCrystalEntity crystalEntity = e.getKey();
         Long time = e.getValue();
         if (this.randomDelay == -1.0f) {
-            this.randomDelay = this.randomDelayConfig.getValue().floatValue() == 0.0f ? 0.0f : RANDOM.nextFloat(this.randomDelayConfig.getValue().floatValue() * 25.0f);
+            this.randomDelay = this.randomDelayConfig.getValue() == 0.0f ? 0.0f : RANDOM.nextFloat(this.randomDelayConfig.getValue() * 25.0f);
         }
-        float breakDelay = this.breakDelayConfig.getValue().floatValue() * 50.0f + this.randomDelay;
+        float breakDelay = this.breakDelayConfig.getValue() * 50.0f + this.randomDelay;
         if (ClickCrystalModule.mc.player.getEyePos().squaredDistanceTo(crystalEntity.getPos()) <= 12.25 && (float)(System.currentTimeMillis() - time) >= breakDelay) {
-            if (this.rotateConfig.getValue().booleanValue()) {
+            if (this.rotateConfig.getValue()) {
                 Vec3d rotatePos = crystalEntity.getPos();
-                if (this.randomRotateConfig.getValue().booleanValue()) {
+                if (this.randomRotateConfig.getValue()) {
                     Box bb = crystalEntity.getBoundingBox();
                     rotatePos = new Vec3d(RANDOM.nextDouble(bb.minX, bb.maxX), RANDOM.nextDouble(bb.minY, bb.maxY), RANDOM.nextDouble(bb.minZ, bb.maxZ));
                 }

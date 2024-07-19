@@ -16,7 +16,7 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class TooltipsModule
 extends ToggleModule {
-    Config<Boolean> shulkersConfig = new BooleanConfig("Shulkers", "Renders all the contents of shulkers in tooltips", true);
+    final Config<Boolean> shulkersConfig = new BooleanConfig("Shulkers", "Renders all the contents of shulkers in tooltips", true);
     Config<Boolean> mapsConfig = new BooleanConfig("Maps", "Renders a preview of maps in tooltips", false);
 
     public TooltipsModule() {
@@ -30,7 +30,7 @@ extends ToggleModule {
             return;
         }
         NbtCompound nbtCompound = BlockItem.getBlockEntityNbt(stack);
-        if (this.shulkersConfig.getValue().booleanValue() && nbtCompound != null && nbtCompound.contains("Items", 9)) {
+        if (this.shulkersConfig.getValue() && nbtCompound != null && nbtCompound.contains("Items", 9)) {
             event.cancel();
             event.context.getMatrices().push();
             event.context.getMatrices().translate(0.0f, 0.0f, 600.0f);

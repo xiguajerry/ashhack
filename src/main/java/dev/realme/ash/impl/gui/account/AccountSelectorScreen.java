@@ -31,12 +31,11 @@ public final class AccountSelectorScreen extends Screen {
       this.accountListWidget.setDimensionsAndPosition(this.width, this.height - 64 - 32, 0, 32);
       this.accountListWidget.populateEntries();
       this.accountListWidget.setSearchFilter(null);
-      this.addDrawableChild(this.searchWidget = new TextFieldWidget(this.client.textRenderer, 135, 20, Text.of("Search...")));
+       assert this.client != null;
+       this.addDrawableChild(this.searchWidget = new TextFieldWidget(this.client.textRenderer, 135, 20, Text.of("Search...")));
       this.searchWidget.setPosition(this.width / 2 - this.searchWidget.getWidth() / 2, 4);
       this.searchWidget.setPlaceholder(Text.of("Search..."));
-      this.addDrawableChild(ButtonWidget.builder(Text.of("Add"), (action) -> {
-         this.client.setScreen(new AccountAddAccountScreen(this));
-      }).dimensions(this.width / 2 + 2, this.accountListWidget.getHeight() + 40, 110, 20).build());
+      this.addDrawableChild(ButtonWidget.builder(Text.of("Add"), (action) -> this.client.setScreen(new AccountAddAccountScreen(this))).dimensions(this.width / 2 + 2, this.accountListWidget.getHeight() + 40, 110, 20).build());
       this.addDrawableChild(ButtonWidget.builder(Text.of("Login"), (action) -> {
          AccountEntry entry = (AccountEntry)this.accountListWidget.getSelectedOrNull();
          if (entry != null) {
@@ -52,9 +51,7 @@ public final class AccountSelectorScreen extends Screen {
          }
 
       }).dimensions(this.width / 2 - 110 - 2, this.accountListWidget.getHeight() + 40, 110, 20).build());
-      this.addDrawableChild(ButtonWidget.builder(Text.of("Back"), (action) -> {
-         this.client.setScreen(this.parent);
-      }).dimensions(this.width / 2 - 110 - 2, this.accountListWidget.getHeight() + 40 + 20 + 2, 110, 20).build());
+      this.addDrawableChild(ButtonWidget.builder(Text.of("Back"), (action) -> this.client.setScreen(this.parent)).dimensions(this.width / 2 - 110 - 2, this.accountListWidget.getHeight() + 40 + 20 + 2, 110, 20).build());
       this.addDrawableChild(ButtonWidget.builder(Text.of("Delete"), (action) -> {
          AccountEntry entry = (AccountEntry)this.accountListWidget.getSelectedOrNull();
          if (entry != null) {
@@ -90,7 +87,8 @@ public final class AccountSelectorScreen extends Screen {
    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
       super.render(context, mouseX, mouseY, delta);
       this.accountListWidget.render(context, mouseX, mouseY, delta);
-      context.drawTextWithShadow(this.client.textRenderer, Text.of(this.getLoginInfo()), 2, 2, 11184810);
+       assert this.client != null;
+       context.drawTextWithShadow(this.client.textRenderer, Text.of(this.getLoginInfo()), 2, 2, 11184810);
       if (this.searchWidget.isSelected()) {
          String content = this.searchWidget.getText();
          if (content == null || content.isEmpty()) {
@@ -114,6 +112,11 @@ public final class AccountSelectorScreen extends Screen {
    }
 
    private String getLoginInfo() {
-      return AccountManager.MSA_AUTHENTICATOR.getLoginStage().isEmpty() ? "Logged in as " + this.client.getSession().getUsername() : AccountManager.MSA_AUTHENTICATOR.getLoginStage();
+       if (AccountManager.MSA_AUTHENTICATOR.getLoginStage().isEmpty()) {
+           assert this.client != null;
+           return "Logged in as " + this.client.getSession().getUsername();
+       } else {
+           return AccountManager.MSA_AUTHENTICATOR.getLoginStage();
+       }
    }
 }

@@ -15,9 +15,9 @@ import net.minecraft.util.math.Vec3d;
 
 public class BreadcrumbsModule
 extends ToggleModule {
-    private final Map<Vec3d, Long> positions = new ConcurrentHashMap<Vec3d, Long>();
-    Config<Boolean> infiniteConfig = new BooleanConfig("Infinite", "Renders breadcrumbs for all positions since toggle", true);
-    Config<Float> maxTimeConfig = new NumberConfig<Float>("MaxPosition", "The maximum time for a given position", 1.0f, 2.0f, 20.0f);
+    private final Map<Vec3d, Long> positions = new ConcurrentHashMap<>();
+    final Config<Boolean> infiniteConfig = new BooleanConfig("Infinite", "Renders breadcrumbs for all positions since toggle", true);
+    final Config<Float> maxTimeConfig = new NumberConfig<>("MaxPosition", "The maximum time for a given position", 1.0f, 2.0f, 20.0f);
 
     public BreadcrumbsModule() {
         super("Breadcrumbs", "Renders a line connecting all previous positions", ModuleCategory.RENDER);
@@ -34,9 +34,9 @@ extends ToggleModule {
             return;
         }
         this.positions.put(new Vec3d(BreadcrumbsModule.mc.player.getX(), BreadcrumbsModule.mc.player.getBoundingBox().minY, BreadcrumbsModule.mc.player.getZ()), System.currentTimeMillis());
-        if (!this.infiniteConfig.getValue().booleanValue()) {
+        if (!this.infiniteConfig.getValue()) {
             this.positions.forEach((p, t) -> {
-                if ((float)(System.currentTimeMillis() - t) >= this.maxTimeConfig.getValue().floatValue() * 1000.0f) {
+                if ((float)(System.currentTimeMillis() - t) >= this.maxTimeConfig.getValue() * 1000.0f) {
                     this.positions.remove(p);
                 }
             });

@@ -18,10 +18,10 @@ import net.minecraft.util.math.Direction;
 
 public class TridentFlyModule
 extends ToggleModule {
-    Config<Boolean> allowNoWaterConfig = new BooleanConfig("AllowNoWater", "Allows you to fly using tridents even without water", true);
-    Config<Boolean> instantConfig = new BooleanConfig("Instant", "Removes the pullback of the trident", true);
-    Config<Boolean> flyConfig = new BooleanConfig("Spam", "Automatically uses riptide", false);
-    Config<Integer> ticksConfig = new NumberConfig<Integer>("Ticks", "The ticks between riptide boost", 0, 3, 20, () -> this.flyConfig.getValue());
+    final Config<Boolean> allowNoWaterConfig = new BooleanConfig("AllowNoWater", "Allows you to fly using tridents even without water", true);
+    final Config<Boolean> instantConfig = new BooleanConfig("Instant", "Removes the pullback of the trident", true);
+    final Config<Boolean> flyConfig = new BooleanConfig("Spam", "Automatically uses riptide", false);
+    final Config<Integer> ticksConfig = new NumberConfig<>("Ticks", "The ticks between riptide boost", 0, 3, 20, () -> this.flyConfig.getValue());
 
     public TridentFlyModule() {
         super("TridentFly", "Allows you to fly using tridents", ModuleCategory.MOVEMENT);
@@ -29,7 +29,7 @@ extends ToggleModule {
 
     @EventListener
     public void onTick(TickEvent event) {
-        if (event.getStage() == EventStage.PRE || !this.flyConfig.getValue().booleanValue()) {
+        if (event.getStage() == EventStage.PRE || !this.flyConfig.getValue()) {
             return;
         }
         if (TridentFlyModule.mc.player.getMainHandStack().getItem() == Items.TRIDENT && TridentFlyModule.mc.player.getItemUseTime() >= this.ticksConfig.getValue()) {
@@ -40,14 +40,14 @@ extends ToggleModule {
 
     @EventListener
     public void onTridentPullback(TridentPullbackEvent event) {
-        if (this.instantConfig.getValue().booleanValue()) {
+        if (this.instantConfig.getValue()) {
             event.cancel();
         }
     }
 
     @EventListener
     public void onTridentWaterCheck(TridentWaterEvent event) {
-        if (this.allowNoWaterConfig.getValue().booleanValue()) {
+        if (this.allowNoWaterConfig.getValue()) {
             event.cancel();
         }
     }

@@ -23,12 +23,12 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 public class StepModule
 extends ToggleModule {
-    Config<StepMode> modeConfig = new EnumConfig("Mode", "Step mode", StepMode.NORMAL, StepMode.values());
-    Config<Float> heightConfig = new NumberConfig<Float>("Height", "The maximum height for stepping up blocks", 1.0f, 2.5f, 10.0f);
-    Config<Boolean> useTimerConfig = new BooleanConfig("UseTimer", "Slows down packets by applying timer when stepping", true);
-    Config<Boolean> strictConfig = new BooleanConfig("Strict", "Confirms the step height for NCP servers", false, () -> this.heightConfig.getValue().floatValue() <= 2.5f);
-    Config<Boolean> entityStepConfig = new BooleanConfig("EntityStep", "Allows entities to step up blocks", false);
-    Config<Boolean> pauseInside = new BooleanConfig("PauseInside", "Allows entities to step up blocks", false);
+    final Config<StepMode> modeConfig = new EnumConfig<>("Mode", "Step mode", StepMode.NORMAL, StepMode.values());
+    final Config<Float> heightConfig = new NumberConfig<>("Height", "The maximum height for stepping up blocks", 1.0f, 2.5f, 10.0f);
+    final Config<Boolean> useTimerConfig = new BooleanConfig("UseTimer", "Slows down packets by applying timer when stepping", true);
+    final Config<Boolean> strictConfig = new BooleanConfig("Strict", "Confirms the step height for NCP servers", false, () -> this.heightConfig.getValue() <= 2.5f);
+    final Config<Boolean> entityStepConfig = new BooleanConfig("EntityStep", "Allows entities to step up blocks", false);
+    final Config<Boolean> pauseInside = new BooleanConfig("PauseInside", "Allows entities to step up blocks", false);
     private boolean cancelTimer;
     private final Timer stepTimer = new CacheTimer();
 
@@ -52,7 +52,7 @@ extends ToggleModule {
 
     @EventListener
     public void onPlayerUpdate(UpdateWalkingEvent event) {
-        if (PlayerUtil.isInsideBlock() && this.pauseInside.getValue().booleanValue()) {
+        if (PlayerUtil.isInsideBlock() && this.pauseInside.getValue()) {
             this.setStepHeight(0.6f);
             return;
         }
@@ -61,11 +61,11 @@ extends ToggleModule {
         }
         if (this.modeConfig.getValue() == StepMode.NORMAL) {
             double stepHeight = StepModule.mc.player.getY() - StepModule.mc.player.prevY;
-            if (stepHeight <= 0.5 || stepHeight > (double)this.heightConfig.getValue().floatValue()) {
+            if (stepHeight <= 0.5 || stepHeight > (double) this.heightConfig.getValue()) {
                 return;
             }
             double[] offs = this.getStepOffsets(stepHeight);
-            if (this.useTimerConfig.getValue().booleanValue()) {
+            if (this.useTimerConfig.getValue()) {
                 Managers.TICK.setClientTick(stepHeight > 1.0 ? 0.15f : 0.35f);
                 this.cancelTimer = true;
             }
@@ -78,7 +78,7 @@ extends ToggleModule {
 
     @EventListener
     public void onTick(TickEvent event) {
-        if (PlayerUtil.isInsideBlock() && this.pauseInside.getValue().booleanValue()) {
+        if (PlayerUtil.isInsideBlock() && this.pauseInside.getValue()) {
             this.setStepHeight(0.6f);
             return;
         }
@@ -95,14 +95,14 @@ extends ToggleModule {
             this.cancelTimer = false;
         }
         if (StepModule.mc.player.isOnGround() && this.stepTimer.passed(200)) {
-            this.setStepHeight(this.heightConfig.getValue().floatValue());
+            this.setStepHeight(this.heightConfig.getValue());
         } else {
             this.setStepHeight(this.isAbstractHorse(StepModule.mc.player.getVehicle()) ? 1.0f : 0.6f);
         }
     }
 
     private void setStepHeight(float stepHeight) {
-        if (this.entityStepConfig.getValue().booleanValue() && StepModule.mc.player.getVehicle() != null) {
+        if (this.entityStepConfig.getValue() && StepModule.mc.player.getVehicle() != null) {
             StepModule.mc.player.getVehicle().setStepHeight(stepHeight);
         } else {
             StepModule.mc.player.setStepHeight(stepHeight);
@@ -111,7 +111,7 @@ extends ToggleModule {
 
     private double[] getStepOffsets(double stepHeight) {
         double[] offsets = new double[]{};
-        if (this.strictConfig.getValue().booleanValue()) {
+        if (this.strictConfig.getValue()) {
             if (stepHeight > 1.1661) {
                 offsets = new double[]{0.42, 0.7532, 1.001, 1.1661, stepHeight};
             } else if (stepHeight > 1.015) {

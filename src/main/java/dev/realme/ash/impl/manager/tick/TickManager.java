@@ -86,14 +86,13 @@ public class TickManager implements Globals {
       float min = 20.0F;
 
       try {
-         Iterator var2 = this.ticks.iterator();
 
-         while(var2.hasNext()) {
-            float t = (Float)var2.next();
-            if (t < min) {
-               min = t;
-            }
-         }
+          for (Object tick : this.ticks) {
+              float t = (Float) tick;
+              if (t < min) {
+                  min = t;
+              }
+          }
       } catch (NullPointerException var4) {
       }
 

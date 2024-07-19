@@ -33,26 +33,26 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket.PositionAndOnGr
 import net.minecraft.util.hit.BlockHitResult;
 
 public class PacketLoggerModule extends ToggleModule {
-    Config<Float> delay = new NumberConfig("Timeout", "", 0.0F, 50.0F, 5000.0F);
-    Config<Boolean> chatConfig = new BooleanConfig("LogChat", "Logs packets in the chats", false);
-    Config<Boolean> moveFullConfig = new BooleanConfig("PlayerMoveFull", "Logs PlayerMoveC2SPacket", false);
-    Config<Boolean> moveLookConfig = new BooleanConfig("PlayerMoveLook", "Logs PlayerMoveC2SPacket", false);
-    Config<Boolean> movePosConfig = new BooleanConfig("PlayerMovePosition", "Logs PlayerMoveC2SPacket", false);
-    Config<Boolean> moveGroundConfig = new BooleanConfig("PlayerMoveGround", "Logs PlayerMoveC2SPacket", false);
-    Config<Boolean> vehicleMoveConfig = new BooleanConfig("VehicleMove", "Logs VehicleMoveC2SPacket", false);
-    Config<Boolean> playerActionConfig = new BooleanConfig("PlayerAction", "Logs PlayerActionC2SPacket", false);
-    Config<Boolean> updateSlotConfig = new BooleanConfig("UpdateSelectedSlot", "Logs UpdateSelectedSlotC2SPacket", false);
-    Config<Boolean> clickSlotConfig = new BooleanConfig("ClickSlot", "Logs ClickSlotC2SPacket", false);
-    Config<Boolean> pickInventoryConfig = new BooleanConfig("PickInventory", "Logs PickFromInventoryC2SPacket", false);
-    Config<Boolean> handSwingConfig = new BooleanConfig("HandSwing", "Logs HandSwingC2SPacket", false);
-    Config<Boolean> interactEntityConfig = new BooleanConfig("InteractEntity", "Logs PlayerInteractEntityC2SPacket", false);
-    Config<Boolean> interactBlockConfig = new BooleanConfig("InteractBlock", "Logs PlayerInteractBlockC2SPacket", false);
-    Config<Boolean> interactItemConfig = new BooleanConfig("InteractItem", "Logs PlayerInteractItemC2SPacket", false);
-    Config<Boolean> commandConfig = new BooleanConfig("ClientCommand", "Logs ClientCommandC2SPacket", false);
-    Config<Boolean> statusConfig = new BooleanConfig("ClientStatus", "Logs ClientStatusC2SPacket", false);
-    Config<Boolean> closeScreenConfig = new BooleanConfig("CloseScreen", "Logs CloseHandledScreenC2SPacket", false);
-    Config<Boolean> teleportConfirmConfig = new BooleanConfig("TeleportConfirm", "Logs TeleportConfirmC2SPacket", false);
-    Config<Boolean> pongConfig = new BooleanConfig("Pong", "Logs CommonPongC2SPacket", false);
+    final Config<Float> delay = new NumberConfig<>("Timeout", "", 0.0F, 50.0F, 5000.0F);
+    final Config<Boolean> chatConfig = new BooleanConfig("LogChat", "Logs packets in the chats", false);
+    final Config<Boolean> moveFullConfig = new BooleanConfig("PlayerMoveFull", "Logs PlayerMoveC2SPacket", false);
+    final Config<Boolean> moveLookConfig = new BooleanConfig("PlayerMoveLook", "Logs PlayerMoveC2SPacket", false);
+    final Config<Boolean> movePosConfig = new BooleanConfig("PlayerMovePosition", "Logs PlayerMoveC2SPacket", false);
+    final Config<Boolean> moveGroundConfig = new BooleanConfig("PlayerMoveGround", "Logs PlayerMoveC2SPacket", false);
+    final Config<Boolean> vehicleMoveConfig = new BooleanConfig("VehicleMove", "Logs VehicleMoveC2SPacket", false);
+    final Config<Boolean> playerActionConfig = new BooleanConfig("PlayerAction", "Logs PlayerActionC2SPacket", false);
+    final Config<Boolean> updateSlotConfig = new BooleanConfig("UpdateSelectedSlot", "Logs UpdateSelectedSlotC2SPacket", false);
+    final Config<Boolean> clickSlotConfig = new BooleanConfig("ClickSlot", "Logs ClickSlotC2SPacket", false);
+    final Config<Boolean> pickInventoryConfig = new BooleanConfig("PickInventory", "Logs PickFromInventoryC2SPacket", false);
+    final Config<Boolean> handSwingConfig = new BooleanConfig("HandSwing", "Logs HandSwingC2SPacket", false);
+    final Config<Boolean> interactEntityConfig = new BooleanConfig("InteractEntity", "Logs PlayerInteractEntityC2SPacket", false);
+    final Config<Boolean> interactBlockConfig = new BooleanConfig("InteractBlock", "Logs PlayerInteractBlockC2SPacket", false);
+    final Config<Boolean> interactItemConfig = new BooleanConfig("InteractItem", "Logs PlayerInteractItemC2SPacket", false);
+    final Config<Boolean> commandConfig = new BooleanConfig("ClientCommand", "Logs ClientCommandC2SPacket", false);
+    final Config<Boolean> statusConfig = new BooleanConfig("ClientStatus", "Logs ClientStatusC2SPacket", false);
+    final Config<Boolean> closeScreenConfig = new BooleanConfig("CloseScreen", "Logs CloseHandledScreenC2SPacket", false);
+    final Config<Boolean> teleportConfirmConfig = new BooleanConfig("TeleportConfirm", "Logs TeleportConfirmC2SPacket", false);
+    final Config<Boolean> pongConfig = new BooleanConfig("Pong", "Logs CommonPongC2SPacket", false);
     int count = 0;
     private final Timer updateTimer = new CacheTimer();
 

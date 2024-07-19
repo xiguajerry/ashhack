@@ -58,9 +58,7 @@ public class MixinBufferBuilderStorage {
          map.put(RenderLayer.getDirectEntityGlint(), new BufferBuilder(RenderLayer.getDirectEntityGlint().getExpectedBufferSize()));
          map.put(RenderLayer.getWaterMask(), new BufferBuilder(RenderLayer.getWaterMask().getExpectedBufferSize()));
          map.put(RenderLayersClient.GLINT, new BufferBuilder(RenderLayersClient.GLINT.getExpectedBufferSize()));
-         ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.forEach((renderLayer) -> {
-            map.put(renderLayer, new BufferBuilder(renderLayer.getExpectedBufferSize()));
-         });
+         ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.forEach((renderLayer) -> map.put(renderLayer, new BufferBuilder(renderLayer.getExpectedBufferSize())));
       });
       this.entityVertexConsumers = VertexConsumerProvider.immediate(sortedMap, new BufferBuilder(786432));
       this.outlineVertexConsumers = new OutlineVertexConsumerProvider(this.entityVertexConsumers);

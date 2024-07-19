@@ -10,7 +10,7 @@ import dev.realme.ash.impl.event.TickEvent;
 
 public class AutoWalkModule
 extends ToggleModule {
-    Config<Boolean> lockConfig = new BooleanConfig("Lock", "Stops movement when sneaking or jumping", false);
+    final Config<Boolean> lockConfig = new BooleanConfig("Lock", "Stops movement when sneaking or jumping", false);
 
     public AutoWalkModule() {
         super("AutoWalk", "Automatically moves forward", ModuleCategory.MOVEMENT);

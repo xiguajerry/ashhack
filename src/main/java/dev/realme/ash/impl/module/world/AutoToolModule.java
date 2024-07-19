@@ -18,9 +18,11 @@ extends ToggleModule {
 
     @EventListener
     public void onBreakBlock(AttackBlockEvent event) {
+        assert AutoToolModule.mc.world != null;
         BlockState state = AutoToolModule.mc.world.getBlockState(event.getPos());
         int blockSlot = this.getBestToolNoFallback(state);
         if (blockSlot != -1) {
+            assert AutoToolModule.mc.player != null;
             AutoToolModule.mc.player.getInventory().selectedSlot = blockSlot;
         }
     }
@@ -30,6 +32,7 @@ extends ToggleModule {
         if (slot != -1) {
             return slot;
         }
+        assert AutoToolModule.mc.player != null;
         return AutoToolModule.mc.player.getInventory().selectedSlot;
     }
 
@@ -37,6 +40,7 @@ extends ToggleModule {
         int slot = -1;
         float bestTool = 0.0f;
         for (int i = 0; i < 9; ++i) {
+            assert AutoToolModule.mc.player != null;
             ItemStack stack = AutoToolModule.mc.player.getInventory().getStack(i);
             if (stack.isEmpty() || !(stack.getItem() instanceof ToolItem)) continue;
             float speed = stack.getMiningSpeedMultiplier(state);

@@ -11,16 +11,16 @@ import dev.realme.ash.util.math.timer.Timer;
 
 public class CombatSettingModule
 extends ConcurrentModule {
-    public Config<Priority> priority = new EnumConfig("Priority", "", Priority.HEALTH, Priority.values());
-    public Config<MaxHeight> maxHeight = new EnumConfig("MaxHeight", "", MaxHeight.New, MaxHeight.values());
-    public Config<Placement> placement = new EnumConfig("Placement", "", Placement.Vanilla, Placement.values());
-    public Config<Float> placeRange = new NumberConfig<Float>("PlaceRange", "", 0.0f, 5.2f, 6.0f);
-    public Config<Boolean> packetPlace = new BooleanConfig("PacketPlace", "", true);
-    public Config<Float> attackDelay = new NumberConfig<Float>("AttackDelay", "", 0.0f, 0.2f, 5.0f);
-    public Config<Float> rotateTime = new NumberConfig<Float>("RotateTime", "", 0.0f, 0.29f, 2.0f);
-    public Config<Boolean> movementFix = new BooleanConfig("MovementFix", "", false);
-    public Config<SwingMode> swingMode = new EnumConfig("SwingMode", "", SwingMode.Normal, SwingMode.values());
-    public Config<Boolean> oldVersion = new BooleanConfig("OldVersion", "", false);
+    public final Config<Priority> priority = new EnumConfig<>("Priority", "", Priority.HEALTH, Priority.values());
+    public final Config<MaxHeight> maxHeight = new EnumConfig<>("MaxHeight", "", MaxHeight.New, MaxHeight.values());
+    public final Config<Placement> placement = new EnumConfig<>("Placement", "", Placement.Vanilla, Placement.values());
+    public final Config<Float> placeRange = new NumberConfig<>("PlaceRange", "", 0.0f, 5.2f, 6.0f);
+    public final Config<Boolean> packetPlace = new BooleanConfig("PacketPlace", "", true);
+    public final Config<Float> attackDelay = new NumberConfig<>("AttackDelay", "", 0.0f, 0.2f, 5.0f);
+    public final Config<Float> rotateTime = new NumberConfig<>("RotateTime", "", 0.0f, 0.29f, 2.0f);
+    public final Config<Boolean> movementFix = new BooleanConfig("MovementFix", "", false);
+    public final Config<SwingMode> swingMode = new EnumConfig<>("SwingMode", "", SwingMode.Normal, SwingMode.values());
+    public final Config<Boolean> oldVersion = new BooleanConfig("OldVersion", "", false);
     public final Timer attackTimer = new CacheTimer();
 
     public CombatSettingModule() {

@@ -15,10 +15,10 @@ import net.minecraft.util.Formatting;
 
 public class ExtraTabModule
 extends ToggleModule {
-    Config<Integer> sizeConfig = new NumberConfig<Integer>("Size", "The number of players to show", 80, 200, 1000);
-    Config<Integer> columnsConfig = new NumberConfig<Integer>("Columns", "The number columns to show.", 1, 20, 100);
-    Config<Boolean> selfConfig = new BooleanConfig("Self", "Highlights yourself in the tab list.", false);
-    Config<Boolean> friendsConfig = new BooleanConfig("Friends", "Highlights friends in the tab list.", true);
+    final Config<Integer> sizeConfig = new NumberConfig<>("Size", "The number of players to show", 80, 200, 1000);
+    final Config<Integer> columnsConfig = new NumberConfig<>("Columns", "The number columns to show.", 1, 20, 100);
+    final Config<Boolean> selfConfig = new BooleanConfig("Self", "Highlights yourself in the tab list.", false);
+    final Config<Boolean> friendsConfig = new BooleanConfig("Friends", "Highlights friends in the tab list.", true);
 
     public ExtraTabModule() {
         super("ExtraTab", "Expands the tab list size to allow for more players", ModuleCategory.RENDER);
@@ -26,10 +26,10 @@ extends ToggleModule {
 
     @EventListener
     public void onPlayerListName(PlayerListNameEvent event) {
-        if (this.selfConfig.getValue().booleanValue() && event.getPlayerName().getString().equals(mc.getGameProfile().getName())) {
+        if (this.selfConfig.getValue() && event.getPlayerName().getString().equals(mc.getGameProfile().getName())) {
             event.cancel();
-            event.setPlayerName(Text.of("\u00a7s" + event.getPlayerName().getString()));
-        } else if (this.friendsConfig.getValue().booleanValue()) {
+            event.setPlayerName(Text.of("§s" + event.getPlayerName().getString()));
+        } else if (this.friendsConfig.getValue()) {
             for (String s : Managers.SOCIAL.getFriends()) {
                 if (!event.getPlayerName().getString().equals(s)) continue;
                 event.cancel();

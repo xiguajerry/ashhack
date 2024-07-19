@@ -22,7 +22,7 @@ import net.minecraft.util.math.Direction;
 
 public class SelfBowModule
 extends RotationModule {
-    private final Set<StatusEffectInstance> arrows = new HashSet<StatusEffectInstance>();
+    private final Set<StatusEffectInstance> arrows = new HashSet<>();
 
     public SelfBowModule() {
         super("SelfBow", "Shoots player with beneficial tipped arrows", ModuleCategory.COMBAT);

@@ -51,42 +51,42 @@ import net.minecraft.util.math.Vec3d;
 
 public class PacketDiggingModule
 extends RotationModule {
-    Config<Float> delay = new NumberConfig<Float>("Delay", "Added delays", 0.0f, 50.0f, 500.0f);
-    Config<Double> damage = new NumberConfig<Double>("Damage", "The speed to mine blocks", 0.0, 1.0, 1.0);
-    Config<Integer> maxBreak = new NumberConfig<Integer>("BreakCount", "", 0, 8, 50);
-    Config<Float> range = new NumberConfig<Float>("Range", "", 0.0f, 5.0f, 8.0f);
-    Config<Boolean> doubleBreak = new BooleanConfig("DoubleBreak", "", true);
-    Config<Boolean> autoSwap = new BooleanConfig("AutoSwap", "", false);
-    Config<Boolean> clickSlot = new BooleanConfig("ClickSlot", "", false);
-    Config<Double> switchDamage = new NumberConfig<Double>("SwitchDamage", "", 0.0, 0.8, 1.0);
-    Config<Double> stopDamage = new NumberConfig<Double>("StopDamage", "", 0.0, 0.8, 1.0);
-    Config<Double> failedDamage = new NumberConfig<Double>("FailedDamage", "", 1.0, 1.5, 2.5);
-    Config<Boolean> startingRotate = new BooleanConfig("StartingRotate", "", false);
-    Config<Boolean> endingRotate = new BooleanConfig("EndingRotate", "", false);
-    Config<Float> time = new NumberConfig<Float>("Time", "", 0.0f, 100.0f, 2000.0f);
-    Config<Float> subtractTime = new NumberConfig<Float>("SubtractTime", "", 0.0f, 100.0f, 2000.0f);
-    Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
-    Config<Boolean> checkGround = new BooleanConfig("CheckGround", "", true);
-    Config<Boolean> retry = new BooleanConfig("Retry", "", false);
-    Config<Boolean> syncBreak = new BooleanConfig("SyncBreak", "", false);
-    Config<Boolean> wait = new BooleanConfig("Stay", "", true);
-    Config<Boolean> instant = new BooleanConfig("Instant", "", true);
-    Config<Boolean> hotBar = new BooleanConfig("HotBarSwap", "", true);
-    Config<Color> color = new ColorConfig("Color", "", new Color(90, 90, 255), false, false);
-    Config<RenderMode> renderMode = new EnumConfig("RenderMode", "", RenderMode.Grow, RenderMode.values());
-    Config<Double> expandLine = new NumberConfig<Double>("ExpandLine", "", 0.0, 0.1, 0.5);
-    Config<Boolean> box = new BooleanConfig("Box", "", true);
-    Config<Integer> boxAlpha = new NumberConfig<Integer>("BoxAlpha", "", 0, 80, 255);
-    Config<Boolean> line = new BooleanConfig("lines", "", false);
-    Config<Integer> olAlpha = new NumberConfig<Integer>("OLAlpha", "", 0, 255, 255);
-    Config<Float> olWidth = new NumberConfig<Float>("OLWidth", "", 0.1f, 1.5f, 5.0f);
-    Config<Boolean> ignoreSame = new BooleanConfig("IgnoreSame", "", true);
-    Config<Color> double_color = new ColorConfig("Double_Color", "", new Color(255, 255, 255), false, false);
-    Config<Boolean> double_box = new BooleanConfig("Double_Box", "", true);
-    Config<Integer> double_boxAlpha = new NumberConfig<Integer>("Double_BoxAlpha", "", 0, 80, 255);
-    Config<Boolean> double_line = new BooleanConfig("Double_lines", "", false);
-    Config<Integer> double_olAlpha = new NumberConfig<Integer>("Double_OLAlpha", "", 0, 255, 255);
-    Config<Float> double_olWidth = new NumberConfig<Float>("Double_OLWidth", "", 0.1f, 1.5f, 5.0f);
+    final Config<Float> delay = new NumberConfig<>("Delay", "Added delays", 0.0f, 50.0f, 500.0f);
+    final Config<Double> damage = new NumberConfig<>("Damage", "The speed to mine blocks", 0.0, 1.0, 1.0);
+    final Config<Integer> maxBreak = new NumberConfig<>("BreakCount", "", 0, 8, 50);
+    final Config<Float> range = new NumberConfig<>("Range", "", 0.0f, 5.0f, 8.0f);
+    final Config<Boolean> doubleBreak = new BooleanConfig("DoubleBreak", "", true);
+    final Config<Boolean> autoSwap = new BooleanConfig("AutoSwap", "", false);
+    final Config<Boolean> clickSlot = new BooleanConfig("ClickSlot", "", false);
+    final Config<Double> switchDamage = new NumberConfig<>("SwitchDamage", "", 0.0, 0.8, 1.0);
+    final Config<Double> stopDamage = new NumberConfig<>("StopDamage", "", 0.0, 0.8, 1.0);
+    final Config<Double> failedDamage = new NumberConfig<>("FailedDamage", "", 1.0, 1.5, 2.5);
+    final Config<Boolean> startingRotate = new BooleanConfig("StartingRotate", "", false);
+    final Config<Boolean> endingRotate = new BooleanConfig("EndingRotate", "", false);
+    final Config<Float> time = new NumberConfig<>("Time", "", 0.0f, 100.0f, 2000.0f);
+    final Config<Float> subtractTime = new NumberConfig<>("SubtractTime", "", 0.0f, 100.0f, 2000.0f);
+    final Config<Boolean> pauseEat = new BooleanConfig("PauseEat", "Not attacking while using items", true);
+    final Config<Boolean> checkGround = new BooleanConfig("CheckGround", "", true);
+    final Config<Boolean> retry = new BooleanConfig("Retry", "", false);
+    final Config<Boolean> syncBreak = new BooleanConfig("SyncBreak", "", false);
+    final Config<Boolean> wait = new BooleanConfig("Stay", "", true);
+    final Config<Boolean> instant = new BooleanConfig("Instant", "", true);
+    final Config<Boolean> hotBar = new BooleanConfig("HotBarSwap", "", true);
+    final Config<Color> color = new ColorConfig("Color", "", new Color(90, 90, 255), false, false);
+    final Config<RenderMode> renderMode = new EnumConfig<>("RenderMode", "", RenderMode.Grow, RenderMode.values());
+    final Config<Double> expandLine = new NumberConfig<>("ExpandLine", "", 0.0, 0.1, 0.5);
+    final Config<Boolean> box = new BooleanConfig("Box", "", true);
+    final Config<Integer> boxAlpha = new NumberConfig<>("BoxAlpha", "", 0, 80, 255);
+    final Config<Boolean> line = new BooleanConfig("lines", "", false);
+    final Config<Integer> olAlpha = new NumberConfig<>("OLAlpha", "", 0, 255, 255);
+    final Config<Float> olWidth = new NumberConfig<>("OLWidth", "", 0.1f, 1.5f, 5.0f);
+    final Config<Boolean> ignoreSame = new BooleanConfig("IgnoreSame", "", true);
+    final Config<Color> double_color = new ColorConfig("Double_Color", "", new Color(255, 255, 255), false, false);
+    final Config<Boolean> double_box = new BooleanConfig("Double_Box", "", true);
+    final Config<Integer> double_boxAlpha = new NumberConfig<>("Double_BoxAlpha", "", 0, 80, 255);
+    final Config<Boolean> double_line = new BooleanConfig("Double_lines", "", false);
+    final Config<Integer> double_olAlpha = new NumberConfig<>("Double_OLAlpha", "", 0, 255, 255);
+    final Config<Float> double_olWidth = new NumberConfig<>("Double_OLWidth", "", 0.1f, 1.5f, 5.0f);
     public static final List<Block> godBlocks = Arrays.asList(Blocks.COMMAND_BLOCK, Blocks.LAVA_CAULDRON, Blocks.LAVA, Blocks.WATER_CAULDRON, Blocks.WATER, Blocks.BEDROCK, Blocks.BARRIER, Blocks.END_PORTAL, Blocks.NETHER_PORTAL, Blocks.END_PORTAL_FRAME);
     public BlockPos breakPos;
     public BlockPos secondPos;
@@ -157,15 +157,15 @@ extends RotationModule {
                     case Grow -> (1.0 - this.animationTime.easeOutQuad()) * 0.5;
                 };
                 ColorConfig first = (ColorConfig)this.color;
-                if (this.box.getValue().booleanValue()) {
+                if (this.box.getValue()) {
                     RenderManager.renderBox(event.getMatrices(), new Box(this.breakPos).shrink(ease, ease, ease).shrink(-ease, -ease, -ease), first.getRgb(this.boxAlpha.getValue()));
                 }
-                if (this.line.getValue().booleanValue()) {
-                    RenderManager.renderBoundingBox(event.getMatrices(), new Box(this.breakPos).shrink(easeLine, easeLine, easeLine).shrink(-easeLine, -easeLine, -easeLine), this.olWidth.getValue().floatValue(), first.getRgb(this.olAlpha.getValue()));
+                if (this.line.getValue()) {
+                    RenderManager.renderBoundingBox(event.getMatrices(), new Box(this.breakPos).shrink(easeLine, easeLine, easeLine).shrink(-easeLine, -easeLine, -easeLine), this.olWidth.getValue(), first.getRgb(this.olAlpha.getValue()));
                 }
             }
             if (this.secondPos != null) {
-                if (this.secondPos.equals(this.breakPos) && this.ignoreSame.getValue().booleanValue()) {
+                if (this.secondPos.equals(this.breakPos) && this.ignoreSame.getValue()) {
                     return;
                 }
                 double ease = switch (this.renderMode.getValue()) {
@@ -179,11 +179,11 @@ extends RotationModule {
                     case Grow -> (1.0 - this.secondAnim.easeOutQuad()) * 0.5;
                 };
                 ColorConfig second = (ColorConfig)this.double_color;
-                if (this.double_box.getValue().booleanValue()) {
+                if (this.double_box.getValue()) {
                     RenderManager.renderBox(event.getMatrices(), new Box(this.secondPos).shrink(ease, ease, ease).shrink(-ease, -ease, -ease), second.getRgb(this.double_boxAlpha.getValue()));
                 }
-                if (this.double_line.getValue().booleanValue()) {
-                    RenderManager.renderBoundingBox(event.getMatrices(), new Box(this.secondPos).shrink(easeLine, easeLine, easeLine).shrink(-easeLine, -easeLine, -easeLine), this.double_olWidth.getValue().floatValue(), second.getRgb(this.double_olAlpha.getValue()));
+                if (this.double_line.getValue()) {
+                    RenderManager.renderBoundingBox(event.getMatrices(), new Box(this.secondPos).shrink(easeLine, easeLine, easeLine).shrink(-easeLine, -easeLine, -easeLine), this.double_olWidth.getValue(), second.getRgb(this.double_olAlpha.getValue()));
                 }
             }
         }
@@ -195,13 +195,13 @@ extends RotationModule {
             return;
         }
         if (event.getPacket() instanceof PlayerMoveC2SPacket) {
-            if (this.breakPos != null && !BlockUtil.isAir(this.breakPos) && this.subtractTime.getValue().floatValue() > 0.0f && MathHelper.sqrt((float)this.breakPos.toCenterPos().squaredDistanceTo(EntityUtil.getEyesPos())) <= this.range.getValue().floatValue() + 2.0f) {
+            if (this.breakPos != null && !BlockUtil.isAir(this.breakPos) && this.subtractTime.getValue() > 0.0f && MathHelper.sqrt((float)this.breakPos.toCenterPos().squaredDistanceTo(EntityUtil.getEyesPos())) <= this.range.getValue() + 2.0f) {
                 double breakTime;
                 int slot = this.getTool(this.breakPos);
                 if (slot == -1) {
                     slot = PacketDiggingModule.mc.player.getInventory().selectedSlot;
                 }
-                if ((breakTime = this.getBreakTime(this.breakPos, slot, this.damage.getValue(), this.checkGround.getValue()) - (double)this.subtractTime.getValue().floatValue()) <= 0.0 || this.mineTimer.passed((long)breakTime)) {
+                if ((breakTime = this.getBreakTime(this.breakPos, slot, this.damage.getValue(), this.checkGround.getValue()) - (double) this.subtractTime.getValue()) <= 0.0 || this.mineTimer.passed((long)breakTime)) {
                     ((IPlayerMoveC2SPacket) event.getPacket()).setOnGround(true);
                 }
             }
@@ -221,7 +221,7 @@ extends RotationModule {
                 event.cancel();
                 return;
             }
-            if (!this.instant.getValue().booleanValue()) {
+            if (!this.instant.getValue()) {
                 this.startMine = false;
             }
         }
@@ -232,16 +232,16 @@ extends RotationModule {
         if (PacketDiggingModule.nullCheck() || PacketDiggingModule.mc.player.isCreative()) {
             return;
         }
-        if (this.endingRotate.getValue().booleanValue() && this.breakPos != null && !BlockUtil.isAir(this.breakPos) && this.time.getValue().floatValue() > 0.0f) {
+        if (this.endingRotate.getValue() && this.breakPos != null && !BlockUtil.isAir(this.breakPos) && this.time.getValue() > 0.0f) {
             double breakTime;
-            if (MathHelper.sqrt((float)EntityUtil.getEyesPos().squaredDistanceTo(this.breakPos.toCenterPos())) > this.range.getValue().floatValue()) {
+            if (MathHelper.sqrt((float)EntityUtil.getEyesPos().squaredDistanceTo(this.breakPos.toCenterPos())) > this.range.getValue()) {
                 return;
             }
             int slot = this.getTool(this.breakPos);
             if (slot == -1) {
                 slot = PacketDiggingModule.mc.player.getInventory().selectedSlot;
             }
-            if ((breakTime = this.getBreakTime(this.breakPos, slot, this.damage.getValue(), this.checkGround.getValue()) - (double)this.time.getValue().floatValue()) <= 0.0 || this.mineTimer.passed((long)breakTime)) {
+            if ((breakTime = this.getBreakTime(this.breakPos, slot, this.damage.getValue(), this.checkGround.getValue()) - (double) this.time.getValue()) <= 0.0 || this.mineTimer.passed((long)breakTime)) {
                 PacketDiggingModule.facePosFacing(this.breakPos, Managers.INTERACT.getClickDirection(this.breakPos), event);
             }
         }
@@ -297,11 +297,11 @@ extends RotationModule {
         if (BlockUtil.isAir(this.breakPos)) {
             this.breakNumber = 0;
         }
-        if (this.breakNumber > this.maxBreak.getValue() - 1 && this.maxBreak.getValue() > 0 || !this.wait.getValue().booleanValue() && BlockUtil.isAir(this.breakPos) && !this.instant.getValue().booleanValue()) {
+        if (this.breakNumber > this.maxBreak.getValue() - 1 && this.maxBreak.getValue() > 0 || !this.wait.getValue() && BlockUtil.isAir(this.breakPos) && !this.instant.getValue()) {
             if (this.breakPos.equals(this.secondPos)) {
                 this.secondPos = null;
             }
-            if (this.retry.getValue().booleanValue()) {
+            if (this.retry.getValue()) {
                 this.mineTimer.reset();
                 this.animationTime.reset();
             } else {
@@ -316,28 +316,28 @@ extends RotationModule {
             this.startMine = false;
             return;
         }
-        if (MathHelper.sqrt((float)EntityUtil.getEyesPos().squaredDistanceTo(this.breakPos.toCenterPos())) > this.range.getValue().floatValue()) {
+        if (MathHelper.sqrt((float)EntityUtil.getEyesPos().squaredDistanceTo(this.breakPos.toCenterPos())) > this.range.getValue()) {
             this.startMine = false;
             this.breakNumber = 0;
             this.breakPos = null;
             this.secondPos = null;
             return;
         }
-        if (!(this.hotBar.getValue().booleanValue() || PacketDiggingModule.mc.currentScreen == null || PacketDiggingModule.mc.currentScreen instanceof ChatScreen || PacketDiggingModule.mc.currentScreen instanceof InventoryScreen || PacketDiggingModule.mc.currentScreen instanceof ClickGuiScreen)) {
+        if (!(this.hotBar.getValue() || PacketDiggingModule.mc.currentScreen == null || PacketDiggingModule.mc.currentScreen instanceof ChatScreen || PacketDiggingModule.mc.currentScreen instanceof InventoryScreen || PacketDiggingModule.mc.currentScreen instanceof ClickGuiScreen)) {
             return;
         }
         int slot = this.getTool(this.breakPos);
         if (slot == -1) {
             slot = PacketDiggingModule.mc.player.getInventory().selectedSlot;
         }
-        if (this.pauseEat.getValue().booleanValue() && PacketDiggingModule.mc.player.isUsingItem()) {
+        if (this.pauseEat.getValue() && PacketDiggingModule.mc.player.isUsingItem()) {
             return;
         }
         if (this.secondPos != null && this.secondTimer.passed(this.getBreakTime(this.secondPos, slot, this.failedDamage.getValue(), false))) {
             this.secondPos = null;
         }
         int secondSlot = -1;
-        if (this.autoSwap.getValue().booleanValue()) {
+        if (this.autoSwap.getValue()) {
             if (this.secondPos != null) {
                 secondSlot = this.getTool(this.secondPos);
                 if (secondSlot == -1) {
@@ -347,7 +347,7 @@ extends RotationModule {
                     if (this.lastSlot == -1) {
                         this.lastSlot = PacketDiggingModule.mc.player.getInventory().selectedSlot;
                     }
-                    if (!this.clickSlot.getValue().booleanValue()) {
+                    if (!this.clickSlot.getValue()) {
                         if (secondSlot < 9) {
                             InventoryUtil.doSwap(secondSlot);
                         }
@@ -360,7 +360,7 @@ extends RotationModule {
                 }
             }
             if ((this.secondPos == null || BlockUtil.isAir(this.secondPos)) && this.lastSlot != -1 && this.lastSlot != PacketDiggingModule.mc.player.getInventory().selectedSlot) {
-                if (!this.clickSlot.getValue().booleanValue()) {
+                if (!this.clickSlot.getValue()) {
                     InventoryUtil.doSwap(this.lastSlot);
                 } else if (secondSlot != -1) {
                     InventoryUtil.doInvSwap(secondSlot);
@@ -400,7 +400,7 @@ extends RotationModule {
             if (this.mineTimer.passed((long)this.getBreakTime(this.breakPos, slot, this.damage.getValue(), this.checkGround.getValue()))) {
                 boolean shouldSwitch;
                 int old = PacketDiggingModule.mc.player.getInventory().selectedSlot;
-                if (this.hotBar.getValue().booleanValue()) {
+                if (this.hotBar.getValue()) {
                     shouldSwitch = slot != old;
                 } else {
                     if (slot < 9) {
@@ -408,11 +408,11 @@ extends RotationModule {
                     }
                     boolean bl = shouldSwitch = old + 36 != slot;
                 }
-                if (this.syncBreak.getValue().booleanValue() && this.secondPos != null && !this.secondPos.equals(this.breakPos)) {
+                if (this.syncBreak.getValue() && this.secondPos != null && !this.secondPos.equals(this.breakPos)) {
                     return;
                 }
                 if (shouldSwitch) {
-                    if (this.hotBar.getValue().booleanValue()) {
+                    if (this.hotBar.getValue()) {
                         InventoryUtil.doSwap(slot);
                     } else {
                         InventoryUtil.doInvSwap(slot);
@@ -420,7 +420,7 @@ extends RotationModule {
                 }
                 PacketDiggingModule.mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, this.breakPos, Managers.INTERACT.getClickDirection(this.breakPos)));
                 if (shouldSwitch) {
-                    if (this.hotBar.getValue().booleanValue()) {
+                    if (this.hotBar.getValue()) {
                         InventoryUtil.doSwap(old);
                     } else {
                         InventoryUtil.doInvSwap(slot);
@@ -441,7 +441,7 @@ extends RotationModule {
     }
 
     private int getTool(BlockPos pos) {
-        if (this.hotBar.getValue().booleanValue()) {
+        if (this.hotBar.getValue()) {
             int index = -1;
             float CurrentFastest = 1.0f;
             for (int i = 0; i < 9; ++i) {
@@ -524,11 +524,11 @@ extends RotationModule {
     }
 
     private void startMine() {
-        if (this.startingRotate.getValue().booleanValue()) {
+        if (this.startingRotate.getValue()) {
             this.setRotation(this.breakPos, Managers.INTERACT.getClickDirection(this.breakPos));
         }
         PacketDiggingModule.mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, this.breakPos, Managers.INTERACT.getClickDirection(this.breakPos)));
-        if (this.doubleBreak.getValue().booleanValue()) {
+        if (this.doubleBreak.getValue()) {
             if (this.secondPos == null || BlockUtil.isAir(this.secondPos)) {
                 int slot = this.getTool(this.breakPos);
                 if (slot == -1) {

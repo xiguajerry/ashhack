@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 
 public class MacroManager
         implements Globals {
-   private final Set<Macro> macros = new HashSet<Macro>();
+   private final Set<Macro> macros = new HashSet<>();
 
    public MacroManager() {
       Ash.EVENT_HANDLER.subscribe(this);

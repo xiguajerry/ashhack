@@ -6,11 +6,11 @@ import dev.realme.ash.impl.gui.click.impl.config.CategoryFrame;
 import dev.realme.ash.impl.gui.click.impl.config.ModuleButton;
 import net.minecraft.client.gui.DrawContext;
 
-public abstract class ConfigButton extends Button {
-   protected final Config config;
+public abstract class ConfigButton <T> extends Button {
+   protected final Config<T> config;
    protected final ModuleButton moduleButton;
 
-   public ConfigButton(CategoryFrame frame, ModuleButton moduleButton, Config config, float x, float y) {
+   public ConfigButton(CategoryFrame frame, ModuleButton moduleButton, Config<T> config, float x, float y) {
       super(frame, x, y, 99.0F, 13.0F);
       this.moduleButton = moduleButton;
       this.config = config;
@@ -22,7 +22,7 @@ public abstract class ConfigButton extends Button {
 
    public abstract void render(DrawContext var1, float var2, float var3, float var4, float var5, float var6);
 
-   public Config getConfig() {
+   public Config<T> getConfig() {
       return this.config;
    }
 }

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "ash",
+  "version": "3.0",
+  "name": "Ash",
+  "description": "",
+  "authors": [
+    "DDNotFound"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/"
+  },
+  "license": "None",
+  "icon": "assets/ash/icon/client_icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "dev.realme.ash.AshMod"
+    ]
+  },
+  "accessWidener": "ash.accesswidener",
+  "mixins": [
+    "mixins.ash.json"
+  ],
+  "depends": {
+    "java": ">=17",
+    "fabricloader": ">=0.14.17",
+    "minecraft": "1.20.4"
+  }
+}
